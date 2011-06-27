@@ -15,3 +15,9 @@ svn:wc:ra_dav:version-url
 V 86
 /svn/!svn/ver/5980/pasantia/Atencion24/src/com/atencion24/ventanas/V_InicioSesion.java
 END
+LoginSuccessScreen.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/5980/pasantia/Atencion24/src/com/atencion24/ventanas/LoginSuccessScreen.java
+END

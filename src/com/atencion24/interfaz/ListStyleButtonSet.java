@@ -22,6 +22,11 @@ public class ListStyleButtonSet extends VerticalFieldManager
     {
         super( NO_VERTICAL_SCROLL );
         setMargin( MARGIN, MARGIN, MARGIN, MARGIN );
+		try {
+			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
+			setFont(appFont);
+		}catch (ClassNotFoundException e){}
     }
     
     protected void sublayout( int maxWidth, int maxHeight )

@@ -79,19 +79,20 @@ public class LoginSuccessScreen extends MainScreen implements FieldChangeListene
         _bodyWrapper = new NegativeMarginVerticalFieldManager(USE_ALL_WIDTH);
         _currentBody = new ListStyleButtonSet();
         
-        edoCta = new ListStyleButtonField( "Estado de Cuenta", 0 );
+        Bitmap arrowBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/gray-arrow.png");
+        edoCta = new ListStyleButtonField( "Estado de Cuenta", arrowBitmap , 0 );
         edoCta.setChangeListener(this);
         _currentBody.add(edoCta);
-        honPagados = new ListStyleButtonField( "Honorarios pagados en un período", 0 );
+        honPagados = new ListStyleButtonField( "Honorarios pagados en un período", arrowBitmap , 0 );
         honPagados.setChangeListener(this);
         _currentBody.add(honPagados);
-        honFact =  new ListStyleButtonField( "Honorarios facturados en un período", 0 );
+        honFact =  new ListStyleButtonField( "Honorarios facturados en un período", arrowBitmap , 0 );
         honFact.setChangeListener(this);
         _currentBody.add(honFact);
-        detCaso =  new ListStyleButtonField( "Detalle administrativo de un caso", 0 );
+        detCaso =  new ListStyleButtonField( "Detalle administrativo de un caso", arrowBitmap , 0 );
         detCaso.setChangeListener(this);
         _currentBody.add(detCaso);
-        listFianzas =  new ListStyleButtonField( "Listado de fianzas pendientes", 0 ); 
+        listFianzas =  new ListStyleButtonField( "Listado de fianzas pendientes", arrowBitmap , 0 ); 
         listFianzas.setChangeListener(this);
         _currentBody.add(listFianzas);
         

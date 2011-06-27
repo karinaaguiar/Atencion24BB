@@ -1,5 +1,7 @@
 package com.atencion24.ventanas;
 
+import java.util.TimeZone;
+
 import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
@@ -20,6 +22,7 @@ import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
+import com.atencion24.control.ControlDates;
 import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Sesion;
 import com.atencion24.interfaz.CustomButtonField;
@@ -28,6 +31,7 @@ import com.atencion24.interfaz.GridFieldManager;
 
 public class ConsultarHonorariosPagados extends plantilla_screen implements FieldChangeListener{
 	
+	static String dateTime = "01/01/2008";
 	RadioButtonField reciente;
 	RadioButtonField historico;
     DateField fechaInicial;
@@ -65,6 +69,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen implements Fiel
         //**Label field simple**
 		add(new CustomLabelField("Honorarios Pagados", Color.WHITE, 0x990000, FIELD_HCENTER));
 		add(new SeparatorField());
+
+		add(new CustomLabelField("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido() , Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
       
 		//Manager foreground = new ForegroundManager();        
         
@@ -78,7 +84,10 @@ public class ConsultarHonorariosPagados extends plantilla_screen implements Fiel
         add(historico);
         tipoConsulta.setChangeListener(this);
         
-        fechaInicial = new DateField("",Long.parseLong("01/01/2008")  , new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT);                        
+        ControlDates dates = new ControlDates();
+        fechaInicial = new DateField("", System.currentTimeMillis(), new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT);                        
+        fechaInicial.setTimeZone(TimeZone.getDefault());
+        fechaInicial.setDate(dates.stringToDate(dateTime)); 
         LabelField fechaI = new LabelField("Desde: ", Field.FIELD_RIGHT);
             
         fechaFinal = new DateField("",  System.currentTimeMillis() , new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT); 
@@ -117,15 +126,15 @@ public class ConsultarHonorariosPagados extends plantilla_screen implements Fiel
 
 	private void ConsultarHistoricoPagos(String medico){
 		//Comparo las fechas. Fecha Desde < Fecha Hasta
-		if(fechaInicial.toString().equals(fechaFinal.toString())){
-			Dialog.alert("Fecha desde debe ser menor que fecha hasta");
+		if(fechaInicial.getDate() > fechaFinal.getDate() || fechaInicial.getDate() == fechaFinal.getDate()){
+			Dialog.alert("Error al ingresar las fechas. Fecha 'Desde' debe ser menor que fecha 'Hasta'");
 		}
 		else{
 			String fechaI = fechaInicial.toString();
 			System.out.println(fechaI);
 			String fechaF = fechaFinal.toString();
 			System.out.println(fechaF);
-			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + medico + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
+			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + medico + "&fechaI_tb=" + fechaI.toString() + "&fechaF_tb=" + fechaF.toString(), "GET", this);
 			thread.start();
 		}
 			

@@ -132,13 +132,6 @@ public class ListStyleButtonField extends Field
     
     protected void paint( Graphics g )
     {
-    	//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-    	
     	// Left Bitmap
         if( _leftIcon != null ) {
             g.drawBitmap( HPADDING, VPADDING, _leftIcon.getWidth(), _leftIcon.getHeight(), _leftIcon, 0, 0 );
@@ -146,7 +139,7 @@ public class ListStyleButtonField extends Field
         
         // Text
         try {
-        	g.setColor(Color.WHITE);
+        	g.setColor(Color.BLACK);
             g.pushRegion( _leftOffset, ( getHeight() - _labelHeight ) / 2, getWidth() - _leftOffset - _rightOffset, _labelHeight, 0, 0 );
             _labelField.paint( g );
         } finally {
@@ -161,7 +154,7 @@ public class ListStyleButtonField extends Field
     
     protected void paintBackground( Graphics g )
     {
-        if( _drawPosition < 0 ) {
+    	if( _drawPosition < 0 ) {
             // it's like a list field, let the default background be drawn
             super.paintBackground( g );
             return;
