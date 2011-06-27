@@ -1,0 +1,56 @@
+14:21:14,318 TRACE [R] ContextManager starting, bundle version: 1.3.0.201102030942-17
+14:21:14,645 DEBUG [C] Property change listener is enabled.
+14:21:14,855 TRACE [R] ContextManager startingneed update: true
+14:21:14,870 DEBUG [U] Starting Search for CPs
+14:21:15,001 DEBUG [U] CP named BlackBerry Java SDK version 6.0.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack6.0.0_6.0.0.30\components
+14:21:15,004 DEBUG [U] CP named BlackBerry Java SDK version 4.5.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.5.0_4.5.0.28\components
+14:21:15,006 DEBUG [U] CP named BlackBerry Java SDK version 4.6.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.0_4.6.0.23\components
+14:21:15,008 DEBUG [U] CP named BlackBerry Java SDK version 4.6.1 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.1_4.6.1.49\components
+14:21:15,010 DEBUG [U] CP named BlackBerry Java SDK version 4.7.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.7.0_4.7.0.57\components
+14:21:15,012 DEBUG [U] CP named BlackBerry Java SDK version 5.0.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack5.0.0_5.0.0.25\components
+14:21:15,280 DEBUG [B] qualifier: 19
+14:21:16,047 DEBUG [K] VM: *ADDED* [1307731876016$C:\Program Files\Java\jre6]
+14:21:16,382 TRACE [W] Attempting to create VM with name - BlackBerry JRE 6.0.0
+14:21:16,492 DEBUG [K] VM: *ADDED* [BlackBerry JRE 6.0.0$C:\Eclipse\plugins\net.rim.ejde.componentpack6.0.0_6.0.0.30\components]
+14:21:16,535 TRACE [C] openStartupOnEclpseFirstStart was changed from "false" to "false"
+14:21:16,576 TRACE [W] Attempting to create VM with name - BlackBerry JRE 5.0.0
+14:21:16,775 DEBUG [K] VM: *ADDED* [BlackBerry JRE 5.0.0$C:\Eclipse\plugins\net.rim.ejde.componentpack5.0.0_5.0.0.25\components]
+14:21:16,780 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.7.0
+14:21:16,904 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.7.0$C:\Eclipse\plugins\net.rim.ejde.componentpack4.7.0_4.7.0.57\components]
+14:21:16,906 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.6.1
+14:21:17,070 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.6.1$C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.1_4.6.1.49\components]
+14:21:17,072 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.6.0
+14:21:17,132 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.6.0$C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.0_4.6.0.23\components]
+14:21:17,134 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.5.0
+14:21:17,140 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.5.0$C:\Eclipse\plugins\net.rim.ejde.componentpack4.5.0_4.5.0.28\components]
+14:21:17,283 DEBUG [I] Bundle [net.rim.ejde] is changing state to Started.
+14:21:36,498 DEBUG [B] qualifier: 19
+14:21:41,886 DEBUG [I] Bundle [net.rim.ejde] is changing state to Stopping.
+14:21:41,936 DEBUG [C] Property change listener is disabled.
+14:22:48,366 TRACE [R] ContextManager starting, bundle version: 1.3.0.201102030942-17
+14:22:48,552 DEBUG [C] Property change listener is enabled.
+14:22:48,649 TRACE [R] ContextManager startingneed update: true
+14:22:48,656 DEBUG [U] Starting Search for CPs
+14:22:48,667 DEBUG [U] CP named BlackBerry Java SDK version 6.0.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack6.0.0_6.0.0.30\components
+14:22:48,669 DEBUG [U] CP named BlackBerry Java SDK version 4.5.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.5.0_4.5.0.28\components
+14:22:48,671 DEBUG [U] CP named BlackBerry Java SDK version 4.6.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.0_4.6.0.23\components
+14:22:48,673 DEBUG [U] CP named BlackBerry Java SDK version 4.6.1 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.1_4.6.1.49\components
+14:22:48,675 DEBUG [U] CP named BlackBerry Java SDK version 4.7.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack4.7.0_4.7.0.57\components
+14:22:48,676 DEBUG [U] CP named BlackBerry Java SDK version 5.0.0 was found at C:\Eclipse\plugins\net.rim.ejde.componentpack5.0.0_5.0.0.25\components
+14:22:48,696 DEBUG [B] qualifier: 19
+14:22:48,756 DEBUG [K] VM: *ADDED* [BlackBerry JRE 6.0.0$C:\Eclipse\plugins\net.rim.ejde.componentpack6.0.0_6.0.0.30\components]
+14:22:48,812 DEBUG [K] VM: *ADDED* [BlackBerry JRE 5.0.0$C:\Eclipse\plugins\net.rim.ejde.componentpack5.0.0_5.0.0.25\components]
+14:22:48,814 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.7.0$C:\Eclipse\plugins\net.rim.ejde.componentpack4.7.0_4.7.0.57\components]
+14:22:48,816 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.6.1$C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.1_4.6.1.49\components]
+14:22:48,817 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.6.0$C:\Eclipse\plugins\net.rim.ejde.componentpack4.6.0_4.6.0.23\components]
+14:22:48,819 DEBUG [K] VM: *ADDED* [BlackBerry JRE 4.5.0$C:\Eclipse\plugins\net.rim.ejde.componentpack4.5.0_4.5.0.28\components]
+14:22:48,821 DEBUG [K] VM: *ADDED* [1307731876016$C:\Program Files\Java\jre6]
+14:22:48,821 TRACE [W] Attempting to create VM with name - BlackBerry JRE 6.0.0
+14:22:48,830 TRACE [W] Attempting to create VM with name - BlackBerry JRE 5.0.0
+14:22:48,835 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.7.0
+14:22:48,841 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.6.1
+14:22:48,846 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.6.0
+14:22:48,852 TRACE [W] Attempting to create VM with name - BlackBerry JRE 4.5.0
+14:22:49,102 DEBUG [I] Bundle [net.rim.ejde] is changing state to Started.
+14:22:55,931 DEBUG [I] Bundle [net.rim.ejde] is changing state to Stopping.
+14:22:55,932 DEBUG [C] Property change listener is disabled.

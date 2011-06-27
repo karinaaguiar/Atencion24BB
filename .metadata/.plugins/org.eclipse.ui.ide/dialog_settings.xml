@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="net.rim.EclipseJDE:1.3.0.201102031007-19"/>
+		<item value="net.rim.ejde.feature.componentpack4.5.0:4.5.0.28"/>
+		<item value="net.rim.ejde.feature.componentpack4.6.0:4.6.0.23"/>
+		<item value="net.rim.ejde.feature.componentpack4.6.1:4.6.1.49"/>
+		<item value="net.rim.ejde.feature.componentpack4.7.0:4.7.0.57"/>
+		<item value="net.rim.ejde.feature.componentpack5.0.0:5.0.0.25"/>
+		<item value="net.rim.ejde.feature.componentpack6.0.0:6.0.0.30"/>
+		<item value="org.eclipse.cvs:1.2.0.v20100427-7B77FKt90GE5h0SBT5FV9A01911"/>
+		<item value="org.eclipse.help:1.2.0.v20100427-7e7jEQFEp4jsWcboLU9l93"/>
+		<item value="org.eclipse.jdt:3.6.1.r361_v20100714-0800-7z8XFUSFLFlmgLc5z-Bvrt8-HVkH"/>
+		<item value="org.eclipse.pde:3.6.1.r361_v20100727-7b7mFL-FET3dhESDgE5_bkJ"/>
+		<item value="org.eclipse.platform:3.6.1.r361_v20100909-9gF78GrkFqw7GrsZnvz0JWNTeb6fue6896L"/>
+		<item value="org.eclipse.rcp:3.6.1.r361_v20100827-9OArFLdFjY-ThSQXmKvKz0_T"/>
+		<item value="org.eclipse.sdk:3.6.1.r361_v20100714-0800-7Q7m6DDaKf5o2z-L9LxPSe6ygafz-KKIqk1rr_3j4dn7J"/>
+	</list>
+</section>
