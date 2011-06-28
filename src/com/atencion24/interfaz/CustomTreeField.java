@@ -12,7 +12,7 @@ public class CustomTreeField extends TreeField{
 		// TODO Auto-generated constructor stub
 	}
 	
-	//Permitir que con darle click al trackball se expanda o colapse el arbol
+	//Permitir que con darle click al trackball se expanda y colapse el arbol
 	protected boolean navigationClick(int status, int time) 
 	{
 		  // we'll only override unvarnished navigation click behavior

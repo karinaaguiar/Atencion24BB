@@ -1,6 +1,7 @@
 package com.atencion24.control;
 
 import java.io.ByteArrayInputStream;
+import java.util.Vector;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -92,5 +93,29 @@ public class XMLParser {
             System.out.println( "Error: "+e.toString() );
         }
 		return usu;
+    }
+    
+    //Por ahora cableado
+    public Pago LeerProximoPago(String xmlSource) {        
+    	Pago pago = new Pago();
+		return pago;
+    }
+    
+    //Por ahora cableado
+    public Vector LeerHistoricoPagos(String xmlSource) {        
+    	Vector historicoPago = new Vector();
+    	Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
+    	Deduccion deduccion2 = new Deduccion("Arrendamiento Consultorios", "560");
+    	Deduccion deduccion3 = new Deduccion("Descuento Laboratorio", "890");
+    	Vector deducciones = new Vector();
+    	deducciones.addElement(deduccion1);
+    	deducciones.addElement(deduccion2);
+    	deducciones.addElement(deduccion3);
+    	Pago pago1 = new Pago("1200", deducciones, "150", "15/06/2011");
+    	Pago pago2 = new Pago("3000", deducciones, "2000", "30/06/2011");
+    	historicoPago.addElement(pago1);
+    	historicoPago.addElement(pago2);
+    	
+		return historicoPago;
     }
 }
