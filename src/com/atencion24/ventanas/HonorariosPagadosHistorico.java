@@ -5,7 +5,6 @@ import java.util.Vector;
 
 import com.atencion24.control.Deduccion;
 import com.atencion24.control.Pago;
-import com.atencion24.control.ReporteForecast;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
@@ -26,26 +25,52 @@ import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 
+/**
+ * HonorariosPagadosHistorico esta clase es la encargada de desplegar en el dispositivo
+ * BlackBerry el reporte historico de pagos de acuerdo al rango de fechas de búsqueda ingresado 
+ * por el usuario 
+ * 
+ * pagos -> Vector de Pagos. (Todos los pagos generados en el rango de fechas de la búsqueda)
+ * nivel -> número máximo de niveles de expansión que puede tener algún elemento expansible del reporte.
+ * posBotonPresionado -> posicion del elemento expansible que ha sido presionado.
+ * foreground -> Manager de los elementos de interfaz del reporte.
+ * contenido -> ListStyleButtonSet Elemento de interfaz donde se aloja el reporte.
+ * informacionNivel -> Vector de InformacionNivel. (Contiene la información de todos los elementos expandibles del reporte del nivel superior)
+ * botonesF -> Arreglo de CustomButtonTable (Contiene todos los elementos expandibles del reporte del nivel superior) 
+ * 
+ */
+/**
+ * @author Karina
+ *
+ */
+/**
+ * @author Karina
+ *
+ */
+/**
+ * @author Karina
+ *
+ */
 public class HonorariosPagadosHistorico extends MainScreen implements FieldChangeListener {
 
 	static Vector pagos;
 	
-	Manager foreground;
+	private int nivel = 1;
+	int posBotonPresionado = 0;
+	
+	Manager foreground = new ForegroundManager();
 	ListStyleButtonSet contenido   = new ListStyleButtonSet();
-    VerticalFieldManager mainVerticalManager = new VerticalFieldManager(Field.FIELD_HCENTER);
-    
-    private int nivel = 1;
-    
-    Vector informacionNivel = new Vector();
+    Vector informacionNivelSuperior = new Vector();
     CustomButtonTable[] botonesF = new CustomButtonTable[0];
 
-    int[] pos;
-    ReporteForecast reporteF = new ReporteForecast();
-    int posBotonPresionado = 0;
-	
-	public HonorariosPagadosHistorico(Vector historicoPagos) {
+	/**
+	 * HonorariosPagadosHistorico. Constructor de la clase
+	 * @param historicoPagos (Pago)Vector que contiene todos los pagos generados en el 
+	 * rango de fechas de la búsqueda.
+	 */
+	public HonorariosPagadosHistorico(Vector historicoPagos) 
+	{
 		
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		pagos = historicoPagos;
@@ -69,20 +94,20 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 		add(new SeparatorField());
 		
 		//Inserto los managers donde irá el reporte.
-		foreground = new ForegroundManager();
 		foreground.add(contenido);
-        foreground.add(mainVerticalManager);
         add(foreground);
         
-        mostrarReporte();
-        
+        llenarVectorInformacionNivelSup();
 	}
 	
-	public void mostrarReporte()
+	/**
+	 * llenarVectorInformacionNivelSup. Por cada pago en el rango de fechas consultadas (en el vector pagos)
+	 * se crea una instancia de la clase InformacionNivel el cual contendrá toda la información de los
+	 * elementos expandibles del reporte del nivel superior.
+	 */
+	public void llenarVectorInformacionNivelSup()
 	{
-		//Si boton es 0 Estoy mostrando la lista de pagos SIN desplegar el detalle 
-    	int size = pagos.size();
-    	System.out.println("Numero de pagos " + size);
+		int size = pagos.size();
     	int count = size;
     	Enumeration listadoPagos = pagos.elements();
     	Pago pago;
@@ -92,24 +117,33 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	{
     		pago = (Pago) listadoPagos.nextElement();
     		info = new InformacionNivel(pago.getFechaPago(), pago.getMontoNeto()+ " Bs", nivel, new int[] {size-count});
-    		informacionNivel.addElement(info);
+    		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
-    	crearMenu();
+    	crearReporte();
 	}
     
-    public void crearMenu()
+    /**
+     * crearReporte(). Método encargado de mostrar en el dispositivo BB el reporte de historico de pagos
+     * sin ningún elemento expandido. Este método debe crear un CustomButtonTable 
+     * por cada elemento expandible del reporte del nivel superior y asociarle su información respectiva, la 
+     * cual se obtiene del Vector informacionNivelSuperior. Todos los CustomButtonTable creados son almacenados 
+     * en el vector botonesF.
+     */
+    public void crearReporte()
     {
-	    contenido.deleteAll();
-	    mainVerticalManager.deleteAll();
+    	contenido.deleteAll();
+    	
+    	//Agregar la cabecera al reporte
 	    ListStyleLabelField Titulo = new ListStyleLabelField( "Honorarios Pagados", DrawStyle.HCENTER , 0x400000, Color.WHITE);
 	    contenido.add(Titulo);
 	    
 	    CustomButtonTable[] aux;
-	    Enumeration listadoInfoNivel = informacionNivel.elements();
+	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
 	    botonesF = ((InformacionNivel) listadoInfoNivel.nextElement()).mostrarBotones();
 	    
-	    //Por cada infoNivel en el nivel 1 debo crear un CustomButtonTable  
+	    //Por cada infoNivel en el nivel superior debo crear un CustomButtonTable  
+	    //y agregarlo al Vector botonesF
 	    while (listadoInfoNivel.hasMoreElements()) 
     	{
 	    	InformacionNivel info = (InformacionNivel) listadoInfoNivel.nextElement();
@@ -129,13 +163,14 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     {
         try{
             // Los botones que vienen despues del boton presionado son eliminados
-             for (int i = posBotonPresionado + 2; i < botonesF.length + 1; i++){
+             for (int i = posBotonPresionado + 2 ; i < botonesF.length + 1; i++){
                  
                      contenido.delete(botonesF[i-1]);
                  }
-             // Busco los nuevos botones
-             CustomButtonTable[] aux;
-     	    Enumeration listadoInfoNivel = informacionNivel.elements();
+            // Busco los nuevos botones
+            CustomButtonTable[] aux;
+     	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
+     	    botonesF = new CustomButtonTable[1];
      	    botonesF = ((InformacionNivel) listadoInfoNivel.nextElement()).mostrarBotones();
      	    
      	    //Por cada infoNivel en el nivel 1 debo crear un CustomButtonTable  
@@ -148,7 +183,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
              
              // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
              // guardados (el boton presionado y los que vienen antes de el)
-             for (int i = posBotonPresionado + 1; i < botonesF.length; i++){
+             for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
                      botonesF[i].setChangeListener(this);
                      contenido.add(botonesF[i]);
              }
@@ -163,43 +198,64 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
         
     }
     
+    /**
+     * desplegarMenu. Método encargado de según el nivel del boton presionado (en este caso si es 1, es 
+     * decir, del nivel superior) crearle sus hijos (CustomButtonTable), si no se le han creado, en base a la 
+     * información del vector de pagos y settear el campo mostrar del InformacionNivel correspondiente al 
+     * boton presionado en True o False dependendo de si ya estaba desplegado o no.   
+     * @param botonPulsado
+     */
     public void desplegarMenu(CustomButtonTable botonPulsado){
         
     	if (botonPulsado.obtenerNivel() != 0)
     	{
-            pos = botonPulsado.obtenerPosicion();
-            System.out.println(pos[0]);
+    		int[] pos = botonPulsado.obtenerPosicion();
+            System.out.println("Posicion del boton presionado " +pos[0]);
             
-            InformacionNivel info = (InformacionNivel) informacionNivel.elementAt(pos[0]);
+            InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
             Pago pago = (Pago) pagos.elementAt(pos[0]);
             
-            //Asociarle hijos a info para convertirlo en menu desplegable
-            
-            //Primero el monto liberado
-            InformacionNivel infohijo;
-            int posicion = 0 ; 
-            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-            info.hijo.addElement(infohijo);
-            
-            Enumeration deducciones = pago.getDeducciones().elements();
-            Deduccion deduccion;
-            while(deducciones.hasMoreElements())
+            if (info.isMostrar()) info.setMostrar(false);
+            else 
             {
-            	posicion ++;
-            	deduccion = (Deduccion) deducciones.nextElement();
-            	infohijo = new InformacionNivel(deduccion.getConcepto() , deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-                info.hijo.addElement(infohijo);
-            }	
-            info.setMostrar(true); 
-            crearParteMenu();  
+            	//Asociarle hijos a info para convertirlo en menu desplegable
+            	info.setMostrar(true);
+            	if(info.hijo == null)
+            	{
+            		//Primero el monto liberado
+                	info.hijo = new Vector();
+                	System.out.println("No tenia hijos! asi que se los agrego");
+    	            InformacionNivel infohijo;
+    	            int posicion = 0 ; 
+    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
+    	            info.hijo.addElement(infohijo);
+    	            
+    	            Enumeration deducciones = pago.getDeducciones().elements();
+    	            Deduccion deduccion;
+    	            while(deducciones.hasMoreElements())
+    	            {
+    	            	posicion ++;
+    	            	deduccion = (Deduccion) deducciones.nextElement();
+    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
+    	                info.hijo.addElement(infohijo);
+    	            }	
+    	            System.out.println("Numero hijos " +( posicion +1));
+            	}
+            }    
+            informacionNivelSuperior.setElementAt(info,pos[0]);
+	        crearParteMenu();  
         }
     }
     
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.FieldChangeListener#fieldChanged(net.rim.device.api.ui.Field, int)
+     */
     public void fieldChanged(Field field, int context) 
     {
 	    for (int i = 0; i < botonesF.length; i++)
 	    {
-	        if (field == botonesF[i]){
+	        if (field == botonesF[i])
+	        {
 	            posBotonPresionado = i;
 	            desplegarMenu(botonesF[i]);
 	            break;

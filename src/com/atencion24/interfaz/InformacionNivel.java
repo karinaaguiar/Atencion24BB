@@ -23,7 +23,7 @@ import net.rim.device.api.ui.Ui;
  */
 public class InformacionNivel {
         
-        String nombre;
+        private String nombre;
         String valor;
         int nivel;
         int[] pos;
@@ -34,11 +34,11 @@ public class InformacionNivel {
         
         public InformacionNivel(String nombre, String valor, int nivel, int[] pos) {  
             
-            this.nombre = nombre;
+            this.setNombre(nombre);
             this.valor = valor;
             this.nivel = nivel;
             this.pos = pos;
-            this.hijo = new Vector(); 
+            this.hijo = null; 
         }
         
         /*public void guardarHijo(String[][] datos){
@@ -102,15 +102,15 @@ public class InformacionNivel {
                     botones = new CustomButtonTable[1];
                     switch (this.nivel)
                     {
-                        case (3): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (3): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        case (2): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, 0xFFC0CB, Color.BLACK, 0xFFC0CB, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (2): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFC0CB, Color.BLACK, 0xFFC0CB, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        case (1): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, 0xF8DCDC, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (1): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xF8DCDC, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        case (0): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (0): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        default:  botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        default:  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
                     }
                     botones[0].setFont(appFont);
@@ -121,15 +121,15 @@ public class InformacionNivel {
                     botones = new CustomButtonTable[1];
                     switch (this.nivel)
                     {
-                        case (3): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (3): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        case (2): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, 0xFFC0CB, Color.BLACK, 0xFFC0CB, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (2): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFC0CB, Color.BLACK, 0xFFC0CB, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        case (1): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, 0xF8DCDC, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (1): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xF8DCDC, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        case (0): botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        case (0): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
-                        default:  botones[0] = new CustomButtonTable(this.nombre, this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+                        default:  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
                                   break;
                     }
                     botones[0].setFont(appFont);
@@ -188,5 +188,13 @@ public class InformacionNivel {
 
 	public boolean isMostrar() {
 		return mostrar;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getNombre() {
+		return nombre;
 	}
 }          
