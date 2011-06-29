@@ -111,7 +111,7 @@ public class XMLParser {
     	deducciones.addElement(deduccion1);
     	deducciones.addElement(deduccion2);
     	deducciones.addElement(deduccion3);
-    	Pago pago1 = new Pago("1200", deducciones, "150", "15/06/2011");
+    	Pago pago1 = new Pago("1200", deducciones, "150" , "15/06/2011");
     	Pago pago2 = new Pago("3000", deducciones, "2000", "30/06/2011");
     	historicoPago.addElement(pago1);
     	historicoPago.addElement(pago2);
