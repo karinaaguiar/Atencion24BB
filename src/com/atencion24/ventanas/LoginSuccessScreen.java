@@ -102,7 +102,7 @@ public class LoginSuccessScreen extends MainScreen implements FieldChangeListene
 	}
 	
 	public void edoCta(){
-        ConsultarEstadoDeCuenta consultarEdoCta = new ConsultarEstadoDeCuenta(sesion);
+        ConsultarEstadoDeCuenta consultarEdoCta = new ConsultarEstadoDeCuenta();
         UiApplication.getUiApplication().pushScreen(consultarEdoCta);
     }
 	
@@ -112,7 +112,7 @@ public class LoginSuccessScreen extends MainScreen implements FieldChangeListene
     }
 	
 	public void honFact(){
-        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(sesion);
+        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados();
         UiApplication.getUiApplication().pushScreen(consultarHonFacturados);
     }
 	

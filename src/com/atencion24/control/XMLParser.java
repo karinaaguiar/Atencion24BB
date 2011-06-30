@@ -97,7 +97,15 @@ public class XMLParser {
     
     //Por ahora cableado
     public Pago LeerProximoPago(String xmlSource) {        
-    	Pago pago = new Pago();
+    	Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
+    	Deduccion deduccion2 = new Deduccion("Arrendamiento Consultorios", "560");
+    	Deduccion deduccion3 = new Deduccion("Descuento Laboratorio", "890");
+    	Vector deducciones = new Vector();
+    	deducciones.addElement(deduccion1);
+    	deducciones.addElement(deduccion2);
+    	deducciones.addElement(deduccion3);
+    	Pago pago = new Pago("1200", deducciones, "150" , "15/06/2011");
+    	
 		return pago;
     }
     
@@ -117,5 +125,18 @@ public class XMLParser {
     	historicoPago.addElement(pago2);
     	
 		return historicoPago;
+    }
+    
+    //Por ahora cableado
+    public Vector LeerListadoCasos (String xmlSource) 
+    {  
+    	Vector listadoCasos = new Vector();
+    	Caso caso1= new Caso("Ramírez Ariana", "25/07/2009", 0);
+    	Caso caso2= new Caso("Ramírez Antonio", "15/05/2011", 1);
+    	Caso caso3= new Caso("Ramírez Carla", "01/12/2010", 2);
+    	listadoCasos.addElement(caso1);
+    	listadoCasos.addElement(caso2);
+    	listadoCasos.addElement(caso3);
+    	return listadoCasos;
     }
 }

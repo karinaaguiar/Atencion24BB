@@ -40,18 +40,6 @@ import net.rim.device.api.ui.container.MainScreen;
  * botonesF -> Arreglo de CustomButtonTable (Contiene todos los elementos expandibles del reporte del nivel superior) 
  * 
  */
-/**
- * @author Karina
- *
- */
-/**
- * @author Karina
- *
- */
-/**
- * @author Karina
- *
- */
 public class HonorariosPagadosHistorico extends MainScreen implements FieldChangeListener {
 
 	static Vector pagos;
@@ -90,7 +78,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
         add(hfmLabel);
        
         //**Label field simple**
-		add(new CustomLabelField("Honorarios Pagados", Color.WHITE, 0x400000, FIELD_HCENTER));
+		add(new CustomLabelField("Histórico de Pagos", Color.WHITE, 0x400000, FIELD_HCENTER));
 		add(new SeparatorField());
 		
 		//Inserto los managers donde irá el reporte.
@@ -101,7 +89,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 	}
 	
 	/**
-	 * llenarVectorInformacionNivelSup. Por cada pago en el rango de fechas consultadas (en el vector pagos)
+	 * llenarVectorInformacionNivelSup(). Por cada pago en el rango de fechas consultadas (en el vector pagos)
 	 * se crea una instancia de la clase InformacionNivel el cual contendrá toda la información de los
 	 * elementos expandibles del reporte del nivel superior.
 	 */
@@ -135,7 +123,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	contenido.deleteAll();
     	
     	//Agregar la cabecera al reporte
-	    ListStyleLabelField Titulo = new ListStyleLabelField( "Honorarios Pagados", DrawStyle.HCENTER , 0x400000, Color.WHITE);
+	    ListStyleLabelField Titulo = new ListStyleLabelField( "Histórico de Pagos", DrawStyle.HCENTER , 0x400000, Color.WHITE);
 	    contenido.add(Titulo);
 	    
 	    CustomButtonTable[] aux;
@@ -159,6 +147,13 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 	    }
     }
     
+    /**
+     * crearParteMenu(). Metodo encargado de desplegar el reporte por pantalla, una vez que ha sido presionado 
+     * algún botón desplegable (en este caso del nivel superior 1). Además esta funcion invoca al metodo mostrarBotones
+     * para crear los CustomButtonField de acuerdo a la información del vector informacionNivelSuperior (incluyendo los
+     * CustomButtonField) de los hijos. A todos lo CustomButtonField creados le setea el ChangeListener y los agrega
+     * al contenido (ListStyleButtonSet)
+     */
     public void crearParteMenu()
     {
         try{
@@ -200,7 +195,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     
     /**
      * desplegarMenu. Método encargado de según el nivel del boton presionado (en este caso si es 1, es 
-     * decir, del nivel superior) crearle sus hijos (CustomButtonTable), si no se le han creado, en base a la 
+     * decir, del nivel superior) crearle sus hijos (InformacionNivel), si no se le han creado, en base a la 
      * información del vector de pagos y settear el campo mostrar del InformacionNivel correspondiente al 
      * boton presionado en True o False dependendo de si ya estaba desplegado o no.   
      * @param botonPulsado
