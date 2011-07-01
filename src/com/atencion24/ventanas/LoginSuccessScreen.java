@@ -1,6 +1,9 @@
 package com.atencion24.ventanas;
 
+import java.util.Hashtable;
+
 import com.atencion24.control.Sesion;
+import com.atencion24.control.XMLParser;
 
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
@@ -18,6 +21,7 @@ import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
@@ -130,9 +134,6 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
 		String medico = sesion.getCodigoMedico();
 		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + medico, "GET", this);
 		thread.start();*/
-		
-		ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(sesion);
-        UiApplication.getUiApplication().pushScreen(reporteFianzas);
     }
 	
 	 public void fieldChanged(Field field, int context) {
@@ -155,8 +156,38 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
 	    }
 
 	public void llamadaExitosa(String respuesta) {
-		// TODO Auto-generated method stub
-		
+		//Si el usuario eligio consultar el reporte Listado de Fianzas
+		if (reporteElegido ==5)
+		{
+			//Con el String XML que recibo del servidor debo hacer llamada
+    		//a mi parser XML para que se encargue de darme el 
+    		//XML que me ha enviado el servidor procesado como 
+    		//un objeto de control. 
+			XMLParser envioXml = new XMLParser();
+		    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Hashtable fianzas = envioXml.LeerListadoFianzas(respuesta); //xmlInterno
+		    
+		    //En caso de que el servidor haya enviado un error
+		    //El medico no tiene asociada fianzas pendientes
+		    if (fianzas == null)
+		    {
+		        final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert(mostrarError);
+					}
+				});
+		    }
+		    else
+		    {
+		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
+				        UiApplication.getUiApplication().pushScreen(reporteFianzas);
+					}
+				});
+		    }
+		}
 	}
 
 	public void llamadaFallada(String respuesta) {

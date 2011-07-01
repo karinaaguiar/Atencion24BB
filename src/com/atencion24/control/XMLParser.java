@@ -150,4 +150,26 @@ public class XMLParser {
 		Caso caso = new Caso("Ramírez Ariana", "25/07/2009", "2009533", "19162868", "Seguros Mercantil", "3500", "1000", "500", "2000", honorarios); 
 		return caso;
 	}
+
+	public Hashtable LeerListadoFianzas(String respuesta) {
+		Hashtable fianzas = new Hashtable();
+		
+		Vector descuentos = new Vector();
+		Descuento descuento1 = new Descuento("30/09/2010", "300");
+		Descuento descuento2 = new Descuento("15/10/2010", "200");
+		descuentos.addElement(descuento1);
+		descuentos.addElement(descuento2);
+		Fianza fianza1 = new Fianza("20106921", "25/08/2010", "González Jesús", "20.500" , "500", "20.000", descuentos);
+		
+		descuentos = new Vector();
+		descuento1 = new Descuento("15/06/2009", "2000");
+		descuento2 = new Descuento("30/06/2009", "500");
+		descuentos.addElement(descuento1);
+		descuentos.addElement(descuento2);
+		Fianza fianza2 = new Fianza("20112321", "2/05/2009", "González Ana", "12.500" , "2.500", "10.000", descuentos);
+
+		fianzas.put(new Integer(0), fianza1);
+		fianzas.put(new Integer(0), fianza2);
+		return fianzas;
+	}
 }
