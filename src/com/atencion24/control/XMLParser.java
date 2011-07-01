@@ -169,7 +169,30 @@ public class XMLParser {
 		Fianza fianza2 = new Fianza("20112321", "2/05/2009", "González Ana", "12.500" , "2.500", "10.000", descuentos);
 
 		fianzas.put(new Integer(0), fianza1);
-		fianzas.put(new Integer(0), fianza2);
+		fianzas.put(new Integer(1), fianza2);
 		return fianzas;
 	}
+
+	public EstadoCuentaAS LeerEstadoCtaAntiguedadSaldo(String respuesta) {
+		EstadoCuentaAS edocta = new EstadoCuentaAS("10.000", "8.000", "7.000", "1.000", "500", "26.500");
+		return edocta;
+	}
+
+	public Vector LeerHonorariosFacturados(String respuesta) 
+	{
+		Vector resumenFacturado = new Vector();
+		String hospitalizacion = "8.000";
+		String emergencia = "1500";
+		String cirugia = "500";
+		String convenios = "0";
+		String total = "20.000";
+		resumenFacturado.addElement(hospitalizacion);
+		resumenFacturado.addElement(emergencia);
+		resumenFacturado.addElement(cirugia);
+		resumenFacturado.addElement(convenios);
+		resumenFacturado.addElement(total);
+		return resumenFacturado;
+	}
 }
+
+

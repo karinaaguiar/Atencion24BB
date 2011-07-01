@@ -207,7 +207,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen implements Fiel
 			System.out.println(fechaI);
 			String fechaF = fechaFinal.toString();
 			System.out.println(fechaF);
-			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + medico + "&fechaI_tb=" + fechaI.toString() + "&fechaF_tb=" + fechaF.toString(), "GET", this);
+			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + medico + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
 			thread.start();
 		}*/
 			

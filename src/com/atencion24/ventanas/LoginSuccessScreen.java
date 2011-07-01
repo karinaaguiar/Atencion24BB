@@ -2,6 +2,7 @@ package com.atencion24.ventanas;
 
 import java.util.Hashtable;
 
+import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 
@@ -106,8 +107,14 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
 	}
 	
 	public void edoCta(){
-        ConsultarEstadoDeCuenta consultarEdoCta = new ConsultarEstadoDeCuenta();
-        UiApplication.getUiApplication().pushScreen(consultarEdoCta);
+		//Por ahora llamo directo a llamadaExitosa luego será
+		//el hilo de la conexion quien se encargue
+		//Cuando implemente el web service utilizar codigo de abajo
+		llamadaExitosa("");
+		/*
+		String medico = sesion.getCodigoMedico();
+		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + medico, "GET", this);
+		thread.start();*/
     }
 	
 	public void honPagados(){
@@ -116,7 +123,8 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
     }
 	
 	public void honFact(){
-        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados();
+		String medico = sesion.getCodigoMedico();
+        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(medico);
         UiApplication.getUiApplication().pushScreen(consultarHonFacturados);
     }
 	
@@ -138,7 +146,8 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
 	
 	 public void fieldChanged(Field field, int context) {
 	        if (field == edoCta) {
-	        		edoCta();
+	        	reporteElegido = 1;	
+	        	edoCta();
 	            }
 	        else if (field == honPagados) {
 	        		honPagados();
@@ -184,6 +193,38 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
 					public void run() {
 						ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
 				        UiApplication.getUiApplication().pushScreen(reporteFianzas);
+					}
+				});
+		    }
+		}
+		//Si el usuario eligio consultar el reporte Estado de Cuenta
+		if (reporteElegido ==1)
+		{
+			//Con el String XML que recibo del servidor debo hacer llamada
+    		//a mi parser XML para que se encargue de darme el 
+    		//XML que me ha enviado el servidor procesado como 
+    		//un objeto de control. 
+			XMLParser envioXml = new XMLParser();
+		    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(respuesta); //xmlInterno
+		    
+		    //En caso de que el servidor haya enviado un error
+		    //La Clínica no posee deuda con el médico
+		    if (edoCta == null)
+		    {
+		        final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert(mostrarError);
+					}
+				});
+		    }
+		    else
+		    {
+		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta);
+				        UiApplication.getUiApplication().pushScreen(EdoCta);
 					}
 				});
 		    }

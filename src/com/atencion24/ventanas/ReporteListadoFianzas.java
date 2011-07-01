@@ -4,10 +4,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import com.atencion24.control.Deduccion;
+import com.atencion24.control.Descuento;
 import com.atencion24.control.Fianza;
-import com.atencion24.control.Honorario;
-import com.atencion24.control.Pago;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
@@ -27,8 +25,9 @@ import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
+import net.rim.device.api.ui.container.MainScreen;
 
-public class ReporteListadoFianzas extends plantilla_screen implements FieldChangeListener {
+public class ReporteListadoFianzas extends MainScreen implements FieldChangeListener {
 
 	static Hashtable fianzas;
 	
@@ -86,7 +85,7 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
     	while (listadoFianzas.hasMoreElements()) 
     	{
     		fianza = (Fianza) listadoFianzas.nextElement();
-    		info = new InformacionNivel(fianza.getNroCaso(), "", nivel, new int[] {size-count});
+    		info = new InformacionNivel(" Caso:", fianza.getNroCaso(), nivel, new int[] {size-count});
     		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
@@ -128,17 +127,52 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 	         contenido.add(botonesF[i]);
 	    }
     }
-    
-	public void llamadaExitosa(String respuesta) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void llamadaFallada(String respuesta) {
-		// TODO Auto-generated method stub
-
-	}
 	
+    /**
+     * crearParteMenu(). Metodo encargado de desplegar el reporte por pantalla, una vez que ha sido presionado 
+     * algún botón desplegable. Además esta funcion invoca al metodo mostrarBotones
+     * para crear los CustomButtonField de acuerdo a la información del vector informacionNivelSuperior (incluyendo los
+     * CustomButtonField) de los hijos. A todos lo CustomButtonField creados le setea el ChangeListener y los agrega
+     * al contenido (ListStyleButtonSet)
+     */
+    public void crearParteMenu()
+    {
+        try{
+            // Los botones que vienen despues del boton presionado son eliminados
+             for (int i = posBotonPresionado + 2 ; i < botonesF.length + 1; i++){
+                 
+                     contenido.delete(botonesF[i-1]);
+                 }
+            // Busco los nuevos botones
+            CustomButtonTable[] aux;
+     	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
+     	    botonesF = new CustomButtonTable[1];
+     	    botonesF = ((InformacionNivel) listadoInfoNivel.nextElement()).mostrarBotones();
+     	    
+     	    //Por cada infoNivel en el nivel 1 debo crear un CustomButtonTable  
+     	    while (listadoInfoNivel.hasMoreElements()) 
+         	{
+     	    	InformacionNivel info = (InformacionNivel) listadoInfoNivel.nextElement();
+     	    	aux = info.mostrarBotones();
+     	    	botonesF = info.mezclarArray(botonesF,aux);
+         	}
+             
+             // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
+             // guardados (el boton presionado y los que vienen antes de el)
+             for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
+                     botonesF[i].setChangeListener(this);
+                     contenido.add(botonesF[i]);
+             }
+             //Guardo en mi arreglo los botones que no fueron borrados,
+             //para poder hacer bien la comparacion en la función fieldChanged
+             for (int i = 0; i < posBotonPresionado + 1; i++){
+                 botonesF[i] = (CustomButtonTable)contenido.getField(i + 1);
+                 }
+         }catch(IndexOutOfBoundsException e){
+             System.out.println("Error: " + e);
+         }
+        
+    }
 	  /**
      * desplegarMenu. Método encargado de según el nivel del boton presionado (en este caso si es algun boton del nivel
      * superior, o su hijo Monto Abonado, crearle sus hijos (InformacionNivel), si no se le han creado, en base a la 
@@ -173,62 +207,61 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 		                
 		                //Paciente
 			            infohijo = new InformacionNivel(" Paciente:", fianza.getPaciente(), 1, new int[] {pos[0],1});
-		                info.hijo.put(new Integer(0), infohijo);
+		                info.hijo.put(new Integer(1), infohijo);
 		                
 		                //Monto a cobrar
 			            infohijo = new InformacionNivel(" Monto a cobrar:", fianza.getMontoACobrar(), 1, new int[] {pos[0],2});
-		                info.hijo.put(new Integer(0), infohijo);
+		                info.hijo.put(new Integer(2), infohijo);
 		        		
 		                //Monto abonado
 			            infohijo = new InformacionNivel(" Monto abonado:", fianza.getMontoAbonado(), 1, new int[] {pos[0],3});
-		                info.hijo.put(new Integer(0), infohijo);
+		                info.hijo.put(new Integer(3), infohijo);
 		                
 		                //Monto neto
 			            infohijo = new InformacionNivel(" Monto neto:", fianza.getMontoNeto(), 1, new int[] {pos[0],4});
-		                info.hijo.put(new Integer(0), infohijo);
-		                //AQUI!!
+		                info.hijo.put(new Integer(4), infohijo);
 		        	}
 		        }	
 		        informacionNivelSuperior.setElementAt(info,pos[0]);
 		        crearParteMenu();  
     		}
-    		else if (nivelPulsado == 1) //Si presionaste algun honorario en particular
+    		else if (nivelPulsado == 1) //Si presionaste algun boton del primer nivel
     		{
     			int[] pos = botonPulsado.obtenerPosicion();
     			int posicionNivel = pos[1];
-    			Integer posNivel  = new Integer(posicionNivel); 
     			
-    			InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(3);
-    			InformacionNivel hijoPresionado = (InformacionNivel) info.hijo.get(posNivel); 
-    			if (hijoPresionado.isMostrar()) hijoPresionado.setMostrar(false);
-		        else 
-		        {
-		        	//Asociarle hijos a info para convertirlo en menu desplegable
-		        	hijoPresionado.setMostrar(true);
-		        	if(hijoPresionado.hijo == null)
-		        	{
-		        		hijoPresionado.hijo = new Hashtable();
-			            InformacionNivel infohijo;
-		        		Honorario honorario = (Honorario) caso.getHonorarios().get(posNivel);
-		        	    
-		        		//Monto Facturado
-		        		infohijo = new InformacionNivel(" Monto Facturado: ", honorario.getMontoFacturado(), 0, new int[] {3,posicionNivel,0});
-		        		hijoPresionado.hijo.put(new Integer(0), infohijo);
-		        		//Monto Exonerado
-		        		infohijo = new InformacionNivel(" Monto Exonerado: ", honorario.getMontoExonerado(), 0, new int[] {3,posicionNivel,1});
-		        		hijoPresionado.hijo.put(new Integer(1), infohijo);
-		        		//Monto Abonado
-		        		infohijo = new InformacionNivel(" Monto Abonado: ", honorario.getMontoAbonado(), 0, new int[] {3,posicionNivel,2});
-		        		hijoPresionado.hijo.put(new Integer(2), infohijo);
-		        		//Deuda
-		        		infohijo = new InformacionNivel(" Deuda: ", honorario.getTotalDeuda(), 0, new int[] {3,posicionNivel,3});
-		        		hijoPresionado.hijo.put(new Integer(3), infohijo);
-		        	}
-		        }
-    			info.hijo.remove(posNivel);
-    			info.hijo.put(posNivel, hijoPresionado);
-		        informacionNivelSuperior.setElementAt(info,3);
-		        crearParteMenu();  
+    			if (posicionNivel == 3) //Si presionaste el monto abonado de alguna fianza
+    			{
+        			int idFianza = pos[0];
+        			
+        			InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(idFianza);
+        			InformacionNivel hijoPresionado = (InformacionNivel) info.hijo.get(new Integer(3)); 
+        			if (hijoPresionado.isMostrar()) hijoPresionado.setMostrar(false);
+    		        else 
+    		        {
+    		        	//Asociarle hijos a info para convertirlo en menu desplegable
+    		        	hijoPresionado.setMostrar(true);
+    		        	if(hijoPresionado.hijo == null)
+    		        	{
+    		        		hijoPresionado.hijo = new Hashtable();
+    			            InformacionNivel infohijo;
+    			            Enumeration descuentos = ((Fianza)fianzas.get(new Integer(idFianza))).getDescuentos().elements();
+    			            int count = 0; 
+    			            while(descuentos.hasMoreElements())
+    			            {
+    			            	Descuento descuento = (Descuento) descuentos.nextElement();
+    			            	infohijo = new InformacionNivel(descuento.getFecha(), descuento.getMonto(), 0, new int[] {idFianza,posicionNivel,count});
+        		        		hijoPresionado.hijo.put(new Integer(count), infohijo);
+        		        		count ++;
+    			            }
+    		        	}
+    		        }
+        			info.hijo.remove(new Integer(3));
+        			info.hijo.put(new Integer(3), hijoPresionado);
+    		        informacionNivelSuperior.setElementAt(info,idFianza);
+    		        crearParteMenu();  
+    				
+    			}
     		}
     	}	
     }

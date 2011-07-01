@@ -101,6 +101,10 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	Enumeration listadoPagos = pagos.elements();
     	Pago pago;
     	InformacionNivel info;
+    	
+    	info = new InformacionNivel(" Fecha ", " Monto ", nivel, new int[] {size-count});
+		informacionNivelSuperior.addElement(info);
+		count --;
     	//Por cada pago en listadoPagos, debo crear un InformacionNivel y agregarlo al Vector informacionNivel
     	while (listadoPagos.hasMoreElements()) 
     	{
@@ -206,40 +210,41 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	if (botonPulsado.obtenerNivel() != 0)
     	{
     		int[] pos = botonPulsado.obtenerPosicion();
-            System.out.println("Posicion del boton presionado " +pos[0]);
-            
-            InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
-            Pago pago = (Pago) pagos.elementAt(pos[0]);
-            
-            if (info.isMostrar()) info.setMostrar(false);
-            else 
-            {
-            	//Asociarle hijos a info para convertirlo en menu desplegable
-            	info.setMostrar(true);
-            	if(info.hijo == null)
-            	{
-            		//Primero el monto liberado
-                	info.hijo = new Hashtable();
-                	System.out.println("No tenia hijos! asi que se los agrego");
-    	            InformacionNivel infohijo;
-    	            int posicion = 0 ; 
-    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-    	            info.hijo.put(new Integer(posicion), infohijo);
-    	            
-    	            Enumeration deducciones = pago.getDeducciones().elements();
-    	            Deduccion deduccion;
-    	            while(deducciones.hasMoreElements())
-    	            {
-    	            	posicion ++;
-    	            	deduccion = (Deduccion) deducciones.nextElement();
-    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-    	                info.hijo.put(new Integer(posicion),infohijo);
-    	            }	
-    	            System.out.println("Numero hijos " +( posicion +1));
-            	}
-            }    
-            informacionNivelSuperior.setElementAt(info,pos[0]);
-	        crearParteMenu();  
+    		if (pos[0]!=0)
+    		{	
+	            InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
+	            Pago pago = (Pago) pagos.elementAt((pos[0])-1);
+	            
+	            if (info.isMostrar()) info.setMostrar(false);
+	            else 
+	            {
+	            	//Asociarle hijos a info para convertirlo en menu desplegable
+	            	info.setMostrar(true);
+	            	if(info.hijo == null)
+	            	{
+	            		//Primero el monto liberado
+	                	info.hijo = new Hashtable();
+	                	System.out.println("No tenia hijos! asi que se los agrego");
+	    	            InformacionNivel infohijo;
+	    	            int posicion = 0 ; 
+	    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
+	    	            info.hijo.put(new Integer(posicion), infohijo);
+	    	            
+	    	            Enumeration deducciones = pago.getDeducciones().elements();
+	    	            Deduccion deduccion;
+	    	            while(deducciones.hasMoreElements())
+	    	            {
+	    	            	posicion ++;
+	    	            	deduccion = (Deduccion) deducciones.nextElement();
+	    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
+	    	                info.hijo.put(new Integer(posicion),infohijo);
+	    	            }	
+	    	            System.out.println("Numero hijos " +( posicion +1));
+	            	}
+	            }    
+	            informacionNivelSuperior.setElementAt(info,pos[0]);
+		        crearParteMenu();  
+    		}
         }
     }
     
