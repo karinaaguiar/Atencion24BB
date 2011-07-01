@@ -9,7 +9,7 @@ package com.atencion24.interfaz;
 
 
 import java.util.Enumeration;
-import java.util.Vector;
+import java.util.Hashtable;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Color;
@@ -28,7 +28,7 @@ public class InformacionNivel {
         int nivel;
         int[] pos;
         private boolean mostrar = false;
-        public Vector hijo;
+        public Hashtable hijo;
         
         public InformacionNivel(){}
         

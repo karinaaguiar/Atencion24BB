@@ -1,6 +1,6 @@
 package com.atencion24.ventanas;
 
-import java.util.Vector;
+import java.util.Hashtable;
 
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
@@ -14,12 +14,10 @@ import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
-import net.rim.device.api.ui.component.PasswordEditField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 import com.atencion24.control.HttpConexion;
-import com.atencion24.control.Pago;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
@@ -78,7 +76,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen implements FieldCha
 		
 	}
 	
-	public void consultarDetalleDeCaso()
+	public void consultarListadoDeCaso()
 	{
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
@@ -90,7 +88,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen implements FieldCha
 		}
 		else{
 			String apellido = apellidoField.getText();
-			HttpConexion thread = new HttpConexion("/consultarDetalleCaso?apellido_tb" + apellido, "GET", this);
+			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?apellido_tb" + apellido, "GET", this);
 			thread.start();
 		}*/
 	}
@@ -103,7 +101,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen implements FieldCha
 		//un objeto de control. 
 		XMLParser envioXml = new XMLParser();
 	    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Vector listadoCasos = envioXml.LeerListadoCasos(respuesta); //xmlInterno
+	    final Hashtable listadoCasos = envioXml.LeerListadoCasos(respuesta); //xmlInterno
 	    
 	    //En caso de que el servidor haya enviado un error
 	    //No hay casos asociados al apellido y al medico 
@@ -134,7 +132,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen implements FieldCha
 
 	public void fieldChanged(Field field, int context) {
 		if (field == consultarButtom){
-			consultarDetalleDeCaso();
+			consultarListadoDeCaso();
 		}	
 		
 	}

@@ -1,7 +1,7 @@
 package com.atencion24.ventanas;
 
 import java.util.Enumeration;
-import java.util.Vector;
+import java.util.Hashtable;
 
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
@@ -11,13 +11,14 @@ import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.Ui;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 import com.atencion24.control.Caso;
 import com.atencion24.control.ManejoArray;
+import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonField;
@@ -26,7 +27,7 @@ import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 
 public class ListarCasos extends plantilla_screen implements FieldChangeListener {
 
-	static Vector casos;
+	static Hashtable casos;
 	
     Manager _bodyWrapper;
     Manager _currentBody;
@@ -35,7 +36,7 @@ public class ListarCasos extends plantilla_screen implements FieldChangeListener
    
     ListStyleButtonField [] botones;
 	
-	ListarCasos(Vector listadoCasos) 
+	ListarCasos(Hashtable listadoCasos) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		casos = listadoCasos;
@@ -94,25 +95,52 @@ public class ListarCasos extends plantilla_screen implements FieldChangeListener
 		}catch (ClassNotFoundException e){}
 	}
 
-	public void llamadaExitosa(String respuesta) {
-		// TODO Auto-generated method stub
-
+	public void llamadaExitosa(String respuesta) 
+	{
+		//Con el String XML que recibo del servidor debo hacer llamada
+		//a mi parser XML para que se encargue de darme el 
+		//XML que me ha enviado el servidor procesado como 
+		//un objeto de control. 
+		XMLParser envioXml = new XMLParser();
+	    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+	    final Caso caso = envioXml.LeerCaso(respuesta); //xmlInterno
+	    
+	    //En este caso el servidor no puede enviar error
+    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+			public void run() {
+				DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
+		        UiApplication.getUiApplication().pushScreen(ventanaCaso);
+			}
+		});
 	}
 
 	public void llamadaFallada(String respuesta) {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	public void consultarCaso(Caso caso)
+	{
+		//Por ahora llamo directo a llamadaExitosa luego será
+		//el hilo de la conexion quien se encargue
+		//Cuando implemente el web service utilizar codigo de abajo
+		llamadaExitosa("");
+		/*
+		String nroCaso = caso.getNroCaso();
+		String udn = caso.getUnidadNegocio();
+		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb="+ medico+"&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this);
+		thread.start();*/
+	}
+	
 	public void fieldChanged(Field field, int context) {
 		for (int i = 0; i < botones.length; i++)
 	    {
 	        if (field == botones[i])
 	        {
 	        	//AQUI
-	        	consultarCaso()
-	        	posBotonPresionado = i;
-	            desplegarMenu(botones[i]);
+	        	Integer id = new Integer(i);
+	        	Caso caso  = (Caso) casos.get(id);
+	        	consultarCaso(caso);
 	            break;
 	        }
 	    }

@@ -20,12 +20,12 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.MainScreen;
 
-
-public class LoginSuccessScreen extends MainScreen implements FieldChangeListener {
+public class LoginSuccessScreen extends plantilla_screen implements FieldChangeListener {
 	
 	static Sesion sesion;
+	
+	int reporteElegido;
 	
     Manager _bodyWrapper;
     Manager _currentBody;
@@ -122,7 +122,16 @@ public class LoginSuccessScreen extends MainScreen implements FieldChangeListene
     }
 	
 	public void listFianzas(){
-        ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(sesion);
+		//Por ahora llamo directo a llamadaExitosa luego será
+		//el hilo de la conexion quien se encargue
+		//Cuando implemente el web service utilizar codigo de abajo
+		llamadaExitosa("");
+		/*
+		String medico = sesion.getCodigoMedico();
+		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + medico, "GET", this);
+		thread.start();*/
+		
+		ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(sesion);
         UiApplication.getUiApplication().pushScreen(reporteFianzas);
     }
 	
@@ -140,9 +149,20 @@ public class LoginSuccessScreen extends MainScreen implements FieldChangeListene
 	        		detCaso();
 	            }
 	        else if (field == listFianzas) {
+	        		reporteElegido = 5;
 	        		listFianzas();
 	            }
 	    }
+
+	public void llamadaExitosa(String respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void llamadaFallada(String respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
 }
  
        

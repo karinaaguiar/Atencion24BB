@@ -1,10 +1,9 @@
 package com.atencion24.control;
 
-import java.util.Vector;
+import java.util.Hashtable;
 
 public class Caso {
 	
-	private int idCaso;
 	private String nombrePaciente;
 	private String fechaEmisionFactura;
 	private String nroCaso;
@@ -15,20 +14,21 @@ public class Caso {
 	private String montoExonerado;
 	private String montoAbonado;
 	private String totalDeuda;
-	private Vector honorarios;
+	private Hashtable honorarios;
 	
 	public Caso() {}
 	
-	public Caso(String nombrePaciente, String fechaEmisionFactura, int idCaso) 
+	public Caso(String nombrePaciente, String fechaEmisionFactura, String nroCaso, String udn) 
 	{  
-		this.setIdCaso(idCaso);
+		this.setNroCaso(nroCaso);
+		this.setUnidadNegocio(udn);
 		this.setNombrePaciente(nombrePaciente);
 	    this.setFechaEmisionFactura(fechaEmisionFactura);
 	}
 	
 	public Caso(String nombrePaciente, String fechaEmisionFactura, String nroCaso, String ciPaciente, 
 			String responsablePago, String montoFacturado, String montoExonerado, String montoAbonado,
-			String totalDeuda, Vector honorarios) {
+			String totalDeuda, Hashtable honorarios) {
 		
 		this.setNombrePaciente(nombrePaciente);
 		this.setFechaEmisionFactura(fechaEmisionFactura);
@@ -114,11 +114,11 @@ public class Caso {
 		return totalDeuda;
 	}
 
-	public void setHonorarios(Vector honorarios) {
+	public void setHonorarios(Hashtable honorarios) {
 		this.honorarios = honorarios;
 	}
 
-	public Vector getHonorarios() {
+	public Hashtable getHonorarios() {
 		return honorarios;
 	}
 
@@ -128,13 +128,5 @@ public class Caso {
 
 	public String getUnidadNegocio() {
 		return unidadNegocio;
-	}
-
-	public void setIdCaso(int idCaso) {
-		this.idCaso = idCaso;
-	}
-
-	public int getIdCaso() {
-		return idCaso;
 	}
 }

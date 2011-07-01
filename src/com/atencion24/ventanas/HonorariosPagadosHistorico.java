@@ -1,6 +1,7 @@
 package com.atencion24.ventanas;
 
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import com.atencion24.control.Deduccion;
@@ -218,12 +219,12 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
             	if(info.hijo == null)
             	{
             		//Primero el monto liberado
-                	info.hijo = new Vector();
+                	info.hijo = new Hashtable();
                 	System.out.println("No tenia hijos! asi que se los agrego");
     	            InformacionNivel infohijo;
     	            int posicion = 0 ; 
     	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-    	            info.hijo.addElement(infohijo);
+    	            info.hijo.put(new Integer(posicion), infohijo);
     	            
     	            Enumeration deducciones = pago.getDeducciones().elements();
     	            Deduccion deduccion;
@@ -232,7 +233,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	            	posicion ++;
     	            	deduccion = (Deduccion) deducciones.nextElement();
     	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-    	                info.hijo.addElement(infohijo);
+    	                info.hijo.put(new Integer(posicion),infohijo);
     	            }	
     	            System.out.println("Numero hijos " +( posicion +1));
             	}

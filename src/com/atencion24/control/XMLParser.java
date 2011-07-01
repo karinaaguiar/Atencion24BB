@@ -1,6 +1,7 @@
 package com.atencion24.control;
 
 import java.io.ByteArrayInputStream;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import org.w3c.dom.Document;
@@ -128,15 +129,25 @@ public class XMLParser {
     }
     
     //Por ahora cableado
-    public Vector LeerListadoCasos (String xmlSource) 
+    public Hashtable  LeerListadoCasos (String xmlSource) 
     {  
-    	Vector listadoCasos = new Vector();
-    	Caso caso1= new Caso("Ramírez Ariana", "25/07/2009", 0);
-    	Caso caso2= new Caso("Ramírez Antonio", "15/05/2011", 1);
-    	Caso caso3= new Caso("Ramírez Carla", "01/12/2010", 2);
-    	listadoCasos.addElement(caso1);
-    	listadoCasos.addElement(caso2);
-    	listadoCasos.addElement(caso3);
+    	Hashtable listadoCasos = new Hashtable();
+    	Caso caso1= new Caso("Ramírez Ariana", "25/07/2009", "2009533", "4" );
+    	Caso caso2= new Caso("Ramírez Antonio", "15/05/2011", "2011932", "4");
+    	Caso caso3= new Caso("Ramírez Carla", "01/12/2010", "20103432", "4");
+    	listadoCasos.put((Integer) new Integer(0), caso1);
+    	listadoCasos.put((Integer) new Integer(1), caso2);
+    	listadoCasos.put((Integer) new Integer(2), caso3);
     	return listadoCasos;
     }
+
+	public Caso LeerCaso(String respuesta) {
+		Hashtable honorarios = new Hashtable();
+		Honorario honorario1 = new Honorario("Cirugia1", "2500", "1000", "500", "1000");
+		Honorario honorario2 = new Honorario("Cirugia2", "1000", "0", "0", "1000");
+		honorarios.put((Integer) new Integer(0),honorario1);
+		honorarios.put((Integer) new Integer(1),honorario2);
+		Caso caso = new Caso("Ramírez Ariana", "25/07/2009", "2009533", "19162868", "Seguros Mercantil", "3500", "1000", "500", "2000", honorarios); 
+		return caso;
+	}
 }
