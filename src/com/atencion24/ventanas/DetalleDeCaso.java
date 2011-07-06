@@ -81,7 +81,7 @@ public class DetalleDeCaso extends MainScreen implements FieldChangeListener{
 	{
     	InformacionNivel info;
     	//Nombre del paciente
-		info = new InformacionNivel(" Nombre del Paciente: ", caso.getNombrePaciente(), nivel, new int[] {0});
+		info = new InformacionNivel(" Paciente: ", caso.getNombrePaciente(), nivel, new int[] {0});
 		informacionNivelSuperior.addElement(info);
 		
 		//Cédula del paciente

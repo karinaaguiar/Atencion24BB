@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import com.atencion24.control.Deduccion;
 import com.atencion24.control.Pago;
 import com.atencion24.interfaz.CustomButtonTable;
+import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
@@ -58,7 +59,7 @@ public class HonorariosPagadosEnProceso extends MainScreen {
 		//Inserto los managers donde irá el reporte.
 		foreground.add(contenido);
         add(foreground);
-		
+        
         crearReporte();
 	}
 	
@@ -72,16 +73,20 @@ public class HonorariosPagadosEnProceso extends MainScreen {
 	    contenido.add(Titulo);
 	    
         try {
-            FontFamily alphaSansFamily = FontFamily.forName(FontFamily.FAMILY_SYSTEM);
+        	FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
-            CustomButtonTable boton;
-            boton = new CustomButtonTable(pago.getFechaPago(), " ", 0x704B4B, Color.WHITE, 0x400000, Color.WHITE, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
+            //Encabezado
+            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Al " + pago.getFechaPago()," ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado.setFont(appFont);
+            fieldManager.add(encabezado);
+            
+            //Monto liberado
             CustomButtonTable botonS = new CustomButtonTable(" Monto total liberado:", pago.getMontoLiberado() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             botonS.setFont(appFont);
             fieldManager.add(botonS);
+            
+            CustomButtonTable boton;
             Enumeration deducciones = pago.getDeducciones().elements();
             while (deducciones.hasMoreElements())
             {
@@ -90,9 +95,10 @@ public class HonorariosPagadosEnProceso extends MainScreen {
                 boton.setFont(appFont);
                 fieldManager.add(boton);
             }
-            boton = new CustomButtonTable(" Monto neto:", pago.getMontoNeto() + " Bs ", 0x704B4B, Color.WHITE, 0x400000, Color.WHITE, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
+            //Monto neto 
+            encabezado = new CustomButtonTableNotFocus(" Monto neto:", pago.getMontoNeto() + " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado.setFont(appFont);
+            fieldManager.add(encabezado);
             
             contenido.add(fieldManager);
             botonS.setFocus();

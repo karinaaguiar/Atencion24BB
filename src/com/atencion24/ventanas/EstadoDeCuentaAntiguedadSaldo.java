@@ -2,6 +2,7 @@ package com.atencion24.ventanas;
 
 import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.interfaz.CustomButtonTable;
+import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
@@ -70,15 +71,15 @@ public class EstadoDeCuentaAntiguedadSaldo extends MainScreen
 	    contenido.add(Titulo);
 	    
         try {
-            FontFamily alphaSansFamily = FontFamily.forName(FontFamily.FAMILY_SYSTEM);
+            FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
             CustomButtonTable boton;
             
             //Deuda A 30 dias
-            boton = new CustomButtonTable(" Deuda a 30 días:", edoCuenta.getA30dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
+            CustomButtonTable botonS = new CustomButtonTable(" Deuda a 30 días:", edoCuenta.getA30dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            botonS.setFont(appFont);
+            fieldManager.add(botonS);
             
             //Deuda A 60 dias
             boton = new CustomButtonTable(" Deuda a 60 días:", edoCuenta.getA60dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
@@ -100,13 +101,13 @@ public class EstadoDeCuentaAntiguedadSaldo extends MainScreen
             boton.setFont(appFont);
             fieldManager.add(boton);
             
-            //Deuda A 30 dias
-            boton = new CustomButtonTable(" Total deuda:", edoCuenta.getTotalDeuda() + " Bs ", 0x704B4B, Color.WHITE, 0x400000, Color.WHITE, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
-
+            //Total Deuda
+            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Total deuda:", edoCuenta.getTotalDeuda() + " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado.setFont(appFont);
+            fieldManager.add(encabezado);
             
             contenido.add(fieldManager);
+            botonS.setFocus();
         }         
         catch (ClassNotFoundException e) {}
     }

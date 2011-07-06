@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import com.atencion24.interfaz.CustomButtonTable;
+import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
@@ -72,15 +73,15 @@ public class HonorariosFacturados extends MainScreen {
 	    contenido.add(Titulo);
 	    
         try {
-            FontFamily alphaSansFamily = FontFamily.forName(FontFamily.FAMILY_SYSTEM);
+            FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
             CustomButtonTable boton;
             Enumeration detallefact = facturado.elements();
             
-            boton = new CustomButtonTable(" Hospitalización:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
+            CustomButtonTable botonS = new CustomButtonTable(" Hospitalización:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            botonS.setFont(appFont);
+            fieldManager.add(botonS);
             
             boton = new CustomButtonTable(" Emergencia:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
@@ -94,11 +95,12 @@ public class HonorariosFacturados extends MainScreen {
             boton.setFont(appFont);
             fieldManager.add(boton);
             
-            boton = new CustomButtonTable(" Total facturado:", detallefact.nextElement()+ " Bs ", 0x704B4B, Color.WHITE, 0x400000, Color.WHITE, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
+            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Total facturado:", detallefact.nextElement()+ " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado.setFont(appFont);
+            fieldManager.add(encabezado);
             
             contenido.add(fieldManager);
+            botonS.setFocus();
         }         
         catch (ClassNotFoundException e) {}
     }
