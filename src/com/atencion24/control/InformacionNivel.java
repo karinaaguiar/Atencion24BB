@@ -25,6 +25,7 @@ import net.rim.device.api.ui.Ui;
  *  mostrar -> bandera que nos indica si el botón está desplegado o no.
  *  hijo -> estructura que contiene los hijos del botón desplegable (los que se expanden o comprimen al 
  *  		presionar el botón desplegable)  
+ *  bold -> booleano que indica si el texto va en negritas o no
  */
 public class InformacionNivel {
         
@@ -35,6 +36,7 @@ public class InformacionNivel {
     private int[] pos;
     private boolean mostrar = false;
     private Hashtable hijo;
+    private boolean bold = false; 
     
     
     /**
@@ -56,6 +58,26 @@ public class InformacionNivel {
     }
     
     /**
+     * Constructor de la clase. Con icono y bold 
+     * @param icon Bitmap del icono del widget desplegable
+     * @param nombre valor de la etiqueta del lado izquierdo del widget despleglable
+     * @param valor valor de la etiqueta del lado derecho del widget despleglable
+     * @param nivel entero que representa el nivel de anidamiento donde se encuentra el widget desplegable  
+     * @param pos arreglo que permite determinar la posicion relativa del botón respecto al resto de los botones
+     * @param bold booleano que indica si el texto va en negritas o no
+     */
+    public InformacionNivel(Bitmap icon,String nombre, String valor, int nivel, int[] pos, boolean bold) {  
+        
+        this.setNombre(nombre);
+        this.valor = valor;
+        this.nivel = nivel;
+        this.pos = pos;
+        this.setHijo(null); 
+        this.setIcono(icon);
+        this.bold = bold;
+    }
+    
+    /**
      * Constructor de la clase. Sin icono
      * @param nombre valor de la etiqueta del lado izquierdo del widget despleglable
      * @param valor valor de la etiqueta del lado derecho del widget despleglable
@@ -70,6 +92,25 @@ public class InformacionNivel {
         this.pos = pos;
         this.setHijo(null); 
         this.setIcono(null);
+    }
+    
+    /**
+     * Constructor de la clase. Sin icono y bold
+     * @param nombre valor de la etiqueta del lado izquierdo del widget despleglable
+     * @param valor valor de la etiqueta del lado derecho del widget despleglable
+     * @param nivel entero que representa el nivel de anidamiento donde se encuentra el widget desplegable  
+     * @param pos arreglo que permite determinar la posicion relativa del botón respecto al resto de los botones
+     * @param bold booleano que indica si el texto va en negritas o no
+     */
+    public InformacionNivel(String nombre, String valor, int nivel, int[] pos, boolean bold) {  
+        
+        this.setNombre(nombre);
+        this.valor = valor;
+        this.nivel = nivel;
+        this.pos = pos;
+        this.setHijo(null); 
+        this.setIcono(null);
+        this.bold = bold;
     }
     
     /**
@@ -105,6 +146,7 @@ public class InformacionNivel {
     	try {
             FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
+            Font boldFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt).derive(Font.BOLD);
             if (isMostrar() && nivel != 0 && this.getHijo() != null)
             {
                 CustomButtonTable[] auxBotones = new CustomButtonTable[0];
@@ -116,13 +158,15 @@ public class InformacionNivel {
                     auxBotones  = mezclarArray(auxBotones, aux2Botones);
                 }
                 botones = crearCustomButton (this.nivel);
-                botones[0].setFont(appFont);
+                if (!this.bold) botones[0].setFont(appFont);
+                else botones[0].setFont(boldFont);
                 return mezclarArray(botones, auxBotones);
             }
             else
             {
             	botones = crearCustomButton (this.nivel);
-            	botones[0].setFont(appFont);
+            	if (!this.bold) botones[0].setFont(appFont);
+                else botones[0].setFont(boldFont);
                 return botones;
             }
         }catch (ClassNotFoundException e) {
@@ -140,8 +184,15 @@ public class InformacionNivel {
     	CustomButtonTable[] botones = new CustomButtonTable[1];
     	switch (nivel)
         {
-            case (3): botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
-                      break;
+            case (3): if(this.getIcono()!=null)
+  		  			  {
+            		  	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x400202, Color.LIGHTYELLOW, 0x900A0A , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            		  	break;
+  		  			  }
+            		  else {
+            			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+              		  	break;
+            		  } 
             case (2): if(this.getIcono()!=null)
             		  {
             		  	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFC0CB, Color.BLACK, 0xFFC0CB, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);

@@ -68,7 +68,7 @@ public class HonorariosPagadosEnProceso extends MainScreen {
         fieldManager = new VerticalFieldManager();
         
         //Agregar la cabecera al reporte
-	    ListStyleLabelField Titulo = new ListStyleLabelField( "Pago en proceso \n "+ pago.getFechaPago(), DrawStyle.HCENTER , 0x400000, Color.WHITE);
+	    ListStyleLabelField Titulo = new ListStyleLabelField( "Pago en proceso", DrawStyle.HCENTER , 0x400000, Color.WHITE);
 	    contenido.add(Titulo);
 	    
         try {
@@ -76,9 +76,12 @@ public class HonorariosPagadosEnProceso extends MainScreen {
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
             CustomButtonTable boton;
-            boton = new CustomButtonTable(" Monto total liberado:", pago.getMontoLiberado() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(pago.getFechaPago(), " ", 0x704B4B, Color.WHITE, 0x400000, Color.WHITE, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
+            CustomButtonTable botonS = new CustomButtonTable(" Monto total liberado:", pago.getMontoLiberado() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            botonS.setFont(appFont);
+            fieldManager.add(botonS);
             Enumeration deducciones = pago.getDeducciones().elements();
             while (deducciones.hasMoreElements())
             {
@@ -92,6 +95,7 @@ public class HonorariosPagadosEnProceso extends MainScreen {
             fieldManager.add(boton);
             
             contenido.add(fieldManager);
+            botonS.setFocus();
         }         
         catch (ClassNotFoundException e) {}
     }

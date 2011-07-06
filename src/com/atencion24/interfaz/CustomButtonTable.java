@@ -6,6 +6,23 @@ import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Keypad;
 
+/**
+ * Elemento de interfaz que representa una celda de una tabla
+ * label ->  texto del lado izquierdo en la celda
+ * label2 -> texto del lado derecho en la celda
+ * foregroundColor -> color del texto 
+ * backgroundColor -> color del fondo 
+ * focusedForegroundColor -> color del texto cuando la celda tiene el foco
+ * focusedBackgroundColor -> color del fondo cuando la celda tiene el foco
+ * focusedShadowColor -> color para indicar que el foco está sobre la celda
+ * color_border -> color de los bordes de la celda
+ * nivel -> nivel al que pertenece la celda dentro del posible anidamiento
+ * posicion -> arreglo que permite determinar la posicion relativa del celda respecto al resto de las celdas. 
+ *  	       pos[nivel] representa la posición de la celda dentro del nivel al que pertenece.
+ *  	       pos[nivel-i] representa la posición de su padre del nivel i  
+ *  _leftIcon -> Bitmap de la celda (en caso de tener)
+ *  _leftOffset -> margen izquierdo que se deberá mantener al dibujar el texto de la celda.  
+ */
 public class CustomButtonTable extends Field {
          
     private String label;
@@ -24,10 +41,23 @@ public class CustomButtonTable extends Field {
     private static final int HPADDING = 6; //Display.getWidth() <= 320 ? 6 : 8;
     private static final int VPADDING = 4;
     
-    public int obtenerNivel(){
-        return nivel;
-        }
-    
+    /**
+     * Constructor de la clase. Con ícono 
+     * @param icon Bitmap de la celda 
+     * @param label texto del lado izquierdo en la celda
+     * @param labelR texto del lado derecho en la celda
+     * @param focusedShadowColor color para indicar que el foco está sobre la celda
+     * @param foregroundColor color del texto 
+     * @param backgroundColor color del fondo 
+     * @param focusedForegroundColor color del texto cuando la celda tiene el foco
+     * @param focusedBackgroundColor color del fondo cuando la celda tiene el foco
+     * @param style estilo del botón (field) 
+     * @param colorB color de los bordes de la celda
+     * @param nvl nivel al que pertenece la celda dentro del posible anidamiento
+     * @param pos arreglo que permite determinar la posicion relativa del celda respecto al resto de las celdas. 
+ *  	          pos[nivel] representa la posición de la celda dentro del nivel al que pertenece.
+ *  	          pos[nivel-i] representa la posición de su padre del nivel i  
+     */
     public CustomButtonTable(Bitmap icon, String label, String labelR, int focusedShadowColor, int foregroundColor, int backgroundColor, int focusedForegroundColor, int focusedBackgroundColor, long style, int colorB, int nvl, int[] pos) {
         super(style);
         this.label = label;
@@ -43,6 +73,22 @@ public class CustomButtonTable extends Field {
         set_leftIcon(icon);
         }
     
+    /**
+     * Constructor de la clase. Sin ícono 
+     * @param label texto del lado izquierdo en la celda
+     * @param labelR texto del lado derecho en la celda
+     * @param focusedShadowColor color para indicar que el foco está sobre la celda
+     * @param foregroundColor color del texto 
+     * @param backgroundColor color del fondo 
+     * @param focusedForegroundColor color del texto cuando la celda tiene el foco
+     * @param focusedBackgroundColor color del fondo cuando la celda tiene el foco
+     * @param style estilo del botón (field) 
+     * @param colorB color de los bordes de la celda
+     * @param nvl nivel al que pertenece la celda dentro del posible anidamiento
+     * @param pos arreglo que permite determinar la posicion relativa del celda respecto al resto de las celdas. 
+ *  	          pos[nivel] representa la posición de la celda dentro del nivel al que pertenece.
+ *  	          pos[nivel-i] representa la posición de su padre del nivel i  
+     */
     public CustomButtonTable(String label, String labelR, int focusedShadowColor, int foregroundColor, int backgroundColor, int focusedForegroundColor, int focusedBackgroundColor, long style, int colorB, int nvl, int[] pos) {
         super(style);
         this.label = label;
@@ -57,27 +103,17 @@ public class CustomButtonTable extends Field {
         this.posicion = pos;
         }
        
-    public CustomButtonTable(Bitmap icon, String label, int foregroundColor, int backgroundColor, long style, int colorB) {
-        super(style);
-        this.label = label;
-        this.foregroundColor = foregroundColor;
-        this.backgroundColor = backgroundColor;
-        this.color_border = colorB;
-        set_leftIcon(icon);
-        }
-        
-    public CustomButtonTable(Bitmap icon, String label, int foregroundColor, int backgroundColor, long style) {
-        super(style);
-        this.label = label;
-        this.foregroundColor = foregroundColor;
-        this.backgroundColor = backgroundColor;
-        set_leftIcon(icon);
+    public int obtenerNivel(){
+        return nivel;
         }
         
     public int [] obtenerPosicion(){
         return posicion;
     }
     
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#layout(int, int)
+     */
     protected void layout(int width, int height) {
         
     	_leftOffset = HPADDING;
@@ -97,6 +133,9 @@ public class CustomButtonTable extends Field {
         }
     }
     
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#getPreferredHeight()
+     */
     public int getPreferredHeight() {
     	if (get_leftIcon() != null) {
             return Math.max(getFont().getHeight(), get_leftIcon().getHeight());
@@ -106,6 +145,9 @@ public class CustomButtonTable extends Field {
         }
     }
     
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#getPreferredWidth()
+     */
     public int getPreferredWidth() {
         int width;
         if (label2 == null){
@@ -124,31 +166,29 @@ public class CustomButtonTable extends Field {
         return width;
     }
     
-    /*protected void paint(Graphics graphics) {
-        graphics.setBackgroundColor(backgroundColor);
-        graphics.clear();
-        graphics.setColor(foregroundColor);
-        graphics.drawText(label, 0, 0);
-    }*/
-    
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#paint(net.rim.device.api.ui.Graphics)
+     */
     protected void paint(Graphics graphics) {
         graphics.setBackgroundColor(backgroundColor);
         graphics.clear();
         
-        if (color_border != 0){              
+        if (color_border != 0)
+        {              
             graphics.setColor( color_border );
             graphics.drawLine( 0, 0, 0, getHeight());
             graphics.drawLine( getWidth()-1, 0, getWidth()-1, getHeight());
         }
-        if (isFocus()) {
-            
+        if (isFocus()) 
+        {
             graphics.setColor(focusedBackgroundColor);
             graphics.fillRect(0, 0, getWidth(), getHeight());
             graphics.setColor(focusedShadowColor);
             graphics.setGlobalAlpha(100);
             graphics.fillRoundRect(3, 3, getWidth(), getHeight()-6, 12, 12);
             graphics.setGlobalAlpha(255);
-            if (label2 != null){
+            if (label2 != null)
+            {
                 int text2X = (getWidth() - getFont().getAdvance(label2))-2;
                 graphics.setColor(focusedForegroundColor);
                 // Left Bitmap
@@ -158,15 +198,13 @@ public class CustomButtonTable extends Field {
                 graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, text2X - 1);
                 graphics.drawText(label2, text2X, 0);
             }else{
-                graphics.setColor(focusedForegroundColor);
+            	graphics.setColor(focusedForegroundColor);
                 // Left Bitmap
                 if( get_leftIcon() != null ) {
                 	graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
                 }
                 graphics.drawText(label, 0, 0);
             }
-            
-            
         }else{
             if (label2 != null){
                 int text2X = (getWidth() - getFont().getAdvance(label2))-2;
@@ -177,7 +215,8 @@ public class CustomButtonTable extends Field {
                 }
                 graphics.drawText(label, _leftOffset , 0, DrawStyle.ELLIPSIS, text2X - 1);
                 graphics.drawText(label2, text2X, 0);
-            }else{
+            }
+            else{
                 graphics.setColor(foregroundColor);
                 // Left Bitmap
                 if( get_leftIcon() != null ) {
@@ -185,33 +224,50 @@ public class CustomButtonTable extends Field {
                 }
                 graphics.drawText(label, 0, 0);   
             }
-            
         }
     }
     
-    
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#isFocusable()
+     */
     public boolean isFocusable() {
         return true;
     }
     
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#drawFocus(net.rim.device.api.ui.Graphics, boolean)
+     */
     protected void drawFocus(Graphics graphics, boolean on) {
         }
         
+    
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#onFocus(int)
+     */
     protected void onFocus(int direction) {
         super.onFocus(direction);
         invalidate();
     }
         
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#onUnfocus()
+     */
     protected void onUnfocus() {
         super.onUnfocus();
         invalidate();
     }
         
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#navigationClick(int, int)
+     */
     protected boolean navigationClick(int status, int time) {
         fieldChangeNotify(0);
         return true;
     }
         
+    /* (non-Javadoc)
+     * @see net.rim.device.api.ui.Field#keyChar(char, int, int)
+     */
     protected boolean keyChar(char character, int status, int time) {
         if (character == Keypad.KEY_ENTER) {
             fieldChangeNotify(0);

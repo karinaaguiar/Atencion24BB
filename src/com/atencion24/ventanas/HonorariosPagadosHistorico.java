@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.atencion24.control.Deduccion;
 import com.atencion24.control.Pago;
 import com.atencion24.interfaz.CustomButtonTable;
+import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
@@ -45,7 +46,6 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 
 	static Vector pagos;
 	
-	private int nivel = 1;
 	int posBotonPresionado = 0;
 	
 	Manager foreground = new ForegroundManager();
@@ -53,8 +53,8 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     Vector informacionNivelSuperior = new Vector();
     CustomButtonTable[] botonesF = new CustomButtonTable[0];
     
-    Bitmap plus = Bitmap.getBitmapResource("com/atencion24/imagenes/plus_alt_12x12.png");
-    Bitmap minus = Bitmap.getBitmapResource("com/atencion24/imagenes/minus_alt_12x12.png");
+    Bitmap plus = Bitmap.getBitmapResource("com/atencion24/imagenes/plus_blanco.png");
+    Bitmap minus = Bitmap.getBitmapResource("com/atencion24/imagenes/minus_blanco.png");
 
 	/**
 	 * HonorariosPagadosHistorico. Constructor de la clase
@@ -104,15 +104,11 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	Enumeration listadoPagos = pagos.elements();
     	Pago pago;
     	InformacionNivel info;
-    	
-    	info = new InformacionNivel(" Fecha ", " Monto ", nivel, new int[] {size-count});
-		informacionNivelSuperior.addElement(info);
-		count --;
     	//Por cada pago en listadoPagos, debo crear un InformacionNivel y agregarlo al Vector informacionNivel
     	while (listadoPagos.hasMoreElements()) 
     	{
     		pago = (Pago) listadoPagos.nextElement();
-    		info = new InformacionNivel(plus, pago.getFechaPago(), pago.getMontoNeto()+ " Bs", nivel, new int[] {size-count});
+    		info = new InformacionNivel(plus, pago.getFechaPago(), pago.getMontoNeto()+ " Bs", 3, new int[] {size-count});
     		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
@@ -133,6 +129,15 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	//Agregar la cabecera al reporte
 	    ListStyleLabelField Titulo = new ListStyleLabelField( "Histórico de Pagos", DrawStyle.HCENTER , 0x400000, Color.WHITE);
 	    contenido.add(Titulo);
+	    
+	    try {
+            FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
+            Font boldFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt).derive(Font.BOLD);
+            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Fecha", " Monto", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado.setFont(boldFont);
+            contenido.add(encabezado);
+	    }
+	    catch (ClassNotFoundException e) {}
 	    
 	    CustomButtonTable[] aux;
 	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
@@ -198,7 +203,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
              //Guardo en mi arreglo los botones que no fueron borrados,
              //para poder hacer bien la comparacion en la función fieldChanged
              for (int i = 0; i < posBotonPresionado + 1; i++){
-                 botonesF[i] = (CustomButtonTable)contenido.getField(i + 1);
+                 botonesF[i] = (CustomButtonTable)contenido.getField(i + 2);
                  }
          }catch(IndexOutOfBoundsException e){
              System.out.println("Error: " + e);
@@ -218,46 +223,42 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	if (botonPulsado.obtenerNivel() != 0)
     	{
     		int[] pos = botonPulsado.obtenerPosicion();
-    		if (pos[0]!=0)
-    		{	
-	            InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
-	            Pago pago = (Pago) pagos.elementAt((pos[0])-1);
-	            
-	            if (info.isMostrar()) 
-	            {
-	            	info.setMostrar(false);
-	            	info.setIcono(plus);
-	            }
-	            else 
-	            {
-	            	//Asociarle hijos a info para convertirlo en menu desplegable
-	            	info.setMostrar(true);
-	            	info.setIcono(minus);
-	            	if(info.getHijo() == null)
-	            	{
-	            		//Primero el monto liberado
-	                	info.setHijo(new Hashtable());
-	                	System.out.println("No tenia hijos! asi que se los agrego");
-	    	            InformacionNivel infohijo;
-	    	            int posicion = 0 ; 
-	    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-	    	            info.getHijo().put(new Integer(posicion), infohijo);
-	    	            
-	    	            Enumeration deducciones = pago.getDeducciones().elements();
-	    	            Deduccion deduccion;
-	    	            while(deducciones.hasMoreElements())
-	    	            {
-	    	            	posicion ++;
-	    	            	deduccion = (Deduccion) deducciones.nextElement();
-	    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-	    	                info.getHijo().put(new Integer(posicion),infohijo);
-	    	            }	
-	    	            System.out.println("Numero hijos " +( posicion +1));
-	            	}
-	            }    
-	            informacionNivelSuperior.setElementAt(info,pos[0]);
-		        crearParteMenu();  
-    		}
+    		
+            InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
+            Pago pago = (Pago) pagos.elementAt(pos[0]);
+            if (info.isMostrar()) 
+            {
+            	info.setMostrar(false);
+            	info.setIcono(plus);
+            }
+            else 
+            {
+            	//Asociarle hijos a info para convertirlo en menu desplegable
+            	info.setMostrar(true);
+            	info.setIcono(minus);
+            	if(info.getHijo() == null)
+            	{
+            		//Primero el monto liberado
+                	info.setHijo(new Hashtable());
+    	            InformacionNivel infohijo;
+    	            int posicion = 0 ; 
+    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", 0, new int[] {posicion});
+    	            info.getHijo().put(new Integer(posicion), infohijo);
+    	            
+    	            Enumeration deducciones = pago.getDeducciones().elements();
+    	            Deduccion deduccion;
+    	            while(deducciones.hasMoreElements())
+    	            {
+    	            	posicion ++;
+    	            	deduccion = (Deduccion) deducciones.nextElement();
+    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", 0, new int[] {posicion});
+    	                info.getHijo().put(new Integer(posicion),infohijo);
+    	            }	
+            	}
+            }    
+            informacionNivelSuperior.setElementAt(info,pos[0]);
+	        crearParteMenu();  
+    		
         }
     }
     
