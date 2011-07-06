@@ -9,7 +9,7 @@ import com.atencion24.control.Fianza;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
-import com.atencion24.interfaz.InformacionNivel;
+import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
 import com.atencion24.interfaz.ListStyleLabelField;
 
@@ -38,6 +38,9 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
 	ListStyleButtonSet contenido   = new ListStyleButtonSet();
     Vector informacionNivelSuperior = new Vector();
     CustomButtonTable[] botonesF = new CustomButtonTable[0];
+    
+    Bitmap plus = Bitmap.getBitmapResource("com/atencion24/imagenes/plus_alt_12x12.png");
+    Bitmap minus = Bitmap.getBitmapResource("com/atencion24/imagenes/minus_alt_12x12.png");
     
 	ReporteListadoFianzas(Hashtable listaFianzas) 
 	{
@@ -85,7 +88,7 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
     	while (listadoFianzas.hasMoreElements()) 
     	{
     		fianza = (Fianza) listadoFianzas.nextElement();
-    		info = new InformacionNivel(" Caso:", fianza.getNroCaso(), nivel, new int[] {size-count});
+    		info = new InformacionNivel(plus, " Caso:", fianza.getNroCaso(), nivel, new int[] {size-count});
     		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
@@ -139,7 +142,7 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
     {
         try{
             // Los botones que vienen despues del boton presionado son eliminados
-             for (int i = posBotonPresionado + 2 ; i < botonesF.length + 1; i++){
+             for (int i = posBotonPresionado + 1 ; i < botonesF.length + 1; i++){
                  
                      contenido.delete(botonesF[i-1]);
                  }
@@ -156,13 +159,18 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
      	    	aux = info.mostrarBotones();
      	    	botonesF = info.mezclarArray(botonesF,aux);
          	}
-             
+            
+     	     //Coloco el boton presionado
+     	     botonesF[posBotonPresionado].setChangeListener(this);
+             contenido.add(botonesF[posBotonPresionado]);
+             botonesF[posBotonPresionado].setFocus();
              // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
              // guardados (el boton presionado y los que vienen antes de el)
              for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
                      botonesF[i].setChangeListener(this);
                      contenido.add(botonesF[i]);
              }
+            
              //Guardo en mi arreglo los botones que no fueron borrados,
              //para poder hacer bien la comparacion en la función fieldChanged
              for (int i = 0; i < posBotonPresionado + 1; i++){
@@ -190,36 +198,41 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
     		{
     			int[] pos = botonPulsado.obtenerPosicion();
 				InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
-		        if (info.isMostrar()) info.setMostrar(false);
+				if (info.isMostrar()) 
+	            {
+	            	info.setMostrar(false);
+	            	info.setIcono(plus);
+	            }
 		        else 
 		        {
 		        	//Asociarle hijos a info para convertirlo en menu desplegable
 		        	info.setMostrar(true);
-		        	if(info.hijo == null)
+		        	info.setIcono(minus);
+		        	if(info.getHijo() == null)
 		        	{
-		        		info.hijo = new Hashtable();
+		        		info.setHijo(new Hashtable());
 			            InformacionNivel infohijo;
 			            Fianza fianza = (Fianza) fianzas.get(new Integer(pos[0]));
 			            
 			            //Fecha Emision
 			            infohijo = new InformacionNivel(" Fecha emisión:", fianza.getFechaEmisionFactura(), 1, new int[] {pos[0],0});
-		                info.hijo.put(new Integer(0), infohijo);
+		                info.getHijo().put(new Integer(0), infohijo);
 		                
 		                //Paciente
 			            infohijo = new InformacionNivel(" Paciente:", fianza.getPaciente(), 1, new int[] {pos[0],1});
-		                info.hijo.put(new Integer(1), infohijo);
+		                info.getHijo().put(new Integer(1), infohijo);
 		                
 		                //Monto a cobrar
 			            infohijo = new InformacionNivel(" Monto a cobrar:", fianza.getMontoACobrar(), 1, new int[] {pos[0],2});
-		                info.hijo.put(new Integer(2), infohijo);
+		                info.getHijo().put(new Integer(2), infohijo);
 		        		
 		                //Monto abonado
-			            infohijo = new InformacionNivel(" Monto abonado:", fianza.getMontoAbonado(), 1, new int[] {pos[0],3});
-		                info.hijo.put(new Integer(3), infohijo);
+			            infohijo = new InformacionNivel(plus, " Monto abonado:", fianza.getMontoAbonado(), 1, new int[] {pos[0],3});
+		                info.getHijo().put(new Integer(3), infohijo);
 		                
 		                //Monto neto
 			            infohijo = new InformacionNivel(" Monto neto:", fianza.getMontoNeto(), 1, new int[] {pos[0],4});
-		                info.hijo.put(new Integer(4), infohijo);
+		                info.getHijo().put(new Integer(4), infohijo);
 		        	}
 		        }	
 		        informacionNivelSuperior.setElementAt(info,pos[0]);
@@ -235,15 +248,20 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
         			int idFianza = pos[0];
         			
         			InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(idFianza);
-        			InformacionNivel hijoPresionado = (InformacionNivel) info.hijo.get(new Integer(3)); 
-        			if (hijoPresionado.isMostrar()) hijoPresionado.setMostrar(false);
+        			InformacionNivel hijoPresionado = (InformacionNivel) info.getHijo().get(new Integer(3)); 
+        			if (hijoPresionado.isMostrar()) 
+    	            {
+        				hijoPresionado.setMostrar(false);
+        				hijoPresionado.setIcono(plus);
+    	            }
     		        else 
     		        {
     		        	//Asociarle hijos a info para convertirlo en menu desplegable
     		        	hijoPresionado.setMostrar(true);
-    		        	if(hijoPresionado.hijo == null)
+    		        	hijoPresionado.setIcono(minus);
+    		        	if(hijoPresionado.getHijo() == null)
     		        	{
-    		        		hijoPresionado.hijo = new Hashtable();
+    		        		hijoPresionado.setHijo(new Hashtable());
     			            InformacionNivel infohijo;
     			            Enumeration descuentos = ((Fianza)fianzas.get(new Integer(idFianza))).getDescuentos().elements();
     			            int count = 0; 
@@ -251,13 +269,13 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
     			            {
     			            	Descuento descuento = (Descuento) descuentos.nextElement();
     			            	infohijo = new InformacionNivel(descuento.getFecha(), descuento.getMonto(), 0, new int[] {idFianza,posicionNivel,count});
-        		        		hijoPresionado.hijo.put(new Integer(count), infohijo);
+        		        		hijoPresionado.getHijo().put(new Integer(count), infohijo);
         		        		count ++;
     			            }
     		        	}
     		        }
-        			info.hijo.remove(new Integer(3));
-        			info.hijo.put(new Integer(3), hijoPresionado);
+        			info.getHijo().remove(new Integer(3));
+        			info.getHijo().put(new Integer(3), hijoPresionado);
     		        informacionNivelSuperior.setElementAt(info,idFianza);
     		        crearParteMenu();  
     				

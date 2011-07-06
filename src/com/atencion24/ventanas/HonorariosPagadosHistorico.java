@@ -9,7 +9,7 @@ import com.atencion24.control.Pago;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
-import com.atencion24.interfaz.InformacionNivel;
+import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
 import com.atencion24.interfaz.ListStyleLabelField;
 
@@ -52,6 +52,9 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 	ListStyleButtonSet contenido   = new ListStyleButtonSet();
     Vector informacionNivelSuperior = new Vector();
     CustomButtonTable[] botonesF = new CustomButtonTable[0];
+    
+    Bitmap plus = Bitmap.getBitmapResource("com/atencion24/imagenes/plus_alt_12x12.png");
+    Bitmap minus = Bitmap.getBitmapResource("com/atencion24/imagenes/minus_alt_12x12.png");
 
 	/**
 	 * HonorariosPagadosHistorico. Constructor de la clase
@@ -109,7 +112,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     	while (listadoPagos.hasMoreElements()) 
     	{
     		pago = (Pago) listadoPagos.nextElement();
-    		info = new InformacionNivel(pago.getFechaPago(), pago.getMontoNeto()+ " Bs", nivel, new int[] {size-count});
+    		info = new InformacionNivel(plus, pago.getFechaPago(), pago.getMontoNeto()+ " Bs", nivel, new int[] {size-count});
     		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
@@ -163,7 +166,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
     {
         try{
             // Los botones que vienen despues del boton presionado son eliminados
-             for (int i = posBotonPresionado + 2 ; i < botonesF.length + 1; i++){
+             for (int i = posBotonPresionado + 1 ; i < botonesF.length + 1; i++){
                  
                      contenido.delete(botonesF[i-1]);
                  }
@@ -180,13 +183,18 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
      	    	aux = info.mostrarBotones();
      	    	botonesF = info.mezclarArray(botonesF,aux);
          	}
-             
+            
+     	     //Coloco el boton presionado
+     	     botonesF[posBotonPresionado].setChangeListener(this);
+             contenido.add(botonesF[posBotonPresionado]);
+             botonesF[posBotonPresionado].setFocus();
              // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
              // guardados (el boton presionado y los que vienen antes de el)
              for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
                      botonesF[i].setChangeListener(this);
                      contenido.add(botonesF[i]);
              }
+            
              //Guardo en mi arreglo los botones que no fueron borrados,
              //para poder hacer bien la comparacion en la función fieldChanged
              for (int i = 0; i < posBotonPresionado + 1; i++){
@@ -215,20 +223,25 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 	            InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(pos[0]);
 	            Pago pago = (Pago) pagos.elementAt((pos[0])-1);
 	            
-	            if (info.isMostrar()) info.setMostrar(false);
+	            if (info.isMostrar()) 
+	            {
+	            	info.setMostrar(false);
+	            	info.setIcono(plus);
+	            }
 	            else 
 	            {
 	            	//Asociarle hijos a info para convertirlo en menu desplegable
 	            	info.setMostrar(true);
-	            	if(info.hijo == null)
+	            	info.setIcono(minus);
+	            	if(info.getHijo() == null)
 	            	{
 	            		//Primero el monto liberado
-	                	info.hijo = new Hashtable();
+	                	info.setHijo(new Hashtable());
 	                	System.out.println("No tenia hijos! asi que se los agrego");
 	    	            InformacionNivel infohijo;
 	    	            int posicion = 0 ; 
 	    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-	    	            info.hijo.put(new Integer(posicion), infohijo);
+	    	            info.getHijo().put(new Integer(posicion), infohijo);
 	    	            
 	    	            Enumeration deducciones = pago.getDeducciones().elements();
 	    	            Deduccion deduccion;
@@ -237,7 +250,7 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 	    	            	posicion ++;
 	    	            	deduccion = (Deduccion) deducciones.nextElement();
 	    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", botonPulsado.obtenerNivel()-1, new int[] {posicion});
-	    	                info.hijo.put(new Integer(posicion),infohijo);
+	    	                info.getHijo().put(new Integer(posicion),infohijo);
 	    	            }	
 	    	            System.out.println("Numero hijos " +( posicion +1));
 	            	}
