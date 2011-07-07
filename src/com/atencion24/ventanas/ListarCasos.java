@@ -45,7 +45,7 @@ public class ListarCasos extends plantilla_screen implements FieldChangeListener
 		try 
 		{
 			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-			Font appFont = familiaFont.getFont(Font.PLAIN, 6, Ui.UNITS_pt);
+			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
 			setFont(appFont);
 
 			//Logo CSS alineado al centro
