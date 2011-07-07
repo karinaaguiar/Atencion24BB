@@ -7,7 +7,6 @@ import java.util.Vector;
 import com.atencion24.control.Descuento;
 import com.atencion24.control.Fianza;
 import com.atencion24.interfaz.CustomButtonTable;
-import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
@@ -18,16 +17,9 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
-import net.rim.device.api.ui.Ui;
-import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.MainScreen;
 
-public class ReporteListadoFianzas extends MainScreen implements FieldChangeListener {
+public class ReporteListadoFianzas extends plantilla_screen implements FieldChangeListener {
 
 	static Hashtable fianzas;
 	
@@ -48,25 +40,9 @@ public class ReporteListadoFianzas extends MainScreen implements FieldChangeList
 	ReporteListadoFianzas(Hashtable listaFianzas) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
+		super.setTitulo("Fianzas Pendientes");
+		super.changeTitulo();
 		fianzas = listaFianzas;
-		
-		//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		BitmapField bitmapField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(bitmapField);
-        add(hfmLabel);
-       
-        //**Label field simple**
-		add(new CustomLabelField("Fianzas Pendientes", Color.WHITE, 0x400000, FIELD_HCENTER));
-		add(new SeparatorField());
 		
 		//Inserto los managers donde irá el reporte.
 		foreground.add(contenido);

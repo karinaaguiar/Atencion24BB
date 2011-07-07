@@ -1,23 +1,23 @@
 /*
- * NegMarginVerticalFieldManager.java
- *
- * Research In Motion Limited proprietary and confidential
- * Copyright Research In Motion Limited, 2009-2009
- */
+* NegMarginVerticalFieldManager.java
+*
+* Research In Motion Limited proprietary and confidential
+* Copyright Research In Motion Limited, 2009-2009
+*/
  
 package com.atencion24.interfaz;
 
 import net.rim.device.api.ui.*;
 
 /**
- * A basic vertical field manager that supports negative vertical margins
- * It also supports horizontal style bits.
- */
+* A basic vertical field manager that supports negative vertical margins
+* It also supports horizontal style bits.
+*/
 public class NegativeMarginVerticalFieldManager extends Manager
 {
     private static final int MAX_EXTENT = Integer.MAX_VALUE >> 1;
 
-    public NegativeMarginVerticalFieldManager( long style ) 
+    public NegativeMarginVerticalFieldManager( long style )
     {
         super( style );
     }
@@ -25,9 +25,9 @@ public class NegativeMarginVerticalFieldManager extends Manager
     
     protected void sublayout( int maxWidth, int maxHeight )
     {
-        Field   field;
-        int     width = 0;
-        int     height = 0;
+        Field field;
+        int width = 0;
+        int height = 0;
 
         // how much height do we have?
         int heightAvail = maxHeight;
@@ -46,7 +46,7 @@ public class NegativeMarginVerticalFieldManager extends Manager
         for( int i = 0; i < numFields; ++i ) {
             field = getField( i );
             
-            marginHorizontal =  field.getMarginLeft() + field.getMarginRight();
+            marginHorizontal = field.getMarginLeft() + field.getMarginRight();
             marginTop = calculateVerticalMargin( prevMarginBottom, field.getMarginTop() );
             marginBottom = field.getMarginBottom();
             
@@ -103,9 +103,9 @@ public class NegativeMarginVerticalFieldManager extends Manager
     }
     
     /**
-     * To account for negative margins
-     */
-    private int calculateVerticalMargin( int prevMarginBottom, int marginTop ) 
+* To account for negative margins
+*/
+    private int calculateVerticalMargin( int prevMarginBottom, int marginTop )
     {
         int max = Math.max( prevMarginBottom, marginTop );
         int sum = prevMarginBottom + marginTop;
@@ -115,4 +115,5 @@ public class NegativeMarginVerticalFieldManager extends Manager
         return max;
     }
     
-}    
+}
+

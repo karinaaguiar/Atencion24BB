@@ -24,9 +24,8 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
-public class LoginSuccessScreen extends plantilla_screen implements FieldChangeListener {
+public class LoginSuccessScreen extends plantilla_screen_http implements FieldChangeListener {
 	
 	static Sesion sesion;
 	
@@ -47,37 +46,12 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
 	{
 		//ojo con NO_VERTICAL_SCROLL
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
-		
-		/*add(new LabelField("Logged in!"));
-		add(new LabelField("Nombre: " + ses.getNombre()));
-		add(new LabelField("Apellido: " + ses.getApellido()));
-		add(new LabelField("Codigo medico: " + ses.getCodigoMedico()));
-		add(new LabelField("NombreUsuario: " + ses.getNombreUsuario()));
-		add(new LabelField("Hey"));*/
-		
-		//Cambiar el font de la aplicación
-		try {
-			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-			setFont(appFont);
-		}catch (ClassNotFoundException e){}
-
 		sesion = ses;
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		bitmapField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(bitmapField);
-        add(hfmLabel);
-		add(new SeparatorField());
+		super.setTitulo("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido());
+		super.changeTitulo();
 		
 		//**Label field simple**
-		add(new CustomLabelField("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido() , Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
-		add(new SeparatorField());
-		
-		//**Label field simple**
-		add(new CustomLabelField("Elija el reporte a consultar:" , Color.WHITE,  0x581B00 , Field.USE_ALL_WIDTH));
+		add(new CustomLabelField("Elija el reporte a consultar:" , Color.WHITE, 0x990000, FIELD_HCENTER));
 		add(new SeparatorField());
 		
 		Manager foreground = new ForegroundManager();
@@ -85,22 +59,33 @@ public class LoginSuccessScreen extends plantilla_screen implements FieldChangeL
         _currentBody = new ListStyleButtonSet();
         
         Bitmap arrowBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/gray-arrow.png");
-        edoCta = new ListStyleButtonField( "Estado de Cuenta", arrowBitmap , 0 );
-        edoCta.setChangeListener(this);
-        _currentBody.add(edoCta);
-        honPagados = new ListStyleButtonField( "Honorarios pagados en un período", arrowBitmap , 0 );
-        honPagados.setChangeListener(this);
-        _currentBody.add(honPagados);
-        honFact =  new ListStyleButtonField( "Honorarios facturados en un período", arrowBitmap , 0 );
-        honFact.setChangeListener(this);
-        _currentBody.add(honFact);
-        detCaso =  new ListStyleButtonField( "Detalle administrativo de un caso", arrowBitmap , 0 );
-        detCaso.setChangeListener(this);
-        _currentBody.add(detCaso);
-        listFianzas =  new ListStyleButtonField( "Listado de fianzas pendientes", arrowBitmap , 0 ); 
-        listFianzas.setChangeListener(this);
-        _currentBody.add(listFianzas);
         
+        try {
+        	FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+        	Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
+       
+	        edoCta = new ListStyleButtonField( "Estado de Cuenta", arrowBitmap , 0 );
+	        edoCta.setFont(appFont);
+	        edoCta.setChangeListener(this);
+	        _currentBody.add(edoCta);
+	        honPagados = new ListStyleButtonField( "Honorarios pagados en un período", arrowBitmap , 0 );
+	        honPagados.setFont(appFont);
+	        honPagados.setChangeListener(this);
+	        _currentBody.add(honPagados);
+	        honFact =  new ListStyleButtonField( "Honorarios facturados en un período", arrowBitmap , 0 );
+	        honFact.setFont(appFont);
+	        honFact.setChangeListener(this);
+	        _currentBody.add(honFact);
+	        detCaso =  new ListStyleButtonField( "Detalle administrativo de un caso", arrowBitmap , 0 );
+	        detCaso.setFont(appFont);
+	        detCaso.setChangeListener(this);
+	        _currentBody.add(detCaso);
+	        listFianzas =  new ListStyleButtonField( "Listado de fianzas pendientes", arrowBitmap , 0 );
+	        listFianzas.setFont(appFont);
+	        listFianzas.setChangeListener(this);
+	        _currentBody.add(listFianzas);
+        
+        } catch (ClassNotFoundException e){}
         _bodyWrapper.add(_currentBody);  
         foreground.add(_bodyWrapper);
         add(foreground);

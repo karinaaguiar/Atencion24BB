@@ -1,8 +1,15 @@
-/*
- * plantilla_screen.java
- */ 
 package com.atencion24.ventanas;
 
+import com.atencion24.interfaz.CustomLabelField;
+
+import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.ui.Color;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
+import net.rim.device.api.ui.Ui;
+import net.rim.device.api.ui.component.BitmapField;
+import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 
 /**
@@ -11,30 +18,45 @@ import net.rim.device.api.ui.container.MainScreen;
  */
 public abstract class plantilla_screen extends MainScreen {
 	
-	/** 
+	private String titulo;
+	private static Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
+	
+	/**
+	 * Constructor de la clase 
 	 * @param style define el estilo de la nueva pantalla 
 	 */
-	plantilla_screen (long style) {
+	plantilla_screen (long style) 
+	{
         super(style); 
-    }
+        try {
+			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
+			setFont(appFont);
+		}catch (ClassNotFoundException e){}
 	
-	/** 
-	 * @param respuesta si la comunicación con el servidor fue exitosa 
-	 * entonces este parámetro contiene la respuesta del servidor 
+		//Logo alineado al centro
+		BitmapField logoField = new BitmapField(logoBitmap);
+		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
+	    hfmLabel.add(logoField);
+	    add(hfmLabel);
+		add(new SeparatorField());
+	}	
+	
+	/**
+	 * Metodo que despliega el titulo de la pantalla
 	 */
-    public abstract void llamadaExitosa( String respuesta );
-    
-    /** 
-	 * @param respuesta si la comunicación con el servidor fue fallida
-	 * entonces este parámetro contiene el código de error 
+	public void changeTitulo(){
+		add(new CustomLabelField(this.titulo, Color.WHITE, 0x990000, FIELD_HCENTER));
+		add(new SeparatorField());
+	}
+	
+	/**
+	 * Metodo que asigna el titulo de la pantalla
+	 * @param titulo titulo de la pantalla
 	 */
-    public abstract void llamadaFallada( String respuesta );
-    
-    /** 
-	 * @param 
-	 */
-    /*protected boolean onSavePrompt(){
-        return true;   
-    }*/
+	public void setTitulo(String titulo){
+		this.titulo = titulo;
+	}
+	
 
 }

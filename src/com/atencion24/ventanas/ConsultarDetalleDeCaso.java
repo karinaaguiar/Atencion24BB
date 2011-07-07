@@ -2,13 +2,9 @@ package com.atencion24.ventanas;
 
 import java.util.Hashtable;
 
-import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.FontFamily;
-import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
@@ -17,14 +13,13 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
-import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.GridFieldManager;
 
-public class ConsultarDetalleDeCaso extends plantilla_screen implements FieldChangeListener {
+public class ConsultarDetalleDeCaso extends plantilla_screen_http implements FieldChangeListener {
 
 	BitmapField logoField;
 	EditField apellidoField;
@@ -33,25 +28,8 @@ public class ConsultarDetalleDeCaso extends plantilla_screen implements FieldCha
 	ConsultarDetalleDeCaso(Sesion sesion) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
-		
-		//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		logoField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(logoField);
-        add(hfmLabel);
-		add(new SeparatorField());
-		
-        //**Label field simple**
-		add(new CustomLabelField("Detalle de un caso", Color.WHITE, 0x990000, FIELD_HCENTER));
-		add(new SeparatorField());
+		super.setTitulo("Detalle de un caso");
+		super.changeTitulo();
 		
 		//**Label field simple**
 		add(new CustomLabelField("Introduzca el apellido del paciente:", Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));

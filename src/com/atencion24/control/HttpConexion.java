@@ -11,25 +11,25 @@ import javax.microedition.io.HttpConnection;
 import net.rim.device.api.system.CoverageInfo;
 import net.rim.device.api.system.RadioInfo;
 
-import com.atencion24.ventanas.plantilla_screen;
+import com.atencion24.ventanas.plantilla_screen_http;
 
 public class HttpConexion extends Thread {
 
 	//IP y ubicación donde se encuentra el Web Service de Atencion24
 	private String url = "http://localhost/Atencion24WebServices/WebServices.asmx";	
     private String method; // GET or POST
-    private plantilla_screen ventana;
+    private plantilla_screen_http ventana;
     private byte[] postData;
   
   //Constructor método get
-	public HttpConexion(String datosAEnviar, String method, plantilla_screen screen) {
+	public HttpConexion(String datosAEnviar, String method, plantilla_screen_http screen) {
 		this.url = url + datosAEnviar;
 		this.method = method;
 		this.ventana = screen;
 	}
 	
 	//Constructor método post
-    public HttpConexion(String method, plantilla_screen screen, byte[] postData) {
+    public HttpConexion(String method, plantilla_screen_http screen, byte[] postData) {
         this.method = method;
         this.ventana = screen;
         this.postData = postData;

@@ -4,7 +4,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
@@ -13,19 +12,16 @@ import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 import com.atencion24.control.Caso;
 import com.atencion24.control.ManejoArray;
 import com.atencion24.control.XMLParser;
-import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonField;
 import com.atencion24.interfaz.ListStyleButtonSet;
 import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 
-public class ListarCasos extends plantilla_screen implements FieldChangeListener {
+public class ListarCasos extends plantilla_screen_http implements FieldChangeListener {
 
 	static Hashtable casos;
 	
@@ -39,6 +35,9 @@ public class ListarCasos extends plantilla_screen implements FieldChangeListener
 	ListarCasos(Hashtable listadoCasos) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
+		super.setTitulo("Detalle de un caso");
+		super.changeTitulo();
+		
 		casos = listadoCasos;
 		
 		//Cambiar el font de la aplicación
@@ -48,18 +47,6 @@ public class ListarCasos extends plantilla_screen implements FieldChangeListener
 			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
 			setFont(appFont);
 
-			//Logo CSS alineado al centro
-			Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-			bitmapField = new BitmapField(logoBitmap);
-			HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-	        hfmLabel.add(bitmapField);
-	        add(hfmLabel);
-			add(new SeparatorField());
-			
-			//**Label field simple**
-			add(new CustomLabelField("Detalle de un caso" , Color.WHITE,  0x990000 , FIELD_HCENTER));
-			add(new SeparatorField());
-			
 			Manager foreground = new ForegroundManager();
 	        _bodyWrapper = new NegativeMarginVerticalFieldManager(USE_ALL_WIDTH);
 	        _currentBody = new ListStyleButtonSet();
@@ -76,7 +63,7 @@ public class ListarCasos extends plantilla_screen implements FieldChangeListener
 	        {
 	        	caso = (Caso) listaCasos.nextElement();
 	        	boton = new ListStyleButtonField(" " + caso.getNombrePaciente() + " (" + 
-	        			caso.getFechaEmisionFactura() + "): ", arrowBitmap, 0);
+	        			caso.getFechaEmisionFactura() + ") ", arrowBitmap, 0);
 	        	boton.setFont(appFont);
 	        	aux[0] = boton;
 	        	botones = manejoArray.mezclarArray(botones, aux);

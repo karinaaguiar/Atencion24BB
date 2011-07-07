@@ -1,10 +1,10 @@
 //
 /*
- * ListStyleButtonField.java
- *
- * Research In Motion Limited proprietary and confidential
- * Copyright Research In Motion Limited, 2008-2008
- */
+* ListStyleButtonField.java
+*
+* Research In Motion Limited proprietary and confidential
+* Copyright Research In Motion Limited, 2008-2008
+*/
 
 package com.atencion24.interfaz;
 
@@ -27,7 +27,7 @@ public class ListStyleButtonField extends Field
     
     private static final int COLOR_BACKGROUND = 0xFFFFFF;////0x9B3316;//0xFFFFFF;
     private static final int COLOR_BORDER = 0xBBBBBB;
-    private static final int COLOR_BACKGROUND_FOCUS = 0x990000;//0XDD280F;//0xF32C10;////0x990000;//0x9B3316;//0xC7411D;//0x186DEF;
+    private static final int COLOR_BACKGROUND_FOCUS = 0xFFEFC9; // 0x704B4B; ////0xFFEFB5;//0x990000;//0XDD280F;//0xF32C10;////0x990000;//0x9B3316;//0xC7411D;//0x186DEF;
     
     
     private MyLabelField _labelField;
@@ -43,7 +43,7 @@ public class ListStyleButtonField extends Field
 
     public ListStyleButtonField( String label, long style )
     {
-    	this( label, null, style );
+     this( label, null, style );
     }
     
     public ListStyleButtonField( String label, Bitmap actionIcon )
@@ -71,10 +71,10 @@ public class ListStyleButtonField extends Field
     }
     
     /**
-     * DRAWPOSITION_TOP | DRAWPOSITION_BOTTOM | DRAWPOSITION_MIDDLE
-     * Determins how the field is drawn (borders)
-     * If none is set, then no borders are drawn
-     */
+* DRAWPOSITION_TOP | DRAWPOSITION_BOTTOM | DRAWPOSITION_MIDDLE
+* Determins how the field is drawn (borders)
+* If none is set, then no borders are drawn
+*/
     public void setDrawPosition( int drawPosition )
     {
         _drawPosition = drawPosition;
@@ -91,8 +91,8 @@ public class ListStyleButtonField extends Field
         _targetHeight = getFont().getHeight() / 2 * 3 + 2 * VPADDING;
 //#ifndef VER_4.6.1 | VER_4.6.0 | VER_4.5.0 | VER_4.2.1 | VER_4.2.0
        /* if( Touchscreen.isSupported() ) {
-            _targetHeight = getFont().getHeight() * 2 + 2 * VPADDING;
-        }*/
+_targetHeight = getFont().getHeight() * 2 + 2 * VPADDING;
+}*/
 //#endif
         
         _leftOffset = HPADDING;
@@ -118,7 +118,7 @@ public class ListStyleButtonField extends Field
         int extraVPaddingNeeded = 0;
         if( _labelHeight < _targetHeight ) {
             // Make sure that they are at least 1.5 times font height
-            extraVPaddingNeeded =  ( _targetHeight - _labelHeight ) / 2;
+            extraVPaddingNeeded = ( _targetHeight - _labelHeight ) / 2;
         }
         
         setExtent( width, _labelHeight + 2 * extraVPaddingNeeded );
@@ -130,16 +130,22 @@ public class ListStyleButtonField extends Field
         updateLayout();
     }
     
+    public void setFont( Font font )
+    {
+        _labelField.setFont( font );
+        updateLayout();
+    }
+    
     protected void paint( Graphics g )
     {
-    	// Left Bitmap
+     // Left Bitmap
         if( _leftIcon != null ) {
             g.drawBitmap( HPADDING, VPADDING, _leftIcon.getWidth(), _leftIcon.getHeight(), _leftIcon, 0, 0 );
         }
         
         // Text
         try {
-        	g.setColor(Color.BLACK);
+         g.setColor(Color.BLACK);
             g.pushRegion( _leftOffset, ( getHeight() - _labelHeight ) / 2, getWidth() - _leftOffset - _rightOffset, _labelHeight, 0, 0 );
             _labelField.paint( g );
         } finally {
@@ -154,7 +160,7 @@ public class ListStyleButtonField extends Field
     
     protected void paintBackground( Graphics g )
     {
-    	if( _drawPosition < 0 ) {
+     if( _drawPosition < 0 ) {
             // it's like a list field, let the default background be drawn
             super.paintBackground( g );
             return;
@@ -172,7 +178,7 @@ public class ListStyleButtonField extends Field
                 g.drawRoundRect( 0, 0, getWidth(), getHeight() + CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS );
                 g.drawLine( 0, getHeight() - 1, getWidth(), getHeight() - 1 );
             } else if( _drawPosition == 1 ) {
-                // Bottom 
+                // Bottom
                 g.setColor( background );
                 g.fillRoundRect( 0, -CORNER_RADIUS, getWidth(), getHeight() + CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS );
                 g.setColor( COLOR_BORDER );
@@ -214,7 +220,7 @@ public class ListStyleButtonField extends Field
         }
     }
     
-    protected boolean keyChar( char character, int status, int time ) 
+    protected boolean keyChar( char character, int status, int time )
     {
         if( character == Characters.ENTER ) {
             clickButton();
@@ -223,56 +229,55 @@ public class ListStyleButtonField extends Field
         return super.keyChar( character, status, time );
     }
     
-    protected boolean navigationClick( int status, int time ) 
+    protected boolean navigationClick( int status, int time )
     {
-        clickButton(); 
-        return true;    
+        clickButton();
+        return true;
     }
     
     protected boolean trackwheelClick( int status, int time )
-    {        
-        clickButton();    
+    {
+        clickButton();
         return true;
     }
     
     //#ifndef VER_4.1.0 | 4.0.0
-        protected boolean invokeAction( int action ) 
+        protected boolean invokeAction( int action )
         {
             switch( action ) {
                 case ACTION_INVOKE: {
-                    clickButton(); 
+                    clickButton();
                     return true;
                 }
             }
             return super.invokeAction( action );
         }
-    //#endif        
+    //#endif
          
     /**
-     * A public way to click this button
-     */
-    public void clickButton() 
+* A public way to click this button
+*/
+    public void clickButton()
     {
         fieldChangeNotify( 0 );
     }
        
 /*#ifndef VER_4.6.1 | VER_4.6.0 | VER_4.5.0 | VER_4.2.1 | VER_4.2.0
-    protected boolean touchEvent( TouchEvent message )
-    {
-        int x = message.getX( 1 );
-        int y = message.getY( 1 );
-        if( x < 0 || y < 0 || x > getExtent().width || y > getExtent().height ) {
-            // Outside the field
-            return false;
-        }
-        switch( message.getEvent() ) {
-       
-            case TouchEvent.UNCLICK:
-                clickButton();
-                return true;
-        }
-        return super.touchEvent( message );
-    }
+protected boolean touchEvent( TouchEvent message )
+{
+int x = message.getX( 1 );
+int y = message.getY( 1 );
+if( x < 0 || y < 0 || x > getExtent().width || y > getExtent().height ) {
+// Outside the field
+return false;
+}
+switch( message.getEvent() ) {
+case TouchEvent.UNCLICK:
+clickButton();
+return true;
+}
+return super.touchEvent( message );
+}
 //#endif */
 
     public void setDirty( boolean dirty ) {}
@@ -288,16 +293,13 @@ public class ListStyleButtonField extends Field
         }
     
         public void layout( int width, int height )
-        {   
+        {
             super.layout( width, height );
-        }   
+        }
         
-        public void paint( Graphics g ) 
+        public void paint( Graphics g )
         {
             super.paint( g );
         }
     }
 }
-
-
-

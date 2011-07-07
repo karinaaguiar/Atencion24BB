@@ -4,14 +4,10 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import net.rim.device.api.i18n.SimpleDateFormat;
-import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.FontFamily;
-import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.DateField;
@@ -20,12 +16,9 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.NullField;
 import net.rim.device.api.ui.component.RadioButtonField;
 import net.rim.device.api.ui.component.RadioButtonGroup;
-import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
 import com.atencion24.control.ControlDates;
-import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Pago;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
@@ -33,7 +26,7 @@ import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.GridFieldManager;
 
-public class ConsultarHonorariosPagados extends plantilla_screen implements FieldChangeListener{
+public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
 	
 	static String dateTime = "01/01/2008";
 	RadioButtonField reciente;
@@ -54,27 +47,11 @@ public class ConsultarHonorariosPagados extends plantilla_screen implements Fiel
    
 	ConsultarHonorariosPagados(Sesion ses) {
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
+		super.setTitulo("Honorarios Pagados");
+		super.changeTitulo();
 		
 		sesion = ses;
 		
-		//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		bitmapField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(bitmapField);
-        add(hfmLabel);
-       
-        //**Label field simple**
-		add(new CustomLabelField("Honorarios Pagados", Color.WHITE, 0x990000, FIELD_HCENTER));
-		add(new SeparatorField());
-
 		add(new CustomLabelField("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido() , Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
       
 		//Manager foreground = new ForegroundManager();        

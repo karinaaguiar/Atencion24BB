@@ -5,12 +5,10 @@ import java.util.Vector;
 
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
-import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
 import com.atencion24.interfaz.ListStyleLabelField;
 
-import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
@@ -18,13 +16,9 @@ import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.Ui;
-import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public class HonorariosFacturados extends MainScreen {
+public class HonorariosFacturados extends plantilla_screen {
 
 	static Vector facturado;
 	
@@ -35,25 +29,9 @@ public class HonorariosFacturados extends MainScreen {
 	public HonorariosFacturados(Vector facturadoUDN) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
+		super.setTitulo("Honorarios Facturados");
+		super.changeTitulo();
 		facturado = facturadoUDN;
-		
-		//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		BitmapField bitmapField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(bitmapField);
-        add(hfmLabel);
-       
-        //**Label field simple**
-		add(new CustomLabelField("Honorarios Facturados", Color.WHITE, 0x400000, FIELD_HCENTER));
-		add(new SeparatorField());
 		
 		//Inserto los managers donde irá el reporte.
 		foreground.add(contenido);

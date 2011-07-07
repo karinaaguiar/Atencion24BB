@@ -1,9 +1,9 @@
 /*
- * ListStyleButtonSet.java
- *
- * Research In Motion Limited proprietary and confidential
- * Copyright Research In Motion Limited, 2009-2009
- */
+* ListStyleButtonSet.java
+*
+* Research In Motion Limited proprietary and confidential
+* Copyright Research In Motion Limited, 2009-2009
+*/
 
 package com.atencion24.interfaz;
 
@@ -12,9 +12,9 @@ import net.rim.device.api.ui.container.*;
 
 
 /**
- * 
- */
-public class ListStyleButtonSet extends VerticalFieldManager 
+*
+*/
+public class ListStyleButtonSet extends VerticalFieldManager
 {
     public static final int MARGIN = 15;
     
@@ -22,11 +22,11 @@ public class ListStyleButtonSet extends VerticalFieldManager
     {
         super( NO_VERTICAL_SCROLL );
         setMargin( MARGIN, MARGIN, MARGIN, MARGIN );
-		try {
-			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-			setFont(appFont);
-		}catch (ClassNotFoundException e){}
+try {
+FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
+setFont(appFont);
+}catch (ClassNotFoundException e){}
     }
     
     protected void sublayout( int maxWidth, int maxHeight )
@@ -72,3 +72,4 @@ public class ListStyleButtonSet extends VerticalFieldManager
         }
     }
 }
+

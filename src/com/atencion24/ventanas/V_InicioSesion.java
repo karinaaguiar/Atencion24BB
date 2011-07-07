@@ -7,23 +7,16 @@ import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
-import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.GridFieldManager;
 
-import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.FontFamily;
-import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.PasswordEditField;
-import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 
@@ -32,10 +25,9 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
  * Ventana de inicio de sesión 
  *
  */
-public class V_InicioSesion extends plantilla_screen implements FieldChangeListener {
+public class V_InicioSesion extends plantilla_screen_http implements FieldChangeListener {
 
 	final int MAX_CLAVE = 6;
-	BitmapField logoField;
 	EditField nombreusuarioField;
 	LabelField nombreusuarioLabel;
 	PasswordEditField passwordField;
@@ -48,25 +40,8 @@ public class V_InicioSesion extends plantilla_screen implements FieldChangeListe
 	public V_InicioSesion() { 
 		
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
-		
-		//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		logoField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(logoField);
-        add(hfmLabel);
-		add(new SeparatorField());
-		
-		//**Label field simple**
-		add(new CustomLabelField("Introduzca sus datos de acceso:", Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
-		add(new SeparatorField());
+		super.setTitulo("Introduzca sus datos de acceso:");
+		super.changeTitulo();
 		
 		//Campos Nombre de usuario y clave
 		nombreusuarioField = new EditField("Usuario: ", "", 20, Field.FIELD_LEFT);//new EditField();
@@ -82,7 +57,6 @@ public class V_InicioSesion extends plantilla_screen implements FieldChangeListe
         gridFieldManager.add(passwordField);
         add(gridFieldManager);
         
-		
 		//**Botones
 		accederButtom = new CustomButtonField(" Acceder ", Color.WHITE, 0x990000 , Color.WHITE, 0xE38311, 0);
 		accederButtom.setChangeListener(this);
@@ -105,8 +79,6 @@ public class V_InicioSesion extends plantilla_screen implements FieldChangeListe
 		else{
 			String usuario = nombreusuarioField.getText();
 			String clave = passwordField.getText();
-			//LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usuario, clave);
-			//UiApplication.getUiApplication().pushScreen(loginSuccessScreen);
 			HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
 			thread.start();
 		}

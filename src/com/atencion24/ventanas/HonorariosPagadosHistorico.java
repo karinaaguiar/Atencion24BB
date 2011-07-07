@@ -8,7 +8,6 @@ import com.atencion24.control.Deduccion;
 import com.atencion24.control.Pago;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
-import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
@@ -23,10 +22,6 @@ import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.Ui;
-import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.MainScreen;
 
 /**
  * HonorariosPagadosHistorico esta clase es la encargada de desplegar en el dispositivo
@@ -42,7 +37,7 @@ import net.rim.device.api.ui.container.MainScreen;
  * botonesF -> Arreglo de CustomButtonTable (Contiene todos los elementos expandibles del reporte del nivel superior) 
  * 
  */
-public class HonorariosPagadosHistorico extends MainScreen implements FieldChangeListener {
+public class HonorariosPagadosHistorico extends plantilla_screen implements FieldChangeListener {
 
 	static Vector pagos;
 	
@@ -65,25 +60,9 @@ public class HonorariosPagadosHistorico extends MainScreen implements FieldChang
 	{
 		
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
+		super.setTitulo("Histórico de Pagos");
+		super.changeTitulo();
 		pagos = historicoPagos;
-		
-		//Cambiar el font de la aplicación
-		try {
-				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
-				Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
-				setFont(appFont);
-			}catch (ClassNotFoundException e){}
-		
-		//Logo CSS alineado al centro
-		Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
-		BitmapField bitmapField = new BitmapField(logoBitmap);
-		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
-        hfmLabel.add(bitmapField);
-        add(hfmLabel);
-       
-        //**Label field simple**
-		add(new CustomLabelField("Histórico de Pagos", Color.WHITE, 0x400000, FIELD_HCENTER));
-		add(new SeparatorField());
 		
 		//Inserto los managers donde irá el reporte.
 		foreground.add(contenido);

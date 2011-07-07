@@ -1,10 +1,10 @@
 //
 /*
- * ListStyleButtonField.java
- *
- * Research In Motion Limited proprietary and confidential
- * Copyright Research In Motion Limited, 2008-2008
- */
+* ListStyleButtonField.java
+*
+* Research In Motion Limited proprietary and confidential
+* Copyright Research In Motion Limited, 2008-2008
+*/
 
 package com.atencion24.interfaz;
 
@@ -25,9 +25,9 @@ public class ListStyleLabelField extends Field
     private static final int HPADDING = 6; //Display.getWidth() <= 320 ? 6 : 8;
     private static final int VPADDING = 4;
     
-    private  int COLOR_BACKGROUND = 0x600808;
+    private int COLOR_BACKGROUND = 0x600808;
     private int COLOR_BORDER = 0xBBBBBB;
-    private  int COLOR_BACKGROUND_FOCUS = 0x600808;
+    private int COLOR_BACKGROUND_FOCUS = 0x600808;
     
     
     private MyLabelField _labelField;
@@ -85,10 +85,10 @@ public class ListStyleLabelField extends Field
     }
     
     /**
-     * DRAWPOSITION_TOP | DRAWPOSITION_BOTTOM | DRAWPOSITION_MIDDLE
-     * Determins how the field is drawn (borders)
-     * If none is set, then no borders are drawn
-     */
+* DRAWPOSITION_TOP | DRAWPOSITION_BOTTOM | DRAWPOSITION_MIDDLE
+* Determins how the field is drawn (borders)
+* If none is set, then no borders are drawn
+*/
     public void setDrawPosition( int drawPosition )
     {
         _drawPosition = drawPosition;
@@ -105,8 +105,8 @@ public class ListStyleLabelField extends Field
         _targetHeight = getFont().getHeight() / 2 * 3 + 2 * VPADDING;
 //#ifndef VER_4.6.1 | VER_4.6.0 | VER_4.5.0 | VER_4.2.1 | VER_4.2.0
        /* if( Touchscreen.isSupported() ) {
-            _targetHeight = getFont().getHeight() * 2 + 2 * VPADDING;
-        }*/
+_targetHeight = getFont().getHeight() * 2 + 2 * VPADDING;
+}*/
 //#endif
         
         _leftOffset = HPADDING;
@@ -132,7 +132,7 @@ public class ListStyleLabelField extends Field
         int extraVPaddingNeeded = 0;
         if( _labelHeight < _targetHeight ) {
             // Make sure that they are at least 1.5 times font height
-            extraVPaddingNeeded =  ( _targetHeight - _labelHeight ) / 2;
+            extraVPaddingNeeded = ( _targetHeight - _labelHeight ) / 2;
         }
         
         setExtent( width, _labelHeight + 2 * extraVPaddingNeeded );
@@ -185,7 +185,7 @@ public class ListStyleLabelField extends Field
                 g.drawRoundRect( 0, 0, getWidth(), getHeight() + CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS );
                 g.drawLine( 0, getHeight() - 1, getWidth(), getHeight() - 1 );
             } else if( _drawPosition == 1 ) {
-                // Bottom 
+                // Bottom
                 g.setColor( background );
                 g.fillRoundRect( 0, -CORNER_RADIUS, getWidth(), getHeight() + CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS );
                 g.setColor( COLOR_BORDER );
@@ -229,26 +229,25 @@ public class ListStyleLabelField extends Field
     
          
     /**
-     * A public way to click this button
-     */
+* A public way to click this button
+*/
        
 /*#ifndef VER_4.6.1 | VER_4.6.0 | VER_4.5.0 | VER_4.2.1 | VER_4.2.0
-    protected boolean touchEvent( TouchEvent message )
-    {
-        int x = message.getX( 1 );
-        int y = message.getY( 1 );
-        if( x < 0 || y < 0 || x > getExtent().width || y > getExtent().height ) {
-            // Outside the field
-            return false;
-        }
-        switch( message.getEvent() ) {
-       
-            case TouchEvent.UNCLICK:
-                clickButton();
-                return true;
-        }
-        return super.touchEvent( message );
-    }
+protected boolean touchEvent( TouchEvent message )
+{
+int x = message.getX( 1 );
+int y = message.getY( 1 );
+if( x < 0 || y < 0 || x > getExtent().width || y > getExtent().height ) {
+// Outside the field
+return false;
+}
+switch( message.getEvent() ) {
+case TouchEvent.UNCLICK:
+clickButton();
+return true;
+}
+return super.touchEvent( message );
+}
 //#endif */
 
     public void setDirty( boolean dirty ) {}
@@ -264,22 +263,20 @@ public class ListStyleLabelField extends Field
         }
         public MyLabelField( String text, long style, int color )
         {
-            super( text, style  );
+            super( text, style );
             this.color = color;
         }
     
         public void layout( int width, int height )
-        {   
+        {
             super.layout( width, height );
-        }   
+        }
         
-        public void paint( Graphics g ) 
+        public void paint( Graphics g )
         {
             g.setColor( color );
             super.paint( g );
         }
     }
 }
-
-
 
