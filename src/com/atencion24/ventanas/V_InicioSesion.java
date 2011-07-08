@@ -47,7 +47,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		super.changeTitulo();
 		
 		//Campos Nombre de usuario y clave
-		nombreusuarioField = new EditField("Usuario: ", "", 20, Field.FIELD_LEFT);//new EditField();
+		nombreusuarioField = new EditField("Usuario: ", "", 20, EditField.NO_NEWLINE);//new EditField();
 		//nombreusuarioLabel = new LabelField("Usuario: ", Field.FIELD_LEFT);
 		
 		passwordField = new PasswordEditField("", "", MAX_CLAVE, Field.EDITABLE);

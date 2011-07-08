@@ -52,8 +52,6 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		
 		this.codSeleccionado = codSeleccionado;
 		
-		LabelField label = new LabelField(codSeleccionado);
-		add(label);
         //RadioButton para escoger el tipo de consulta a realizar
 		RadioButtonGroup tipoConsulta = new RadioButtonGroup();
         reciente = new RadioButtonField("Pago en Proceso ",tipoConsulta,true);

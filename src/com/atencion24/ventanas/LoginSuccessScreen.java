@@ -8,11 +8,13 @@ import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 
-import com.atencion24.interfaz.CustomLabelField;
+import com.atencion24.interfaz.CustomObjectChoiceField;
 import com.atencion24.interfaz.ForegroundManager;
+import com.atencion24.interfaz.LittleCustomLabelField;
 import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 import com.atencion24.interfaz.ListStyleButtonField;
 import com.atencion24.interfaz.ListStyleButtonSet;
+import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
@@ -26,7 +28,6 @@ import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -43,8 +44,9 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
   
     BitmapField bitmapField;
     
-	ObjectChoiceField codPagos;
-   
+	//ObjectChoiceField codPagos;
+    CustomObjectChoiceField codPagos;
+    
     ListStyleButtonField edoCta;
     ListStyleButtonField honPagados;
     ListStyleButtonField honFact;
@@ -66,8 +68,10 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//Si el médico que ingresó al sistema tiene más de un código de pago 
 		if(sesion.getCodigoMedico().size()>1)
 		{
-			foreground.add(new LabelField("Usted tiene más de un código de pago asociado" , Field.FIELD_HCENTER));
-			foreground.add(new CustomLabelField("   Elija el código a consultar:" , Color.WHITE, 0x400000, FIELD_LEFT));
+			foreground.add(new SpacerField());
+			foreground.add(new LittleCustomLabelField("  Elija el código de pago a consultar: " , Color.WHITE, 0x400000, 0));
+			foreground.add(new SpacerField());
+			foreground.add(new SpacerField());
 			
 			Enumeration codpagos = sesion.getCodigoMedico().elements();
 			String [] nombresCodigosAsociados = new String[sesion.getCodigoMedico().size()];
@@ -77,14 +81,19 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 				nombresCodigosAsociados[i] = (String) ((CodigoPago)codpagos.nextElement()).getNombre();
 				i++;
 			}	
-			codPagos = new ObjectChoiceField("Códigos de pago:", nombresCodigosAsociados);
+			codPagos = new CustomObjectChoiceField("Códigos de pago:", nombresCodigosAsociados,0);
 			codPagos.setChangeListener(this);
 			foreground.add(codPagos);
+			foreground.add(new SpacerField());
+			foreground.add(new SpacerField());
+			foreground.add(new SeparatorField());
+
 		}
 		
 		//**Label field simple**
-		foreground.add(new CustomLabelField("   Elija el reporte a consultar:" , Color.WHITE, 0x400000, FIELD_LEFT));
-		foreground.add(new SeparatorField());
+		foreground.add(new LittleCustomLabelField("  Elija el reporte a consultar: " , Color.WHITE, 0x400000, 0));
+
+		//foreground.add(new CustomLabelField("   Elija el reporte a consultar:" , Color.WHITE, 0x400000, FIELD_LEFT));
 		
         _bodyWrapper = new NegativeMarginVerticalFieldManager(USE_ALL_WIDTH);
         _currentBody = new ListStyleButtonSet();
