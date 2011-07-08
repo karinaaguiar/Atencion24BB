@@ -12,10 +12,12 @@ import com.atencion24.interfaz.GridFieldManager;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.PasswordEditField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
@@ -33,6 +35,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	PasswordEditField passwordField;
 	LabelField passwordLabel;
 	CustomButtonField accederButtom;
+	
 	
 	/**
 	 * Constructor de la ventana inicio de sesión
@@ -84,6 +87,18 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		}
 			
 	}
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			Dialog.alert("Hasta luego!");
+			//Debería hacer cierre de sesion
+			System.exit(0);
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.rim.device.api.ui.FieldChangeListener#fieldChanged(net.rim.device.api.ui.Field, int)
 	 */
@@ -128,6 +143,21 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 				Dialog.alert("Error de conexión: " + error);
 			}
 		}); 
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Iniciar Sesion", 20,10) {
+			public void run(){
+				iniciarSesion();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 }   
 

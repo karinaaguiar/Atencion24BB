@@ -5,15 +5,16 @@ import java.util.Hashtable;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
-import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomLabelField;
@@ -25,11 +26,15 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	EditField apellidoField;
 	CustomButtonField consultarButtom;
 	
-	ConsultarDetalleDeCaso(Sesion sesion) 
+	String codSeleccionado;
+	
+	ConsultarDetalleDeCaso(String codSeleccionado) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
 		super.changeTitulo();
+		
+		this.codSeleccionado = codSeleccionado;
 		
 		//**Label field simple**
 		add(new CustomLabelField("Introduzca el apellido del paciente:", Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
@@ -66,7 +71,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		}
 		else{
 			String apellido = apellidoField.getText();
-			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?apellido_tb" + apellido, "GET", this);
+			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido, "GET", this);
 			thread.start();
 		}*/
 	}
@@ -113,6 +118,37 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 			consultarListadoDeCaso();
 		}	
 		
+	}
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			//Debería hacer cierre de sesion
+			Dialog.alert("Hasta luego!");
+			System.exit(0);
+		}
+	}
+	
+	public void irInicio()
+	{
+		UiApplication.getUiApplication().popScreen(this);
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Ir a inicio", 20,10) {
+			public void run(){
+				irInicio();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 
 }

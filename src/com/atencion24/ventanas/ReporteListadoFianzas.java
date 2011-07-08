@@ -18,6 +18,10 @@ import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Manager;
+import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 
 public class ReporteListadoFianzas extends plantilla_screen implements FieldChangeListener {
 
@@ -275,6 +279,37 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 	        }
 	    }
 		
+	}
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			//Debería hacer cierre de sesion
+			Dialog.alert("Hasta luego!");
+			System.exit(0);
+		}
+	}
+	
+	public void irInicio()
+	{
+		UiApplication.getUiApplication().popScreen(this);
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Ir a inicio", 20,10) {
+			public void run(){
+				irInicio();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 
 }

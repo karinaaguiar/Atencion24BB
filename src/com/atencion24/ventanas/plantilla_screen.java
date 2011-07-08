@@ -57,6 +57,4 @@ public abstract class plantilla_screen extends MainScreen {
 	public void setTitulo(String titulo){
 		this.titulo = titulo;
 	}
-	
-
 }

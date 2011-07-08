@@ -55,7 +55,7 @@ public class XMLParser {
         {   
             String nombre;
             String apellido;
-            String CodigoMedico;
+            Vector CodigoMedico = new Vector();
             String nombreUsuario;
             
         	Document documento = PreprocesarXML(xmlSource);
@@ -81,9 +81,15 @@ public class XMLParser {
             apellido = nodoUsuario.item(1).getChildNodes().item(0).getNodeValue(); 
             System.out.println(nodoUsuario.item(1).getNodeName());
             System.out.println(apellido);
-            CodigoMedico = nodoUsuario.item(2).getChildNodes().item(0).getNodeValue(); 
-            System.out.println(nodoUsuario.item(2).getNodeName());
-            System.out.println(CodigoMedico);
+            
+            CodigoPago codpago;
+            codpago = new CodigoPago(nodoUsuario.item(2).getChildNodes().item(0).getNodeValue(), "Karina Aguiar");
+            CodigoMedico.addElement(codpago);
+            codpago = new CodigoPago("123", "Sociedad medica X");
+            CodigoMedico.addElement(codpago);
+            codpago = new CodigoPago("563", "Anestesiologos");
+            CodigoMedico.addElement(codpago);      
+            
             nombreUsuario = nodoUsuario.item(3).getChildNodes().item(0).getNodeValue(); 
             System.out.println(nodoUsuario.item(3).getNodeName());
             System.out.println(nombreUsuario);

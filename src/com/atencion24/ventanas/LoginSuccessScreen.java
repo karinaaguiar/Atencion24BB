@@ -1,7 +1,9 @@
 package com.atencion24.ventanas;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
+import com.atencion24.control.CodigoPago;
 import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
@@ -19,15 +21,20 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.SeparatorField;
 
 public class LoginSuccessScreen extends plantilla_screen_http implements FieldChangeListener {
 	
 	static Sesion sesion;
+	String codSeleccionado;
 	
 	int reporteElegido;
 	
@@ -35,12 +42,15 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     Manager _currentBody;
   
     BitmapField bitmapField;
+    
+	ObjectChoiceField codPagos;
    
     ListStyleButtonField edoCta;
     ListStyleButtonField honPagados;
     ListStyleButtonField honFact;
     ListStyleButtonField detCaso;
     ListStyleButtonField listFianzas;
+	
 	
 	public LoginSuccessScreen(Sesion ses) 
 	{
@@ -50,11 +60,32 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		super.setTitulo("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido());
 		super.changeTitulo();
 		
-		//**Label field simple**
-		add(new CustomLabelField("Elija el reporte a consultar:" , Color.WHITE, 0x990000, FIELD_HCENTER));
-		add(new SeparatorField());
-		
+		codSeleccionado = (String) ((CodigoPago)sesion.getCodigoMedico().elementAt(0)).getCodigo();
+
 		Manager foreground = new ForegroundManager();
+		//Si el médico que ingresó al sistema tiene más de un código de pago 
+		if(sesion.getCodigoMedico().size()>1)
+		{
+			foreground.add(new LabelField("Usted tiene más de un código de pago asociado" , Field.FIELD_HCENTER));
+			foreground.add(new CustomLabelField("   Elija el código a consultar:" , Color.WHITE, 0x400000, FIELD_LEFT));
+			
+			Enumeration codpagos = sesion.getCodigoMedico().elements();
+			String [] nombresCodigosAsociados = new String[sesion.getCodigoMedico().size()];
+			int i = 0;
+			while (codpagos.hasMoreElements())
+			{
+				nombresCodigosAsociados[i] = (String) ((CodigoPago)codpagos.nextElement()).getNombre();
+				i++;
+			}	
+			codPagos = new ObjectChoiceField("Códigos de pago:", nombresCodigosAsociados);
+			codPagos.setChangeListener(this);
+			foreground.add(codPagos);
+		}
+		
+		//**Label field simple**
+		foreground.add(new CustomLabelField("   Elija el reporte a consultar:" , Color.WHITE, 0x400000, FIELD_LEFT));
+		foreground.add(new SeparatorField());
+		
         _bodyWrapper = new NegativeMarginVerticalFieldManager(USE_ALL_WIDTH);
         _currentBody = new ListStyleButtonSet();
         
@@ -98,23 +129,22 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		llamadaExitosa("");
 		/*
 		String medico = sesion.getCodigoMedico();
-		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + medico, "GET", this);
+		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + codSeleccionado, "GET", this);
 		thread.start();*/
     }
 	
 	public void honPagados(){
-        ConsultarHonorariosPagados consultarHonPagados = new ConsultarHonorariosPagados(sesion);
+        ConsultarHonorariosPagados consultarHonPagados = new ConsultarHonorariosPagados(codSeleccionado);
         UiApplication.getUiApplication().pushScreen(consultarHonPagados);
     }
 	
 	public void honFact(){
-		String medico = sesion.getCodigoMedico();
-        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(medico);
+        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(codSeleccionado);
         UiApplication.getUiApplication().pushScreen(consultarHonFacturados);
     }
 	
 	public void detCaso(){
-        ConsultarDetalleDeCaso consultarDetCaso = new ConsultarDetalleDeCaso(sesion);
+        ConsultarDetalleDeCaso consultarDetCaso = new ConsultarDetalleDeCaso(codSeleccionado);
         UiApplication.getUiApplication().pushScreen(consultarDetCaso);
     }
 	
@@ -125,9 +155,24 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		llamadaExitosa("");
 		/*
 		String medico = sesion.getCodigoMedico();
-		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + medico, "GET", this);
+		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + codSeleccionado, "GET", this);
 		thread.start();*/
     }
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			//Debería hacer cierre de sesion
+			Dialog.alert("Hasta luego!");
+			System.exit(0);
+		}
+	}
+
+	public void setCodSeleccionado(){
+		codSeleccionado = (String) ((CodigoPago)sesion.getCodigoMedico().elementAt(codPagos.getSelectedIndex())).getCodigo();
+	}
 	
 	 public void fieldChanged(Field field, int context) {
 	        if (field == edoCta) {
@@ -147,6 +192,9 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 	        		reporteElegido = 5;
 	        		listFianzas();
 	            }
+	        else if (field == codPagos){
+	        		setCodSeleccionado();
+	        }
 	    }
 
 	public void llamadaExitosa(String respuesta) {
@@ -219,6 +267,43 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 	public void llamadaFallada(String respuesta) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Estado de Cuenta", 20,10) {
+			public void run(){
+				reporteElegido = 1;	
+		     	edoCta();
+			}
+		});
+		menu.add(new MenuItem("Honorarios Pagados", 20,10) {
+			public void run(){
+				honPagados();
+			}
+		});
+		menu.add(new MenuItem("Honorarios Facturados", 20,10) {
+			public void run(){
+				honFact();
+			}
+		});
+		menu.add(new MenuItem("Detalle de un Caso", 20,10) {
+			public void run(){
+				detCaso();
+			}
+		});
+		menu.add(new MenuItem("Fianzas Pendientes", 20,10) {
+			public void run(){
+	     		reporteElegido = 5;
+	     		listFianzas();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 }
  

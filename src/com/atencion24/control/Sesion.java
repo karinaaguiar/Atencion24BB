@@ -1,15 +1,17 @@
 package com.atencion24.control;
 
+import java.util.Vector;
+
 public class Sesion {
 
 	private String nombre;
 	private String apellido;
-	private String codigoMedico;
+	private Vector codigoMedico;
 	private String nombreUsuario;
 
 	public Sesion(){}
 	
-	public Sesion(String nombre, String apellido, String codigoMedico, String nombreUsuario) 
+	public Sesion(String nombre, String apellido, Vector codigoMedico, String nombreUsuario) 
 	{  
 	    this.nombre = nombre;
 	    this.apellido = apellido;
@@ -25,7 +27,7 @@ public class Sesion {
 		return apellido;
 	}
 
-	public String getCodigoMedico() {
+	public Vector getCodigoMedico() {
 		return codigoMedico;
 	}
 

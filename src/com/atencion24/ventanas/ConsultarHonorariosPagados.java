@@ -8,11 +8,13 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NullField;
 import net.rim.device.api.ui.component.RadioButtonField;
 import net.rim.device.api.ui.component.RadioButtonGroup;
@@ -20,10 +22,8 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 
 import com.atencion24.control.ControlDates;
 import com.atencion24.control.Pago;
-import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
-import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.GridFieldManager;
 
 public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
@@ -35,7 +35,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     DateField fechaFinal;
     CustomButtonField verRepor;
     
-    static Sesion sesion;
+    String codSeleccionado;
     int tipoConsulta = 0; //Si vale 0 ->pago en proceso. Si vale 1 -> historico de pagos
     
     BitmapField bitmapField;
@@ -44,18 +44,16 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     GridFieldManager gridFieldManager;
     NullField nulo;
     
-   
-	ConsultarHonorariosPagados(Sesion ses) {
+	ConsultarHonorariosPagados(String codSeleccionado) 
+	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Honorarios Pagados");
 		super.changeTitulo();
 		
-		sesion = ses;
+		this.codSeleccionado = codSeleccionado;
 		
-		add(new CustomLabelField("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido() , Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
-      
-		//Manager foreground = new ForegroundManager();        
-        
+		LabelField label = new LabelField(codSeleccionado);
+		add(label);
         //RadioButton para escoger el tipo de consulta a realizar
 		RadioButtonGroup tipoConsulta = new RadioButtonGroup();
         reciente = new RadioButtonField("Pago en Proceso ",tipoConsulta,true);
@@ -169,7 +167,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 
 	}
 
-	private void ConsultarHistoricoPagos(String medico){
+	private void ConsultarHistoricoPagos(){
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
@@ -184,20 +182,20 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			System.out.println(fechaI);
 			String fechaF = fechaFinal.toString();
 			System.out.println(fechaF);
-			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + medico + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
+			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
 			thread.start();
 		}*/
 			
 	}
 	
-	private void ConsultarProximoPago(String medico)
+	private void ConsultarProximoPago()
 	{
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
 		llamadaExitosa("");
 		/*
-		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + medico, "GET", this);
+		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + codSeleccionado, "GET", this);
 		thread.start();*/
 	}
 	
@@ -217,16 +215,46 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 	    	  }
           }
 	      if(field == verRepor) {
-	    	  String medico = sesion.getCodigoMedico();
 	    	  if(historico.isSelected()){
 	    		  tipoConsulta = 1;
-	    		  ConsultarHistoricoPagos(medico);
+	    		  ConsultarHistoricoPagos();
 	    	  }
 	    	  else if (reciente.isSelected()){
 	    		  tipoConsulta = 0;
-	    		  ConsultarProximoPago(medico);
+	    		  ConsultarProximoPago();
 	    	  } 
 	      }
+	}
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			//Debería hacer cierre de sesion
+			Dialog.alert("Hasta luego!");
+			System.exit(0);
+		}
+	}
+	
+	public void irInicio()
+	{
+		UiApplication.getUiApplication().popScreen(this);
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Ir a inicio", 20,10) {
+			public void run(){
+				irInicio();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 
 }

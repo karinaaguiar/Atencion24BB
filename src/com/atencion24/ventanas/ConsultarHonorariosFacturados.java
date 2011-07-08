@@ -13,10 +13,12 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class ConsultarHonorariosFacturados extends plantilla_screen_http implements FieldChangeListener {
@@ -25,15 +27,16 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
     DateField fechaInicial;
     DateField fechaFinal;
     CustomButtonField verRepor;
-    String medico;
     
-	ConsultarHonorariosFacturados(String medico) 
+    String codSeleccionado;
+    
+	ConsultarHonorariosFacturados(String codSeleccionado) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Honorarios Facturados");
 		super.changeTitulo();
 		
-		this.medico = medico;
+		this.codSeleccionado = codSeleccionado;
 		
 		//Campos para rango de fechas
 		ControlDates dates = new ControlDates();
@@ -115,7 +118,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 			System.out.println(fechaI);
 			String fechaF = fechaFinal.toString();
 			System.out.println(fechaF);
-			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + medico + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
+			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
 			thread.start();
 		}*/
 	}
@@ -125,5 +128,36 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 	      if(field == verRepor) {
     		  consultarHonorariosFacturados();
 	      }
+	}
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			//Debería hacer cierre de sesion
+			Dialog.alert("Hasta luego!");
+			System.exit(0);
+		}
+	}
+	
+	public void irInicio()
+	{
+		UiApplication.getUiApplication().popScreen(this);
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Ir a inicio", 20,10) {
+			public void run(){
+				irInicio();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 }

@@ -9,9 +9,12 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
+import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 
 import com.atencion24.control.Caso;
 import com.atencion24.control.ManejoArray;
@@ -115,7 +118,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		/*
 		String nroCaso = caso.getNroCaso();
 		String udn = caso.getUnidadNegocio();
-		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb="+ medico+"&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this);
+		HttpConexion thread = new HttpConexion("/consultarCaso?caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this);
 		thread.start();*/
 	}
 	
@@ -124,7 +127,6 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 	    {
 	        if (field == botones[i])
 	        {
-	        	//AQUI
 	        	Integer id = new Integer(i);
 	        	Caso caso  = (Caso) casos.get(id);
 	        	consultarCaso(caso);
@@ -132,6 +134,48 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 	        }
 	    }
 		
+	}
+	
+	public void cerrarSesion ()
+	{
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		if (dialog == Dialog.YES)
+		{
+			//Debería hacer cierre de sesion
+			Dialog.alert("Hasta luego!");
+			System.exit(0);
+		}
+	}
+	
+	public void irInicio()
+	{
+		UiApplication.getUiApplication().popScreen(UiApplication.getUiApplication().getActiveScreen().getScreenBelow()); 
+		UiApplication.getUiApplication().popScreen(this);	
+	}
+	
+	public void irAtras()
+	{
+		UiApplication.getUiApplication().popScreen(this);
+	}
+	
+	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
+	protected void makeMenu(Menu menu, int instance){
+		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Ir atrás", 20,10) {
+			public void run(){
+				irAtras();
+			}
+		});
+		menu.add(new MenuItem("Ir a inicio", 20,10) {
+			public void run(){
+				irInicio();
+			}
+		});
+		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+			public void run(){
+				cerrarSesion();
+			}
+		});
 	}
 
 }
