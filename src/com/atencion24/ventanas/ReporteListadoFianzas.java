@@ -10,11 +10,8 @@ import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
-import com.atencion24.interfaz.ListStyleLabelField;
 
 import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.ui.Color;
-import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Manager;
@@ -22,6 +19,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.SeparatorField;
 
 public class ReporteListadoFianzas extends plantilla_screen implements FieldChangeListener {
 
@@ -39,7 +37,6 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
     Bitmap arrow1 = Bitmap.getBitmapResource("com/atencion24/imagenes/arrow_down_vino.png");
     Bitmap arrow = Bitmap.getBitmapResource("com/atencion24/imagenes/arrow_vino.png");
     Bitmap check = Bitmap.getBitmapResource("com/atencion24/imagenes/check_vinotinto.png");
-    Bitmap check1 = Bitmap.getBitmapResource("com/atencion24/imagenes/check_nivel_inf.png");
     
 	ReporteListadoFianzas(Hashtable listaFianzas) 
 	{
@@ -89,10 +86,6 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
     {
     	contenido.deleteAll();
     	
-    	//Agregar la cabecera al reporte
-	    ListStyleLabelField Titulo = new ListStyleLabelField( "Fianzas Pendientes", DrawStyle.HCENTER , 0x400000, Color.WHITE);
-	    contenido.add(Titulo);
-	    
 	    CustomButtonTable[] aux;
 	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
 	    botonesF = ((InformacionNivel) listadoInfoNivel.nextElement()).mostrarBotones();
@@ -109,8 +102,9 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 	    //Set ChangeListener y agregarlos a la interfaz
 	    for (int i = 0; i < botonesF.length; i++)
 	    {
-	         botonesF[i].setChangeListener(this);
-	         contenido.add(botonesF[i]);
+			contenido.add(new SeparatorField()); 
+			botonesF[i].setChangeListener(this);
+			contenido.add(botonesF[i]);
 	    }
     }
 	
@@ -125,10 +119,11 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
     {
         try{
             // Los botones que vienen despues del boton presionado son eliminados
-             for (int i = posBotonPresionado + 1 ; i < botonesF.length + 1; i++){
-                 
-                     contenido.delete(botonesF[i-1]);
-                 }
+        	int posicionEnManagerDelPresionado = contenido.getFieldWithFocus().getIndex();
+            int numeroBotonesABorrar = contenido.getFieldCount() - posicionEnManagerDelPresionado;
+            contenido.deleteRange(posicionEnManagerDelPresionado, numeroBotonesABorrar); 
+        	
+        	
             // Busco los nuevos botones
             CustomButtonTable[] aux;
      	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
@@ -147,18 +142,25 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
      	     botonesF[posBotonPresionado].setChangeListener(this);
              contenido.add(botonesF[posBotonPresionado]);
              botonesF[posBotonPresionado].setFocus();
+             
              // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
              // guardados (el boton presionado y los que vienen antes de el)
              for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
                      botonesF[i].setChangeListener(this);
+                     if(botonesF[i].getNivel() != 0)  contenido.add(new SeparatorField());
                      contenido.add(botonesF[i]);
              }
             
              //Guardo en mi arreglo los botones que no fueron borrados,
              //para poder hacer bien la comparacion en la función fieldChanged
-             for (int i = 0; i < posBotonPresionado + 1; i++){
-                 botonesF[i] = (CustomButtonTable)contenido.getField(i + 1);
+             int count = 0; 
+             for (int i = 0; i < posicionEnManagerDelPresionado; i++){
+            	 if(contenido.getField(i).getClass().equals(new CustomButtonTable().getClass()))
+                 {
+                	 botonesF[count] = (CustomButtonTable)contenido.getField(i);
+                	 count++;
                  }
+            }
          }catch(IndexOutOfBoundsException e){
              System.out.println("Error: " + e);
          }
@@ -198,23 +200,23 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 			            Fianza fianza = (Fianza) fianzas.get(new Integer(pos[0]));
 			            
 			            //Fecha Emision
-			            infohijo = new InformacionNivel(check, " Fecha emisión:", fianza.getFechaEmisionFactura(), 0, new int[] {pos[0],0});
+			            infohijo = new InformacionNivel(check, "Fecha emisión:", fianza.getFechaEmisionFactura(), 0, new int[] {pos[0],0});
 		                info.getHijo().put(new Integer(0), infohijo);
 		                
 		                //Paciente
-			            infohijo = new InformacionNivel(check, " Paciente:", fianza.getPaciente(), 0, new int[] {pos[0],1});
+			            infohijo = new InformacionNivel(check, "Paciente:", fianza.getPaciente(), 0, new int[] {pos[0],1});
 		                info.getHijo().put(new Integer(1), infohijo);
 		                
 		                //Monto a cobrar
-			            infohijo = new InformacionNivel(check, " Monto a cobrar:", fianza.getMontoACobrar()+ " Bs", 0, new int[] {pos[0],2});
+			            infohijo = new InformacionNivel(check, "Monto a cobrar:", fianza.getMontoACobrar()+ " Bs", 0, new int[] {pos[0],2});
 		                info.getHijo().put(new Integer(2), infohijo);
 		        		
 		                //Monto abonado
-			            infohijo = new InformacionNivel(arrow, " Monto abonado:", fianza.getMontoAbonado()+ " Bs", 2, new int[] {pos[0],3});
+			            infohijo = new InformacionNivel(arrow, "Monto abonado:", fianza.getMontoAbonado()+ " Bs", 2, new int[] {pos[0],3});
 		                info.getHijo().put(new Integer(3), infohijo);
 		                
 		                //Monto neto
-			            infohijo = new InformacionNivel(check, " Monto neto:", fianza.getMontoNeto() + " Bs", 0, new int[] {pos[0],4});
+			            infohijo = new InformacionNivel(check, "Monto neto:", fianza.getMontoNeto() + " Bs", 0, new int[] {pos[0],4});
 		                info.getHijo().put(new Integer(4), infohijo);
 		        	}
 		        }	
@@ -251,7 +253,7 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
     			            while(descuentos.hasMoreElements())
     			            {
     			            	Descuento descuento = (Descuento) descuentos.nextElement();
-    			            	infohijo = new InformacionNivel(check1, descuento.getFecha(), descuento.getMonto()+ " Bs", 0, new int[] {idFianza,posicionNivel,count});
+    			            	infohijo = new InformacionNivel(descuento.getFecha(), descuento.getMonto()+ " Bs", 0, new int[] {idFianza,posicionNivel,count},1);
         		        		hijoPresionado.getHijo().put(new Integer(count), infohijo);
         		        		count ++;
     			            }

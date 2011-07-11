@@ -7,21 +7,24 @@ import java.util.Vector;
 import com.atencion24.control.Caso;
 import com.atencion24.control.Honorario;
 import com.atencion24.interfaz.CustomButtonTable;
+import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
-import com.atencion24.interfaz.ListStyleLabelField;
 
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
-import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.SeparatorField;
 
 public class DetalleDeCaso extends plantilla_screen implements FieldChangeListener{
 
@@ -62,35 +65,35 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 	{
     	InformacionNivel info;
     	//Nombre del paciente
-		info = new InformacionNivel(check, " Paciente: ", caso.getNombrePaciente(), 0, new int[] {0});
+		info = new InformacionNivel(check, "Paciente: ", caso.getNombrePaciente(), 0, new int[] {0});
 		informacionNivelSuperior.addElement(info);
 		
 		//Cédula del paciente
-		info = new InformacionNivel(check, " CI Paciente: ", caso.getCiPaciente(), 0, new int[] {1});
+		info = new InformacionNivel(check, "CI Paciente: ", caso.getCiPaciente(), 0, new int[] {1});
 		informacionNivelSuperior.addElement(info);
 		
 		//Responsable de pago
-		info = new InformacionNivel(check, " Responsable: ", caso.getResponsablePago(), 0, new int[] {2});
+		info = new InformacionNivel(check, "Responsable: ", caso.getResponsablePago(), 0, new int[] {2});
 		informacionNivelSuperior.addElement(info);		
     	
     	//Honorarios (Unico campo desplegable)
-		info = new InformacionNivel(plus," Honorarios: ", "", 2, new int[] {3});
+		info = new InformacionNivel(plus,"Honorarios: ", "", 2, new int[] {3});
 		informacionNivelSuperior.addElement(info);		
 		
 		//Total Facturado
-		info = new InformacionNivel(check, " Total Facturado: ", caso.getMontoFacturado() + " Bs", 0, new int[] {4});
+		info = new InformacionNivel(check, "Total Facturado: ", caso.getMontoFacturado() + " Bs", 0, new int[] {4});
 		informacionNivelSuperior.addElement(info);		
 		
 		//Total Exonerado
-		info = new InformacionNivel(check, " Total Exonerado: ", caso.getMontoExonerado()+ " Bs", 0, new int[] {5});
+		info = new InformacionNivel(check, "Total Exonerado: ", caso.getMontoExonerado()+ " Bs", 0, new int[] {5});
 		informacionNivelSuperior.addElement(info);
 		
 		//Total Abonado
-		info = new InformacionNivel(check, " Total Abonado: ", caso.getMontoAbonado()+ " Bs", 0, new int[] {6});
+		info = new InformacionNivel(check, "Total Abonado: ", caso.getMontoAbonado()+ " Bs", 0, new int[] {6});
 		informacionNivelSuperior.addElement(info);
 		
 		//Total Deuda
-		info = new InformacionNivel(check, " Total Deuda: ", caso.getTotalDeuda()+ " Bs", 0, new int[] {7});
+		info = new InformacionNivel(check, "Total Deuda: ", caso.getTotalDeuda()+ " Bs", 0, new int[] {7});
 		informacionNivelSuperior.addElement(info);
 		
     	crearReporte();
@@ -106,10 +109,18 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
     public void crearReporte()
     {
     	contenido.deleteAll();
-    	
+    	try {
+	    	FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
+	        Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
+	    	CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus("    Caso " + caso.getNroCaso() ,"", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+		    encabezado.setFont(appFont);
+		    contenido.add(encabezado);
+    	}
+    	catch (ClassNotFoundException e) {}
+	         
     	//Agregar la cabecera al reporte
-	    ListStyleLabelField Titulo = new ListStyleLabelField( "Detalle del caso " + caso.getNroCaso(), DrawStyle.HCENTER , 0x400000, Color.WHITE);
-	    contenido.add(Titulo);
+	    //ListStyleLabelField Titulo = new ListStyleLabelField( "Caso " + caso.getNroCaso(), DrawStyle.HCENTER , 0x400000, Color.WHITE);
+	    //contenido.add(Titulo);
 	    
 	    CustomButtonTable[] aux;
 	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
@@ -127,9 +138,11 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 	    //Set ChangeListener y agregarlos a la interfaz
 	    for (int i = 0; i < botonesF.length; i++)
 	    {
-	         botonesF[i].setChangeListener(this);
-	         contenido.add(botonesF[i]);
+	        if (botonesF[i].getNivel() != 0)  contenido.add(new SeparatorField());
+	    	botonesF[i].setChangeListener(this);
+	        contenido.add(botonesF[i]);
 	    }
+        botonesF[0].setFocus();
     }
     
     /**
@@ -143,10 +156,10 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
     {
         try{
             // Los botones que vienen despues del boton presionado son eliminados
-             for (int i = posBotonPresionado + 1 ; i < botonesF.length + 1; i++){
-                 
-                     contenido.delete(botonesF[i-1]);
-                 }
+        	int posicionEnManagerDelPresionado = contenido.getFieldWithFocus().getIndex();
+            int numeroBotonesABorrar = contenido.getFieldCount() - posicionEnManagerDelPresionado;
+            contenido.deleteRange(posicionEnManagerDelPresionado, numeroBotonesABorrar); 
+        	
             // Busco los nuevos botones
             CustomButtonTable[] aux;
      	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
@@ -165,18 +178,25 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
      	     botonesF[posBotonPresionado].setChangeListener(this);
              contenido.add(botonesF[posBotonPresionado]);
              botonesF[posBotonPresionado].setFocus();
+             
              // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
              // guardados (el boton presionado y los que vienen antes de el)
              for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
                      botonesF[i].setChangeListener(this);
+                     if(botonesF[i].getNivel() != 0)  contenido.add(new SeparatorField());
                      contenido.add(botonesF[i]);
              }
             
              //Guardo en mi arreglo los botones que no fueron borrados,
              //para poder hacer bien la comparacion en la función fieldChanged
-             for (int i = 0; i < posBotonPresionado + 1; i++){
-                 botonesF[i] = (CustomButtonTable)contenido.getField(i + 1);
+             int count = 0; 
+             for (int i = 0; i < posicionEnManagerDelPresionado; i++){
+            	 if(contenido.getField(i).getClass().equals(new CustomButtonTable().getClass()))
+                 {
+                	 botonesF[count] = (CustomButtonTable)contenido.getField(i);
+                	 count++;
                  }
+            }
          }catch(IndexOutOfBoundsException e){
              System.out.println("Error: " + e);
          }
@@ -222,7 +242,7 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
     		        	    while(honorarios.hasMoreElements())
     		        	    {
     		        	    	honorario = (Honorario) honorarios.nextElement();
-    			            	infohijo = new InformacionNivel(arrow, honorario.getNombre(), "", 1, new int[] {3,count});
+    			            	infohijo = new InformacionNivel(arrow, honorario.getNombre(), "", 1, new int[] {3,count},1);
     			                info.getHijo().put(new Integer(count), infohijo);
     			                count++;
     		        	    }	
@@ -257,16 +277,16 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 		        		Honorario honorario = (Honorario) caso.getHonorarios().get(posNivel);
 		        	    
 		        		//Monto Facturado
-		        		infohijo = new InformacionNivel(" Monto Facturado: ", honorario.getMontoFacturado() + " Bs", 0, new int[] {3,posicionNivel,0});
+		        		infohijo = new InformacionNivel("Facturado: ", honorario.getMontoFacturado() + " Bs", 0, new int[] {3,posicionNivel,0},2);
 		        		hijoPresionado.getHijo().put(new Integer(0), infohijo);
 		        		//Monto Exonerado
-		        		infohijo = new InformacionNivel(" Monto Exonerado: ", honorario.getMontoExonerado() + " Bs", 0, new int[] {3,posicionNivel,1});
+		        		infohijo = new InformacionNivel("Exonerado: ", honorario.getMontoExonerado() + " Bs", 0, new int[] {3,posicionNivel,1},2);
 		        		hijoPresionado.getHijo().put(new Integer(1), infohijo);
 		        		//Monto Abonado
-		        		infohijo = new InformacionNivel(" Monto Abonado: ", honorario.getMontoAbonado()+ " Bs", 0, new int[] {3,posicionNivel,2});
+		        		infohijo = new InformacionNivel("Abonado: ", honorario.getMontoAbonado()+ " Bs", 0, new int[] {3,posicionNivel,2},2);
 		        		hijoPresionado.getHijo().put(new Integer(2), infohijo);
 		        		//Deuda
-		        		infohijo = new InformacionNivel(" Deuda: ", honorario.getTotalDeuda()+ " Bs", 0, new int[] {3,posicionNivel,3});
+		        		infohijo = new InformacionNivel("Deuda: ", honorario.getTotalDeuda()+ " Bs", 0, new int[] {3,posicionNivel,3},2);
 		        		hijoPresionado.getHijo().put(new Integer(3), infohijo);
 		        	}
 		        }

@@ -11,11 +11,9 @@ import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
-import com.atencion24.interfaz.ListStyleLabelField;
 
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
-import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
@@ -26,6 +24,7 @@ import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.SeparatorField;
 
 /**
  * HonorariosPagadosHistorico esta clase es la encargada de desplegar en el dispositivo
@@ -110,8 +109,8 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
     	contenido.deleteAll();
     	
     	//Agregar la cabecera al reporte
-	    ListStyleLabelField Titulo = new ListStyleLabelField( "Histórico de Pagos", DrawStyle.HCENTER , 0x400000, Color.WHITE);
-	    contenido.add(Titulo);
+	    //ListStyleLabelField Titulo = new ListStyleLabelField( "", DrawStyle.HCENTER , 0x400000, Color.WHITE);
+	    //contenido.add(Titulo);
 	    
 	    try {
             FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
@@ -138,8 +137,9 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
 	    //Set ChangeListener y agregarlos a la interfaz
 	    for (int i = 0; i < botonesF.length; i++)
 	    {
-	         botonesF[i].setChangeListener(this);
-	         contenido.add(botonesF[i]);
+	    	contenido.add(new SeparatorField()); 
+	    	botonesF[i].setChangeListener(this);
+	        contenido.add(botonesF[i]);
 	    }
     }
     
@@ -153,11 +153,11 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
     public void crearParteMenu()
     {
         try{
-            // Los botones que vienen despues del boton presionado son eliminados
-             for (int i = posBotonPresionado + 1 ; i < botonesF.length + 1; i++){
-                 
-                     contenido.delete(botonesF[i-1]);
-                 }
+        	 // Los botones que vienen despues del boton presionado son eliminados
+        	int posicionEnManagerDelPresionado = contenido.getFieldWithFocus().getIndex();
+            int numeroBotonesABorrar = contenido.getFieldCount() - posicionEnManagerDelPresionado;
+            contenido.deleteRange(posicionEnManagerDelPresionado, numeroBotonesABorrar);
+            
             // Busco los nuevos botones
             CustomButtonTable[] aux;
      	    Enumeration listadoInfoNivel = informacionNivelSuperior.elements();
@@ -176,18 +176,26 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
      	     botonesF[posBotonPresionado].setChangeListener(this);
              contenido.add(botonesF[posBotonPresionado]);
              botonesF[posBotonPresionado].setFocus();
+             
              // Coloco en la pantalla los botones nuevos, ignorando los que ya tengo 
              // guardados (el boton presionado y los que vienen antes de el)
-             for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++){
-                     botonesF[i].setChangeListener(this);
-                     contenido.add(botonesF[i]);
+             for (int i = posBotonPresionado + 1  ; i < botonesF.length; i++)
+             {
+            	 botonesF[i].setChangeListener(this);
+                 if(botonesF[i].getNivel() == 3)  contenido.add(new SeparatorField());
+            	 contenido.add(botonesF[i]);
              }
             
              //Guardo en mi arreglo los botones que no fueron borrados,
              //para poder hacer bien la comparacion en la función fieldChanged
-             for (int i = 0; i < posBotonPresionado + 1; i++){
-                 botonesF[i] = (CustomButtonTable)contenido.getField(i + 2);
+             int count = 0; 
+             for (int i = 0; i < posicionEnManagerDelPresionado ; i++){
+                 if(contenido.getField(i).getClass().equals(new CustomButtonTable().getClass()))
+                 {
+                	 botonesF[count] = (CustomButtonTable)contenido.getField(i);
+                	 count++;
                  }
+             }    
          }catch(IndexOutOfBoundsException e){
              System.out.println("Error: " + e);
          }
@@ -225,7 +233,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
                 	info.setHijo(new Hashtable());
     	            InformacionNivel infohijo;
     	            int posicion = 0 ; 
-    	            infohijo = new InformacionNivel("Monto Liberado" , pago.getMontoLiberado()+ " Bs", 0, new int[] {posicion});
+    	            infohijo = new InformacionNivel("Monto Liberado:" , pago.getMontoLiberado()+ " Bs", 0, new int[] {posicion});
     	            info.getHijo().put(new Integer(posicion), infohijo);
     	            
     	            Enumeration deducciones = pago.getDeducciones().elements();
@@ -234,7 +242,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
     	            {
     	            	posicion ++;
     	            	deduccion = (Deduccion) deducciones.nextElement();
-    	            	infohijo = new InformacionNivel(deduccion.getConcepto() , "-" + deduccion.getMonto()+ " Bs", 0, new int[] {posicion});
+    	            	infohijo = new InformacionNivel(deduccion.getConcepto() + ":" , "-" + deduccion.getMonto()+ " Bs", 0, new int[] {posicion});
     	                info.getHijo().put(new Integer(posicion),infohijo);
     	            }	
             	}

@@ -5,7 +5,10 @@ import java.util.Hashtable;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
@@ -19,6 +22,7 @@ import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.SpacerField;
 
 public class ConsultarDetalleDeCaso extends plantilla_screen_http implements FieldChangeListener {
 
@@ -36,10 +40,20 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		
 		this.codSeleccionado = codSeleccionado;
 		
-		//**Label field simple**
-		add(new CustomLabelField("Introduzca el apellido del paciente:", Color.WHITE,  0x990000 , Field.USE_ALL_WIDTH));
+		add(new SpacerField());
 		add(new SeparatorField());
 		
+		try{
+			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+			Font boldFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt).derive(Font.BOLD);
+			CustomLabelField label = new CustomLabelField("  Introduzca el apellido del paciente: " , 0x400000, Color.WHITE, 0);
+			label.setFont(boldFont);
+			add(label);
+		}catch (ClassNotFoundException e){}
+		
+		add(new SeparatorField());
+		add(new SpacerField());
+        add(new SpacerField());
 		//Campos Nombre de usuario y clave
 		apellidoField = new EditField("", "", 20, EditField.NO_NEWLINE);
 		LabelField apellidoLabel = new LabelField("Apellido: ", Field.FIELD_LEFT);
@@ -49,9 +63,11 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
         gridFieldManager.add(apellidoField);
         add(gridFieldManager);
         
-		
+        add(new SpacerField());
+        add(new SpacerField());
+        add(new SpacerField());
 		//**Botones
-		consultarButtom = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xE38311, 0);
+		consultarButtom = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xF77100, 0);
 		consultarButtom.setChangeListener(this);
 		HorizontalFieldManager buttonManager = new HorizontalFieldManager(FIELD_HCENTER);
 		buttonManager.add(consultarButtom);

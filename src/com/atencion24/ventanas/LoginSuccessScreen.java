@@ -8,9 +8,10 @@ import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 
+//import com.atencion24.interfaz.CustomObjectChoiceField;
+import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.CustomObjectChoiceField;
 import com.atencion24.interfaz.ForegroundManager;
-import com.atencion24.interfaz.LittleCustomLabelField;
 import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 import com.atencion24.interfaz.ListStyleButtonField;
 import com.atencion24.interfaz.ListStyleButtonSet;
@@ -44,8 +45,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
   
     BitmapField bitmapField;
     
-	//ObjectChoiceField codPagos;
-    CustomObjectChoiceField codPagos;
+	CustomObjectChoiceField codPagos;
+    //CustomObjectChoiceField codPagos;
     
     ListStyleButtonField edoCta;
     ListStyleButtonField honPagados;
@@ -69,7 +70,17 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		if(sesion.getCodigoMedico().size()>1)
 		{
 			foreground.add(new SpacerField());
-			foreground.add(new LittleCustomLabelField("  Elija el código de pago a consultar: " , Color.WHITE, 0x400000, 0));
+			foreground.add(new SeparatorField());
+			
+			try{
+				FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+				Font boldFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt).derive(Font.BOLD);
+				CustomLabelField label = new CustomLabelField("  Elija el código de pago a consultar:" , 0x400000, Color.WHITE, 0);
+				label.setFont(boldFont);
+				foreground.add(label);
+			}catch (ClassNotFoundException e){}
+			
+			foreground.add(new SeparatorField());
 			foreground.add(new SpacerField());
 			foreground.add(new SpacerField());
 			
@@ -86,14 +97,20 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			foreground.add(codPagos);
 			foreground.add(new SpacerField());
 			foreground.add(new SpacerField());
-			foreground.add(new SeparatorField());
-
+			
 		}
-		
+		foreground.add(new SpacerField());
+		foreground.add(new SeparatorField());
 		//**Label field simple**
-		foreground.add(new LittleCustomLabelField("  Elija el reporte a consultar: " , Color.WHITE, 0x400000, 0));
-
-		//foreground.add(new CustomLabelField("   Elija el reporte a consultar:" , Color.WHITE, 0x400000, FIELD_LEFT));
+		try{
+			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+			Font boldFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt).derive(Font.BOLD);
+			CustomLabelField label = new CustomLabelField("  Elija el reporte a consultar:" , 0x400000, Color.WHITE, 0);
+			label.setFont(boldFont);
+			foreground.add(label);
+		}catch (ClassNotFoundException e){}
+		
+		foreground.add(new SeparatorField());
 		
         _bodyWrapper = new NegativeMarginVerticalFieldManager(USE_ALL_WIDTH);
         _currentBody = new ListStyleButtonSet();

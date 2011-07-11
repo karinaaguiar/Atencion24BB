@@ -37,6 +37,7 @@ public class InformacionNivel {
     private boolean mostrar = false;
     private Hashtable hijo;
     private boolean bold = false; 
+    private int tabulacion = 0;  
     
     
     /**
@@ -78,6 +79,27 @@ public class InformacionNivel {
     }
     
     /**
+     * Constructor de la clase. Con icono y tabulacion
+     * @param icon Bitmap del icono del widget desplegable
+     * @param nombre valor de la etiqueta del lado izquierdo del widget despleglable
+     * @param valor valor de la etiqueta del lado derecho del widget despleglable
+     * @param nivel entero que representa el nivel de anidamiento donde se encuentra el widget desplegable  
+     * @param pos arreglo que permite determinar la posicion relativa del botón respecto al resto de los botones
+     * @param tabulacion entero que indica que el boton requiere cierto nivel de tabulación
+     * 
+     */
+    public InformacionNivel(Bitmap icon,String nombre, String valor, int nivel, int[] pos, int tabulacion) {  
+        
+        this.setNombre(nombre);
+        this.valor = valor;
+        this.nivel = nivel;
+        this.pos = pos;
+        this.setHijo(null); 
+        this.setIcono(icon);
+        this.setTabulacion(tabulacion);
+    }
+    
+    /**
      * Constructor de la clase. Sin icono
      * @param nombre valor de la etiqueta del lado izquierdo del widget despleglable
      * @param valor valor de la etiqueta del lado derecho del widget despleglable
@@ -111,6 +133,25 @@ public class InformacionNivel {
         this.setHijo(null); 
         this.setIcono(null);
         this.bold = bold;
+    }
+    
+    /**
+     * Constructor de la clase. Sin icono y tabulacion
+     * @param nombre valor de la etiqueta del lado izquierdo del widget despleglable
+     * @param valor valor de la etiqueta del lado derecho del widget despleglable
+     * @param nivel entero que representa el nivel de anidamiento donde se encuentra el widget desplegable  
+     * @param pos arreglo que permite determinar la posicion relativa del botón respecto al resto de los botones
+     * @param bold booleano que indica si el texto va en negritas o no
+     */
+    public InformacionNivel(String nombre, String valor, int nivel, int[] pos, int tabulacion) {  
+        
+        this.setNombre(nombre);
+        this.valor = valor;
+        this.nivel = nivel;
+        this.pos = pos;
+        this.setHijo(null); 
+        this.setIcono(null);
+        this.tabulacion = tabulacion;
     }
     
     /**
@@ -186,44 +227,69 @@ public class InformacionNivel {
         {
             case (3): if(this.getIcono()!=null)
   		  			  {
-            		  	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x400202, Color.LIGHTYELLOW, 0x900A0A , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
-            		  	break;
+            			if(tabulacion != 0)
+                			botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x400000, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			else
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x400000, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            			break;
   		  			  }
             		  else {
-            			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
-              		  	break;
+            			  if(tabulacion != 0)
+            				  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			  else
+                			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+              		  	  break;
             		  } 
             case (2): if(this.getIcono()!=null)
             		  {
-            		  	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFB5 , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
-            		  	break;
+            	        if(tabulacion != 0)
+            	        	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            	        else
+            	        	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            			break;
             		  }
             		  else {
-            		    botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFB5 , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            			if(tabulacion != 0)
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD /*0xFFEFB5*/ , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			else
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD /*0xFFEFB5*/ , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
               		  	break;
             		  }
             case (1): if(this.getIcono()!=null)
   		  			  { 
-            			botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xF7F6C1, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            			if(tabulacion != 0)
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			else
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
             			break;
   		  			  }
             		  else 
             		  {
-            			botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xF7F6C1, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            			if(tabulacion != 0)
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			else
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+
               			break;
             		  } 
             case (0): if(this.getIcono()!=null)
   			  		  { 
-            			botones[0] = new CustomButtonTable(this.getIcono(),this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            			if(tabulacion != 0)
+            				botones[0] = new CustomButtonTable(this.getIcono(),this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			else
+            				botones[0] = new CustomButtonTable(this.getIcono(),this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
             			break;
   			  		  }
             		  else
             		  {
-            			botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            			if(tabulacion != 0) 
+            			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            			else
+            			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
               			break;
             		  }
             	
-            default:  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, pos);
+            default:  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
                       break;
         }
     	return botones;
@@ -260,4 +326,9 @@ public class InformacionNivel {
 	public Hashtable getHijo() {
 		return hijo;
 	}
+
+	public void setTabulacion(int tabulacion) {
+		this.tabulacion = tabulacion;
+	}
+
 }          

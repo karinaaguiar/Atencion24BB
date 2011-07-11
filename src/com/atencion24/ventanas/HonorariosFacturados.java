@@ -7,10 +7,8 @@ import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
-import com.atencion24.interfaz.ListStyleLabelField;
 
 import net.rim.device.api.ui.Color;
-import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
@@ -50,16 +48,18 @@ public class HonorariosFacturados extends plantilla_screen {
         contenido.deleteAll();
         fieldManager = new VerticalFieldManager();
         
-        //Agregar la cabecera al reporte
-	    ListStyleLabelField Titulo = new ListStyleLabelField( "Honorarios Facturados", DrawStyle.HCENTER , 0x400000, Color.WHITE);
-	    contenido.add(Titulo);
-	    
         try {
             FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
             CustomButtonTable boton;
+            CustomButtonTableNotFocus encabezado;
             Enumeration detallefact = facturado.elements();
+            
+            //Encabezado
+            encabezado = new CustomButtonTableNotFocus(" Unidad de Negocio ", "Monto" , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado.setFont(appFont);
+            fieldManager.add(encabezado);
             
             CustomButtonTable botonS = new CustomButtonTable(" Hospitalización:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             botonS.setFont(appFont);
@@ -77,7 +77,7 @@ public class HonorariosFacturados extends plantilla_screen {
             boton.setFont(appFont);
             fieldManager.add(boton);
             
-            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Total facturado:", detallefact.nextElement()+ " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus(" Total facturado:", detallefact.nextElement()+ " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             

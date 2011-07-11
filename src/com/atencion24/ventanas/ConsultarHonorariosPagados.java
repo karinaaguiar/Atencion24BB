@@ -15,7 +15,6 @@ import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.component.NullField;
 import net.rim.device.api.ui.component.RadioButtonField;
 import net.rim.device.api.ui.component.RadioButtonGroup;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -25,6 +24,7 @@ import com.atencion24.control.Pago;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.SpacerField;
 
 public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
 	
@@ -42,7 +42,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     
     int insertIndex;
     GridFieldManager gridFieldManager;
-    NullField nulo;
+    SpacerField nulo;
     
 	ConsultarHonorariosPagados(String codSeleccionado) 
 	{
@@ -52,6 +52,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		
 		this.codSeleccionado = codSeleccionado;
 		
+        add(new SpacerField());
+        add(new SpacerField());
         //RadioButton para escoger el tipo de consulta a realizar
 		RadioButtonGroup tipoConsulta = new RadioButtonGroup();
         reciente = new RadioButtonField("Pago en Proceso ",tipoConsulta,true);
@@ -77,14 +79,16 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
         gridFieldManager.add(fechaF);
         gridFieldManager.add(fechaFinal);
         
-        nulo = new NullField();
+        nulo = new SpacerField();
         add(nulo);
         insertIndex = this.getFieldCount();
         
         //foreground.add(gridFieldManager);
+        add(new SpacerField());
+        add(new SpacerField());
         
         //Boton de consultar
-        verRepor = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xE38311, 0);
+        verRepor = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xF77100, 0);
         verRepor.setChangeListener(this);
         VerticalFieldManager buttonManager = new VerticalFieldManager(FIELD_HCENTER);
         buttonManager.add(verRepor); 

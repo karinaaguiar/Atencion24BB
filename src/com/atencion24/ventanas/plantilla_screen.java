@@ -46,7 +46,7 @@ public abstract class plantilla_screen extends MainScreen {
 	 * Metodo que despliega el titulo de la pantalla
 	 */
 	public void changeTitulo(){
-		add(new CustomLabelField(this.titulo, Color.WHITE, 0x990000, FIELD_HCENTER));
+		add(new CustomLabelField(this.titulo, Color.WHITE, 0x400000, FIELD_HCENTER));
 		add(new SeparatorField());
 	}
 	

@@ -7,6 +7,7 @@ import com.atencion24.control.ControlDates;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.ui.Color;
@@ -38,6 +39,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		
 		this.codSeleccionado = codSeleccionado;
 		
+		add(new SpacerField());
+        add(new SpacerField());
 		//Campos para rango de fechas
 		ControlDates dates = new ControlDates();
         fechaInicial = new DateField("", System.currentTimeMillis(), new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT);                        
@@ -55,8 +58,11 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
         gridFieldManager.add(fechaFinal);   
         add(gridFieldManager);
         
+        add(new SpacerField());
+        add(new SpacerField());
+        add(new SpacerField());
         //Boton de consultar
-        verRepor = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xE38311, 0);
+        verRepor = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xF77100, 0);
         verRepor.setChangeListener(this);
         VerticalFieldManager buttonManager = new VerticalFieldManager(FIELD_HCENTER);
         buttonManager.add(verRepor); 

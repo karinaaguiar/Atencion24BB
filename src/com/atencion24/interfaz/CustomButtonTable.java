@@ -37,10 +37,12 @@ public class CustomButtonTable extends Field {
     private int[] posicion;
     private Bitmap _leftIcon;
     private int _leftOffset;
+    private int tabulado;
     
     private static final int HPADDING = 6; //Display.getWidth() <= 320 ? 6 : 8;
     private static final int VPADDING = 4;
     
+    public CustomButtonTable(){}
     /**
      * Constructor de la clase. Con ícono 
      * @param icon Bitmap de la celda 
@@ -55,8 +57,8 @@ public class CustomButtonTable extends Field {
      * @param colorB color de los bordes de la celda
      * @param nvl nivel al que pertenece la celda dentro del posible anidamiento
      * @param pos arreglo que permite determinar la posicion relativa del celda respecto al resto de las celdas. 
- *  	          pos[nivel] representa la posición de la celda dentro del nivel al que pertenece.
- *  	          pos[nivel-i] representa la posición de su padre del nivel i  
+     *  	  pos[nivel] representa la posición de la celda dentro del nivel al que pertenece.
+     *  	  pos[nivel-i] representa la posición de su padre del nivel i  
      */
     public CustomButtonTable(Bitmap icon, String label, String labelR, int focusedShadowColor, int foregroundColor, int backgroundColor, int focusedForegroundColor, int focusedBackgroundColor, long style, int colorB, int nvl, int[] pos) {
         super(style);
@@ -68,8 +70,27 @@ public class CustomButtonTable extends Field {
         this.focusedBackgroundColor = focusedBackgroundColor;
         this.focusedShadowColor = focusedShadowColor;
         this.color_border = colorB;
-        this.nivel = nvl;
+        this.setNivel(nvl);
         this.posicion = pos;
+        set_leftIcon(icon);
+        }
+    /**
+     * Constructor de la clase. Con ícono y tabulado
+     * 
+     * **/
+    public CustomButtonTable(Bitmap icon, String label, String labelR, int focusedShadowColor, int foregroundColor, int backgroundColor, int focusedForegroundColor, int focusedBackgroundColor, long style, int colorB, int nvl, int[] pos, int tabulado) {
+        super(style);
+        this.label = label;
+        this.label2 = labelR;
+        this.foregroundColor = foregroundColor;
+        this.backgroundColor = backgroundColor;
+        this.focusedForegroundColor = focusedForegroundColor;
+        this.focusedBackgroundColor = focusedBackgroundColor;
+        this.focusedShadowColor = focusedShadowColor;
+        this.color_border = colorB;
+        this.setNivel(nvl);
+        this.posicion = pos;
+        this.tabulado = tabulado;
         set_leftIcon(icon);
         }
     
@@ -99,12 +120,30 @@ public class CustomButtonTable extends Field {
         this.focusedBackgroundColor = focusedBackgroundColor;
         this.focusedShadowColor = focusedShadowColor;
         this.color_border = colorB;
-        this.nivel = nvl;
+        this.setNivel(nvl);
         this.posicion = pos;
         }
+    /**
+     * Constructor de la clase. Sin ícono y tabulado
+     * 
+     **/
+    public CustomButtonTable(String label, String labelR, int focusedShadowColor, int foregroundColor, int backgroundColor, int focusedForegroundColor, int focusedBackgroundColor, long style, int colorB, int nvl, int[] pos, int tabulado) {
+        super(style);
+        this.label = label;
+        this.label2 = labelR;
+        this.foregroundColor = foregroundColor;
+        this.backgroundColor = backgroundColor;
+        this.focusedForegroundColor = focusedForegroundColor;
+        this.focusedBackgroundColor = focusedBackgroundColor;
+        this.focusedShadowColor = focusedShadowColor;
+        this.color_border = colorB;
+        this.setNivel(nvl);
+        this.tabulado = tabulado;
+        this.posicion = pos;
+    }
        
     public int obtenerNivel(){
-        return nivel;
+        return getNivel();
         }
         
     public int [] obtenerPosicion(){
@@ -166,6 +205,70 @@ public class CustomButtonTable extends Field {
         return width;
     }
     
+    public void auxiliarPaint(Graphics graphics, int color)
+    {
+    	if (label2 != null)
+        {
+            int text2X = (getWidth() - getFont().getAdvance(label2))-2;
+            graphics.setColor(color);
+            // Left Bitmap
+            if( get_leftIcon() != null ) {
+            	if(tabulado != 0)
+            	{	
+            		graphics.drawBitmap( _leftOffset*tabulado, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
+            		graphics.drawText(label, _leftOffset*tabulado + _leftOffset -HPADDING, 0, DrawStyle.ELLIPSIS, text2X - 1);
+            	}
+            	else
+            	{	
+            		graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
+            		graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, text2X - 1);
+            	}
+            }
+            else
+            {	
+            	if(tabulado != 0)
+            	{	
+            		graphics.drawText(label, 4*_leftOffset*tabulado , 0, DrawStyle.ELLIPSIS, text2X - 1);
+            	}
+            	else
+            	{	
+            		graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, text2X - 1);
+            	}
+            }
+            graphics.drawText(label2, text2X, 0);
+            
+        }
+        else
+        {
+        	graphics.setColor(color);
+            // Left Bitmap
+            if( get_leftIcon() != null ) 
+            {
+            	if(tabulado != 0)
+            	{	
+            		graphics.drawBitmap( _leftOffset*tabulado, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
+            		graphics.drawText(label, _leftOffset*tabulado + _leftOffset -HPADDING, 0, DrawStyle.ELLIPSIS);
+            	}	
+            	else
+            	{	
+            		graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
+            		graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS);
+            	}	
+            }
+            else
+            {
+            	if(tabulado != 0)
+            	{	
+            		graphics.drawText(label, 4*_leftOffset*tabulado , 0, DrawStyle.ELLIPSIS);
+            	}
+            	else
+            	{	
+            		graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS);
+            	}
+            }
+        }
+    	
+    }
     /* (non-Javadoc)
      * @see net.rim.device.api.ui.Field#paint(net.rim.device.api.ui.Graphics)
      */
@@ -187,43 +290,10 @@ public class CustomButtonTable extends Field {
             graphics.setGlobalAlpha(100);
             graphics.fillRoundRect(3, 3, getWidth(), getHeight()-6, 12, 12);
             graphics.setGlobalAlpha(255);
-            if (label2 != null)
-            {
-                int text2X = (getWidth() - getFont().getAdvance(label2))-2;
-                graphics.setColor(focusedForegroundColor);
-                // Left Bitmap
-                if( get_leftIcon() != null ) {
-                	graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
-                }
-                graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, text2X - 1);
-                graphics.drawText(label2, text2X, 0);
-            }else{
-            	graphics.setColor(focusedForegroundColor);
-                // Left Bitmap
-                if( get_leftIcon() != null ) {
-                	graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
-                }
-                graphics.drawText(label, 0, 0);
-            }
-        }else{
-            if (label2 != null){
-                int text2X = (getWidth() - getFont().getAdvance(label2))-2;
-                graphics.setColor(foregroundColor);
-                // Left Bitmap
-                if( get_leftIcon() != null ) {
-                	graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
-                }
-                graphics.drawText(label, _leftOffset , 0, DrawStyle.ELLIPSIS, text2X - 1);
-                graphics.drawText(label2, text2X, 0);
-            }
-            else{
-                graphics.setColor(foregroundColor);
-                // Left Bitmap
-                if( get_leftIcon() != null ) {
-                	graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
-                }
-                graphics.drawText(label, 0, 0);   
-            }
+            auxiliarPaint(graphics, focusedForegroundColor);
+        }else
+        {
+        	auxiliarPaint(graphics, foregroundColor);
         }
     }
     
@@ -282,6 +352,14 @@ public class CustomButtonTable extends Field {
 
 	public Bitmap get_leftIcon() {
 		return _leftIcon;
+	}
+
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
+	}
+
+	public int getNivel() {
+		return nivel;
 	}
 
 }

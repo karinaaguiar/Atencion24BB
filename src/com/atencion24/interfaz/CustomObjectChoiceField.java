@@ -9,9 +9,11 @@ import net.rim.device.api.ui.component.*;
  * (4.7+) should use ObjectChoiceField directly, and avoid this custom class.
  * @author Nathan Scandella
  */
+
 public class CustomObjectChoiceField extends ObjectChoiceField {
 
-   private static final int HIGHLIGHT_COLOR = 0xFFEFB5;  // blue-ish (TODO: make theme-sensitive?)
+   private static final int HIGHLIGHT_COLOR = 0xF77100; // blue-ish (TODO: make theme-sensitive?)
+   private static final int BACKGROUND_C0LOR = 0xB4ACA0; 
    private boolean _hasFocus = false;
    
    /** @see ObjectChoiceField(String, Object[], int) */
@@ -35,13 +37,20 @@ public class CustomObjectChoiceField extends ObjectChoiceField {
 	      invalidate();  // required to clear focus
 	   }
 
+   protected void paintBackground(Graphics g)
+   {
+	   g.setColor(HIGHLIGHT_COLOR);
+	   super.paintBackground(g);
+   }
    /**
     * Paint is overridden to make a custom, semi-transparent, rounded looking field.
     * @param g the Graphics context used for painting
     */
-   protected void paint(Graphics g) {
+   /*protected void paint(Graphics g) {
 	   if(_hasFocus) 
 		   g.setColor(HIGHLIGHT_COLOR);
+	   else
+		   g.setColor(BACKGROUND_C0LOR);
 	   super.paint(g);
-   }
+   }*/
 }

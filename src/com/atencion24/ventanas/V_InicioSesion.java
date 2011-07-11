@@ -8,6 +8,7 @@ import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -46,6 +47,8 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		super.setTitulo("Introduzca sus datos de acceso:");
 		super.changeTitulo();
 		
+		add(new SpacerField());
+        add(new SpacerField());
 		//Campos Nombre de usuario y clave
 		nombreusuarioField = new EditField("Usuario: ", "", 20, EditField.NO_NEWLINE);//new EditField();
 		//nombreusuarioLabel = new LabelField("Usuario: ", Field.FIELD_LEFT);
@@ -60,8 +63,12 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
         gridFieldManager.add(passwordField);
         add(gridFieldManager);
         
+        add(new SpacerField());
+        add(new SpacerField());
+        add(new SpacerField());
+        
 		//**Botones
-		accederButtom = new CustomButtonField(" Acceder ", Color.WHITE, 0x990000 , Color.WHITE, 0xE38311, 0);
+		accederButtom = new CustomButtonField(" Acceder ", Color.WHITE, 0x990000 , Color.WHITE, 0xF77100, 0); //0xE38311
 		accederButtom.setChangeListener(this);
 		HorizontalFieldManager buttonManager = new HorizontalFieldManager(FIELD_HCENTER);
 		buttonManager.add(accederButtom);
@@ -82,6 +89,17 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		else{
 			String usuario = nombreusuarioField.getText();
 			String clave = passwordField.getText();
+			/*Vector CodigoMedico = new Vector();
+			CodigoPago codpago;
+            codpago = new CodigoPago("124", "Karina Aguiar");
+            CodigoMedico.addElement(codpago);
+            codpago = new CodigoPago("123", "Sociedad medica X");
+            CodigoMedico.addElement(codpago);
+            codpago = new CodigoPago("563", "Anestesiologos");
+            CodigoMedico.addElement(codpago);  
+			Sesion usu = new Sesion("Karina", "Aguiar", CodigoMedico, "c"); 
+			LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
+	        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);*/
 			HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
 			thread.start();
 		}
