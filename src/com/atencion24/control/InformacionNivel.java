@@ -228,47 +228,47 @@ public class InformacionNivel {
             case (3): if(this.getIcono()!=null)
   		  			  {
             			if(tabulacion != 0)
-                			botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x400000, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+                			botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0xAB0303/*0x400000*/, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			else
-            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x400000, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0xAB0303, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
             			break;
   		  			  }
             		  else {
             			  if(tabulacion != 0)
-            				  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            				  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xAB0303, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			  else
-                			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xC8A8A8, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+                			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor,0xAB0303, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
               		  	  break;
             		  } 
             case (2): if(this.getIcono()!=null)
             		  {
             	        if(tabulacion != 0)
-            	        	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            	        	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD , Color.BLACK, 0xFEEABD, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             	        else
-            	        	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            	        	botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD , Color.BLACK, 0xFEEABD, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
             			break;
             		  }
             		  else {
             			if(tabulacion != 0)
-            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD /*0xFFEFB5*/ , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD /*0xFFEFB5*/ , Color.BLACK, 0xFEEABD, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			else
-            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD /*0xFFEFB5*/ , Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFEEABD /*0xFFEFB5*/ , Color.BLACK, 0xFEEABD, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
               		  	break;
             		  }
             case (1): if(this.getIcono()!=null)
   		  			  { 
             			if(tabulacion != 0)
-            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xFFEFC9, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			else
-            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xFFEFC9, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
             			break;
   		  			  }
             		  else 
             		  {
             			if(tabulacion != 0)
-            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xFFEFC9, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			else
-            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xF8DCDC, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            				botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0x704B4B, Color.BLACK, 0xFFEFC9, Color.BLACK, 0xFFEFC9, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
 
               			break;
             		  } 

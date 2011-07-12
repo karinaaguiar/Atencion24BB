@@ -36,6 +36,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Honorarios Facturados");
 		super.changeTitulo();
+		super.changeSubTitulo();
 		
 		this.codSeleccionado = codSeleccionado;
 		
@@ -95,7 +96,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 	    {
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
-					HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN);
+					HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN, fechaInicial.toString(), fechaFinal.toString());
 			        UiApplication.getUiApplication().pushScreen(honorariosFacturados);
 				}
 			});
@@ -154,7 +155,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Consultar", 20,10) {
 			public void run(){
 				consultarHonorariosFacturados();

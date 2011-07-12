@@ -49,6 +49,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Honorarios Pagados");
 		super.changeTitulo();
+		super.changeSubTitulo();
 		
 		this.codSeleccionado = codSeleccionado;
 		
@@ -155,7 +156,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		    {
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
-						HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos);
+						HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos, fechaInicial.toString(), fechaFinal.toString());
 				        UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
 					}
 				});
@@ -246,7 +247,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Consultar", 20,10) {
 			public void run(){
 				if(historico.isSelected()){

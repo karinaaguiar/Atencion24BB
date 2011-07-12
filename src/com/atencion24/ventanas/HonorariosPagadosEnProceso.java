@@ -34,6 +34,8 @@ public class HonorariosPagadosEnProceso extends plantilla_screen {
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Pago en proceso");
 		super.changeTitulo();
+		super.changeSubTitulo();
+		
 		pago = pagoEnProceso;
 		
 		//Inserto los managers donde irá el reporte.
@@ -106,7 +108,7 @@ public class HonorariosPagadosEnProceso extends plantilla_screen {
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Ir atrás", 20,10) {
 			public void run(){
 				irAtras();

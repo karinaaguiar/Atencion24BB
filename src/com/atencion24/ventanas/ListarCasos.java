@@ -40,6 +40,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
 		super.changeTitulo();
+		super.changeSubTitulo();
 		
 		casos = listadoCasos;
 		
@@ -160,7 +161,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Ir atrás", 20,10) {
 			public void run(){
 				irAtras();

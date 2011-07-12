@@ -47,6 +47,8 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
 		super.changeTitulo();
+		super.changeSubTitulo();
+		
 		caso = detalleCaso;
 		
 		//Inserto los managers donde irá el reporte.
@@ -342,7 +344,7 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Ir atrás", 20,10) {
 			public void run(){
 				irAtras();

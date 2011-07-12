@@ -2,55 +2,73 @@ package com.atencion24.interfaz;
 
 import net.rim.device.api.ui.*;
 import net.rim.device.api.ui.component.*;
+import net.rim.device.api.ui.container.PopupScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 
-/**
- * CustomChoiceField provides a reasonable-looking implementation of ObjectChoiceField, for legacy
- * OS versions (e.g. 4.6) for which the default implementation is too clunky.  Newer OS versions
- * (4.7+) should use ObjectChoiceField directly, and avoid this custom class.
- * @author Nathan Scandella
- */
+public class CustomObjectChoiceField extends ObjectChoiceField implements FieldChangeListener{
 
-public class CustomObjectChoiceField extends ObjectChoiceField {
+   private String[] mItems;
+   private int mIndex;
 
-   private static final int HIGHLIGHT_COLOR = 0xF77100; // blue-ish (TODO: make theme-sensitive?)
-   private static final int BACKGROUND_C0LOR = 0xB4ACA0; 
-   private boolean _hasFocus = false;
-   
    /** @see ObjectChoiceField(String, Object[], int) */
-   public CustomObjectChoiceField(String label, Object[] choices, int initialIndex) {
-      super(label, choices, initialIndex);
-   }
-   
-   protected void layout(int width, int height) {
-      super.layout(width, height);
-   }
+   	public CustomObjectChoiceField(String label, Object[] choices, int initialIndex) 
+   	{
+   		super(label, choices, initialIndex);
+   		mItems =(String[]) choices;
+   		updateIndex(0);
+   		setChangeListener(this);
+   	}
+   	
+   	protected void paint(Graphics graphics) 
+   	{
+   		super.paint(graphics);
+   	}
 
-   protected void onFocus(int direction) {
-	      _hasFocus = true;
-	      super.onFocus(direction);
-	      invalidate();
-	   }
 
-	   protected void onUnfocus() {
-	      _hasFocus = false;
-	      super.onUnfocus();
-	      invalidate();  // required to clear focus
-	   }
+   	public void updateIndex(int index) 
+   	{
+	    mIndex = index;
+	    //mItem = mItems[mIndex];
+	    /*mWidth = mItem.mBitmap.getWidth() + 6 + 18 + 3;
+	    mHeight = mItem.mBitmap.getHeight() + 6;
+	    invalidate();*/
+   	}
 
-   protected void paintBackground(Graphics g)
-   {
-	   g.setColor(HIGHLIGHT_COLOR);
-	   super.paintBackground(g);
-   }
-   /**
-    * Paint is overridden to make a custom, semi-transparent, rounded looking field.
-    * @param g the Graphics context used for painting
-    */
-   /*protected void paint(Graphics g) {
-	   if(_hasFocus) 
-		   g.setColor(HIGHLIGHT_COLOR);
-	   else
-		   g.setColor(BACKGROUND_C0LOR);
-	   super.paint(g);
-   }*/
+	public void fieldChanged(Field field, int context) {
+		getScreen().getUiEngine().pushScreen(new DDImagesPopUp());
+	}
+
+	class DDImagesPopUp extends PopupScreen implements FieldChangeListener {
+
+		public DDImagesPopUp() 
+		{
+			super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
+			CustomButtonList button;
+			for (int i = 0; i < mItems.length; i++) 
+			{
+				if(i==mIndex)
+					 button = new CustomButtonList(mItems[i], true); 
+				else
+					button = new CustomButtonList(mItems[i], false);
+				add(button);
+				button.setChangeListener(this);
+			}
+			setFieldWithFocus(getField(mIndex));
+		}
+		
+		protected boolean keyChar(char key, int status, int time) 
+		{
+		    if (Keypad.KEY_ESCAPE == key) {
+		            this.close();
+		            return true;
+		    } else
+		            return super.keyChar(key, status, time);
+		}
+
+		public void fieldChanged(Field field, int context) 
+		{
+			updateIndex(getFieldWithFocusIndex());
+			close();
+		}
+	}
 }

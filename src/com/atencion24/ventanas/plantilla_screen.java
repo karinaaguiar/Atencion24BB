@@ -19,6 +19,7 @@ import net.rim.device.api.ui.container.MainScreen;
 public abstract class plantilla_screen extends MainScreen {
 	
 	private String titulo;
+	private String subtitulo = null;
 	private static Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
 	
 	/**
@@ -27,13 +28,13 @@ public abstract class plantilla_screen extends MainScreen {
 	 */
 	plantilla_screen (long style) 
 	{
-        super(style); 
-        try {
+		super(style); 
+		try {
 			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
 			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
 			setFont(appFont);
-		}catch (ClassNotFoundException e){}
-	
+		}catch (ClassNotFoundException e){}	
+		
 		//Logo alineado al centro
 		BitmapField logoField = new BitmapField(logoBitmap);
 		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
@@ -45,9 +46,10 @@ public abstract class plantilla_screen extends MainScreen {
 	/**
 	 * Metodo que despliega el titulo de la pantalla
 	 */
-	public void changeTitulo(){
+	public void changeTitulo()
+	{
 		add(new CustomLabelField(this.titulo, Color.WHITE, 0x400000, FIELD_HCENTER));
-		add(new SeparatorField());
+		//add(new SeparatorField());
 	}
 	
 	/**
@@ -56,6 +58,33 @@ public abstract class plantilla_screen extends MainScreen {
 	 */
 	public void setTitulo(String titulo){
 		this.titulo = titulo;
+	}
+	
+	/**
+	 * Metodo que despliega el titulo de la pantalla
+	 */
+	public void changeSubTitulo(){
+		 
+		if (subtitulo == null) add(new SeparatorField());
+		else{
+		   try 
+		   {
+			  FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
+			  Font appFont = familiaFont.getFont(Font.PLAIN, 6, Ui.UNITS_pt);
+			  CustomLabelField label = new CustomLabelField(this.subtitulo, Color.WHITE, 0x400000, FIELD_HCENTER);
+			  label.setFont(appFont);
+			  add(label);
+			  add(new SeparatorField());
+		   }catch (ClassNotFoundException e){}
+		}
+	}
+	
+	/**
+	 * Metodo que asigna el titulo de la pantalla
+	 * @param titulo titulo de la pantalla
+	 */
+	public void setSubTitulo(String subtitulo){
+		this.subtitulo = subtitulo;
 	}
 	
 	public boolean onClose ()

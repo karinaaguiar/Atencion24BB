@@ -10,7 +10,7 @@ import com.atencion24.control.XMLParser;
 
 //import com.atencion24.interfaz.CustomObjectChoiceField;
 import com.atencion24.interfaz.CustomLabelField;
-import com.atencion24.interfaz.CustomObjectChoiceField;
+//import com.atencion24.interfaz.CustomObjectChoiceField;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 import com.atencion24.interfaz.ListStyleButtonField;
@@ -45,7 +45,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
   
     BitmapField bitmapField;
     
-	CustomObjectChoiceField codPagos;
+	ObjectChoiceField codPagos;
     //CustomObjectChoiceField codPagos;
     
     ListStyleButtonField edoCta;
@@ -62,6 +62,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		sesion = ses;
 		super.setTitulo("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido());
 		super.changeTitulo();
+		super.changeSubTitulo();
 		
 		codSeleccionado = (String) ((CodigoPago)sesion.getCodigoMedico().elementAt(0)).getCodigo();
 
@@ -92,8 +93,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 				nombresCodigosAsociados[i] = (String) ((CodigoPago)codpagos.nextElement()).getNombre();
 				i++;
 			}	
-			codPagos = new CustomObjectChoiceField("Códigos de pago:", nombresCodigosAsociados,0);
-			codPagos.setChangeListener(this);
+			codPagos = new ObjectChoiceField("Códigos de pago:", nombresCodigosAsociados,0);
+			//codPagos.setChangeListener(this);
 			foreground.add(codPagos);
 			foreground.add(new SpacerField());
 			foreground.add(new SpacerField());
@@ -297,7 +298,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Estado de Cuenta", 20,10) {
 			public void run(){
 				reporteElegido = 1;	

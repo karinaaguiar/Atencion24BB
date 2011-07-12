@@ -11,12 +11,15 @@ import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
+import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -43,6 +46,10 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Fianzas Pendientes");
 		super.changeTitulo();
+        DateField fecha = new DateField("", System.currentTimeMillis(), new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT);                        
+        long date = fecha.getDate();
+		super.setSubTitulo("(" + String.valueOf(date) +")");
+		super.changeSubTitulo();
 		fianzas = listaFianzas;
 		
 		//Inserto los managers donde irá el reporte.
@@ -301,7 +308,7 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Ir a inicio", 20,10) {
 			public void run(){
 				irInicio();

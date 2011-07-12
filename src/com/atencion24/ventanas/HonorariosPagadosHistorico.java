@@ -44,6 +44,9 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
 
 	static Vector pagos;
 	
+	String fechaI; 
+	String fechaF;
+	
 	int posBotonPresionado = 0;
 	
 	Manager foreground = new ForegroundManager();
@@ -58,14 +61,20 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
 	 * HonorariosPagadosHistorico. Constructor de la clase
 	 * @param historicoPagos (Pago)Vector que contiene todos los pagos generados en el 
 	 * rango de fechas de la búsqueda.
+	 * @param fechaF 
+	 * @param fechaI 
 	 */
-	public HonorariosPagadosHistorico(Vector historicoPagos) 
+	public HonorariosPagadosHistorico(Vector historicoPagos, String fechaI, String fechaF) 
 	{
 		
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Histórico de Pagos");
 		super.changeTitulo();
+		super.setSubTitulo("(" + fechaI + " - " + fechaF + ")");
+		super.changeSubTitulo();
 		pagos = historicoPagos;
+		this.fechaI = fechaI;
+		this.fechaF = fechaF;
 		
 		//Inserto los managers donde irá el reporte.
 		foreground.add(contenido);
@@ -294,7 +303,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Ir atrás", 20,10) {
 			public void run(){
 				irAtras();

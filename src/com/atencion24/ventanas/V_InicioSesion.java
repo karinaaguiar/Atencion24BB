@@ -46,6 +46,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Introduzca sus datos de acceso:");
 		super.changeTitulo();
+		super.changeSubTitulo();
 		
 		add(new SpacerField());
         add(new SpacerField());

@@ -37,6 +37,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
 		super.changeTitulo();
+		super.changeSubTitulo();
 		
 		this.codSeleccionado = codSeleccionado;
 		
@@ -154,7 +155,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Consultar", 20,10) {
 			public void run(){
 				consultarListadoDeCaso();

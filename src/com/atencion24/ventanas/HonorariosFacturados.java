@@ -23,16 +23,20 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 public class HonorariosFacturados extends plantilla_screen {
 
 	static Vector facturado;
+	String fechaI; 
+	String fechaF;
 	
 	ListStyleButtonSet contenido   = new ListStyleButtonSet();
     VerticalFieldManager fieldManager;
 	Manager foreground = new ForegroundManager();
 	
-	public HonorariosFacturados(Vector facturadoUDN) 
+	public HonorariosFacturados(Vector facturadoUDN, String fechaI, String fechaF) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Honorarios Facturados");
 		super.changeTitulo();
+		super.setSubTitulo("(" + fechaI + " - " + fechaF + ")");
+		super.changeSubTitulo();
 		facturado = facturadoUDN;
 		
 		//Inserto los managers donde irá el reporte.
@@ -111,7 +115,7 @@ public class HonorariosFacturados extends plantilla_screen {
 	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
-		super.makeMenu(menu, instance);
+		//super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Ir atrás", 20,10) {
 			public void run(){
 				irAtras();
