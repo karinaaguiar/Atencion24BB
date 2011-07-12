@@ -138,7 +138,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 	
 	public void cerrarSesion ()
 	{
-		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea cerrar sesión y salir?");
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
@@ -155,12 +155,17 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
 		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Consultar", 20,10) {
+			public void run(){
+				consultarHonorariosFacturados();
+			}
+		});
 		menu.add(new MenuItem("Ir a inicio", 20,10) {
 			public void run(){
 				irInicio();
 			}
 		});
-		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+		menu.add(new MenuItem("Cerrar Sesión", 20,10) {
 			public void run(){
 				cerrarSesion();
 			}

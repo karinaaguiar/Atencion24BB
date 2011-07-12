@@ -15,7 +15,6 @@ import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.component.RadioButtonField;
 import net.rim.device.api.ui.component.RadioButtonGroup;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
@@ -23,14 +22,15 @@ import com.atencion24.control.ControlDates;
 import com.atencion24.control.Pago;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
+import com.atencion24.interfaz.CustomRadioButtom;
 import com.atencion24.interfaz.GridFieldManager;
 import com.atencion24.interfaz.SpacerField;
 
 public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
 	
 	static String dateTime = "01/01/2008";
-	RadioButtonField reciente;
-	RadioButtonField historico;
+	CustomRadioButtom reciente;
+	CustomRadioButtom historico;
     DateField fechaInicial;
     DateField fechaFinal;
     CustomButtonField verRepor;
@@ -56,8 +56,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
         add(new SpacerField());
         //RadioButton para escoger el tipo de consulta a realizar
 		RadioButtonGroup tipoConsulta = new RadioButtonGroup();
-        reciente = new RadioButtonField("Pago en Proceso ",tipoConsulta,true);
-        historico = new RadioButtonField("Histórico",tipoConsulta,false);	
+        reciente = new CustomRadioButtom("Pago en Proceso ",tipoConsulta,true);
+        historico = new CustomRadioButtom("Histórico ",tipoConsulta,false);	
         //foreground.
         add(reciente);
         //foreground.
@@ -230,7 +230,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 	
 	public void cerrarSesion ()
 	{
-		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea cerrar sesión y salir?");
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
@@ -247,12 +247,24 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
 		super.makeMenu(menu, instance);
+		menu.add(new MenuItem("Consultar", 20,10) {
+			public void run(){
+				if(historico.isSelected()){
+		    		  tipoConsulta = 1;
+		    		  ConsultarHistoricoPagos();
+		    	  }
+		    	  else if (reciente.isSelected()){
+		    		  tipoConsulta = 0;
+		    		  ConsultarProximoPago();
+		    	  } 
+			}
+		});
 		menu.add(new MenuItem("Ir a inicio", 20,10) {
 			public void run(){
 				irInicio();
 			}
 		});
-		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+		menu.add(new MenuItem("Cerrar Sesión", 20,10) {
 			public void run(){
 				cerrarSesion();
 			}

@@ -106,17 +106,6 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 			
 	}
 	
-	public void cerrarSesion ()
-	{
-		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
-		if (dialog == Dialog.YES)
-		{
-			Dialog.alert("Hasta luego!");
-			//Debería hacer cierre de sesion
-			System.exit(0);
-		}
-	}
-	
 	/* (non-Javadoc)
 	 * @see net.rim.device.api.ui.FieldChangeListener#fieldChanged(net.rim.device.api.ui.Field, int)
 	 */
@@ -169,11 +158,6 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		menu.add(new MenuItem("Iniciar Sesion", 20,10) {
 			public void run(){
 				iniciarSesion();
-			}
-		});
-		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
-			public void run(){
-				cerrarSesion();
 			}
 		});
 	}

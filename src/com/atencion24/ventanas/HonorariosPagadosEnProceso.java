@@ -84,7 +84,7 @@ public class HonorariosPagadosEnProceso extends plantilla_screen {
 	
 	public void cerrarSesion ()
 	{
-		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea salir?");
+		int dialog =  Dialog.ask(Dialog.D_YES_NO, "¿Está seguro que desea cerrar sesión y salir?");
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
@@ -117,7 +117,7 @@ public class HonorariosPagadosEnProceso extends plantilla_screen {
 				irInicio();
 			}
 		});
-		menu.add(new MenuItem("Cerrar Sesion", 20,10) {
+		menu.add(new MenuItem("Cerrar Sesión", 20,10) {
 			public void run(){
 				cerrarSesion();
 			}
