@@ -5,6 +5,7 @@ import java.util.Hashtable;
 
 import com.atencion24.control.CodigoPago;
 import com.atencion24.control.EstadoCuentaAS;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 
@@ -153,11 +154,11 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
-		String medico = sesion.getCodigoMedico();
+		//llamadaExitosa("");
+		
+		//String medico = sesion.getCodigoMedico();
 		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + codSeleccionado, "GET", this);
-		thread.start();*/
+		thread.start();
     }
 	
 	public void honPagados(){
@@ -265,8 +266,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     		//XML que me ha enviado el servidor procesado como 
     		//un objeto de control. 
 			XMLParser envioXml = new XMLParser();
-		    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(respuesta); //xmlInterno
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(xmlInterno); //xmlInterno
 		    
 		    //En caso de que el servidor haya enviado un error
 		    //La Clínica no posee deuda con el médico

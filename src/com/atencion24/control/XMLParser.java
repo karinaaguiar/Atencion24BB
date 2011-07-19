@@ -179,8 +179,46 @@ public class XMLParser {
 		return fianzas;
 	}
 
-	public EstadoCuentaAS LeerEstadoCtaAntiguedadSaldo(String respuesta) {
-		EstadoCuentaAS edocta = new EstadoCuentaAS("10.000", "8.000", "7.000", "1.000", "500", "26.500");
+	/**
+	 * @param respuesta
+	 * @return
+	 */
+	public EstadoCuentaAS LeerEstadoCtaAntiguedadSaldo(String xmlSource) 
+	{
+		EstadoCuentaAS edocta = new EstadoCuentaAS();
+        
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "La Clínica actualmente no tiene deudas con usted";
+            return null;
+    	}	
+
+    	NodeList nodoEstadoCtaAS = elemento.getChildNodes();
+    	
+    	//Deuda A 30 días 
+        edocta.setA30dias(nodoEstadoCtaAS.item(0).getChildNodes().item(0).getNodeValue()); 
+        
+        //Deuda a 60 días 
+        edocta.setA60dias(nodoEstadoCtaAS.item(1).getChildNodes().item(0).getNodeValue());
+        
+        //Deuda a 90 días 
+        edocta.setA90dias(nodoEstadoCtaAS.item(2).getChildNodes().item(0).getNodeValue());
+        
+        //Deuda a 180 días 
+        edocta.setA180dias(nodoEstadoCtaAS.item(3).getChildNodes().item(0).getNodeValue());
+        
+        //Deuda a más 180 días 
+        edocta.setMas180(nodoEstadoCtaAS.item(4).getChildNodes().item(0).getNodeValue());
+        
+        //Deuda total 
+        edocta.setTotalDeuda(nodoEstadoCtaAS.item(5).getChildNodes().item(0).getNodeValue());
+        
 		return edocta;
 	}
 

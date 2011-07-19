@@ -19,6 +19,7 @@ import net.rim.device.api.ui.component.RadioButtonGroup;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
 import com.atencion24.control.ControlDates;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Pago;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
@@ -196,10 +197,9 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
+		//llamadaExitosa("");
 		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + codSeleccionado, "GET", this);
-		thread.start();*/
+		thread.start();
 	}
 	
 	
