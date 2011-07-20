@@ -107,8 +107,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     		//XML que me ha enviado el servidor procesado como 
     		//un objeto de control. 
 			XMLParser envioXml = new XMLParser();
-		    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final Pago pagoEnProceso = envioXml.LeerProximoPago(respuesta); //xmlInterno
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Pago pagoEnProceso = envioXml.LeerProximoPago(xmlInterno);
 		    
 		    //En caso de que el servidor haya enviado un error
 		    //No hay pago en proceso (tabla pagoshonorarios vacia)
@@ -139,8 +139,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     		//XML que me ha enviado el servidor procesado como 
     		//un objeto de control. 
 			XMLParser envioXml = new XMLParser();
-		    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final Vector historicoPagos = envioXml.LeerHistoricoPagos(respuesta); //xmlInterno
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Vector historicoPagos = envioXml.LeerHistoricoPagos(xmlInterno); 
 		    
 		    //En caso de que el servidor haya enviado un error
 		    //No hay datos (pagos de nomina) entre las fechas indicadas
@@ -175,8 +175,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
+		//llamadaExitosa("");
+		
 		//Comparo las fechas. Fecha Desde < Fecha Hasta
 		if(fechaInicial.getDate() > fechaFinal.getDate() || fechaInicial.getDate() == fechaFinal.getDate()){
 			Dialog.alert("Error al ingresar las fechas. Fecha 'Desde' debe ser menor que fecha 'Hasta'");
@@ -188,7 +188,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			System.out.println(fechaF);
 			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
 			thread.start();
-		}*/
+		}
 			
 	}
 	

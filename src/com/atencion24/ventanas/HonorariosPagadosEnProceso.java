@@ -34,6 +34,7 @@ public class HonorariosPagadosEnProceso extends plantilla_screen {
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Pago en proceso");
 		super.changeTitulo();
+		super.setSubTitulo(pagoEnProceso.getFechaPago());
 		super.changeSubTitulo();
 		
 		pago = pagoEnProceso;

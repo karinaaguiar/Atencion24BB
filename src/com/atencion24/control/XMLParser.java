@@ -102,24 +102,105 @@ public class XMLParser {
 		return usu;
     }
     
-    //Por ahora cableado
-    public Pago LeerProximoPago(String xmlSource) {        
-    	Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
+    public Pago AuxiliarHonorariosPagados(NodeList nodoPago, Pago pago)
+    {
+    	Vector Deducciones = new Vector();
+    	Deduccion deduccion = new Deduccion();
+    	
+        //Monto Liberado
+        pago.setMontoLiberado(nodoPago.item(0).getChildNodes().item(0).getNodeValue());
+        
+        //Deducciones
+        NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
+        for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
+        {
+        	NodeList nodoDeduccion = nodoDeducciones.item(i).getChildNodes();
+        	deduccion.setConcepto(nodoDeduccion.item(0).getNodeValue());
+        	deduccion.setMonto(nodoDeduccion.item(1).getNodeValue());
+        	Deducciones.addElement(deduccion);
+        }	
+        pago.setDeducciones(Deducciones);
+        
+        //Monto Neto
+        pago.setMontoNeto(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
+        
+        //Fecha Pago 
+        pago.setFechaPago(nodoPago.item(3).getChildNodes().item(0).getNodeValue());
+        
+		return pago;
+    }
+    
+    /**
+     * @param xmlSource
+     * @return
+     */
+    public Pago LeerProximoPago(String xmlSource) 
+    {        
+    	Pago pago = new Pago();
+    	
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	System.out.println(tag);
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "Aún no se han generado pagos a su nombre para la próxima nómina";
+            return null;
+    	}	
+
+    	NodeList nodoPago = elemento.getChildNodes();
+        pago = AuxiliarHonorariosPagados(nodoPago, pago);
+    	
+		return pago;
+        
+        /*Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
     	Deduccion deduccion2 = new Deduccion("Arrendamiento Consultorios", "560");
     	Deduccion deduccion3 = new Deduccion("Descuento Laboratorio", "890");
     	Vector deducciones = new Vector();
     	deducciones.addElement(deduccion1);
     	deducciones.addElement(deduccion2);
     	deducciones.addElement(deduccion3);
-    	Pago pago = new Pago("1200", deducciones, "150" , "15/06/2011");
-    	
-		return pago;
+    	Pago pago = new Pago("1200", deducciones, "150" , "15/06/2011");*/
     }
     
-    //Por ahora cableado
-    public Vector LeerHistoricoPagos(String xmlSource) {        
+    
+    /**
+     * @param xmlSource
+     * @return
+     */
+    public Vector LeerHistoricoPagos(String xmlSource) 
+    {        
     	Vector historicoPago = new Vector();
-    	Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
+    	Pago pago = new Pago();
+    	
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	System.out.println(tag);
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "No existen pagos en el rango de fechas indicado";
+            return null;
+    	}	
+
+    	NodeList nodoPagos = elemento.getChildNodes();
+    	
+    	for( int i =0 ; i < nodoPagos.getLength(); i++ )
+        {
+    		NodeList nodoPago = nodoPagos.item(i).getChildNodes();
+    		pago = AuxiliarHonorariosPagados(nodoPago, pago);
+    		historicoPago.addElement(pago);
+        }
+    	
+    	return historicoPago;
+    	
+        /*Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
     	Deduccion deduccion2 = new Deduccion("Arrendamiento Consultorios", "560");
     	Deduccion deduccion3 = new Deduccion("Descuento Laboratorio", "890");
     	Vector deducciones = new Vector();
@@ -129,9 +210,8 @@ public class XMLParser {
     	Pago pago1 = new Pago("1200", deducciones, "150" , "15/06/2011");
     	Pago pago2 = new Pago("3000", deducciones, "2000", "30/06/2011");
     	historicoPago.addElement(pago1);
-    	historicoPago.addElement(pago2);
+    	historicoPago.addElement(pago2);*/
     	
-		return historicoPago;
     }
     
     //Por ahora cableado
