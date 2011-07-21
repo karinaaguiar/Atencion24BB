@@ -12,6 +12,10 @@ import org.w3c.dom.NodeList;
 import net.rim.device.api.xml.parsers.DocumentBuilder;
 import net.rim.device.api.xml.parsers.DocumentBuilderFactory;
 
+/**
+ * @author Karina
+ *
+ */
 public class XMLParser {
 	
 	String error = "";
@@ -102,21 +106,27 @@ public class XMLParser {
 		return usu;
     }
     
-    public Pago AuxiliarHonorariosPagados(NodeList nodoPago, Pago pago)
+    /**
+     * @param nodoPago
+     * @return
+     */
+    public Pago AuxiliarHonorariosPagados(NodeList nodoPago)
     {
+    	Pago pago = new Pago();
     	Vector Deducciones = new Vector();
     	Deduccion deduccion = new Deduccion();
     	
         //Monto Liberado
-        pago.setMontoLiberado(nodoPago.item(0).getChildNodes().item(0).getNodeValue());
-        
+    	pago.setMontoLiberado(nodoPago.item(0).getChildNodes().item(0).getNodeValue());
+    	
         //Deducciones
         NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
         for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
         {
         	NodeList nodoDeduccion = nodoDeducciones.item(i).getChildNodes();
-        	deduccion.setConcepto(nodoDeduccion.item(0).getNodeValue());
-        	deduccion.setMonto(nodoDeduccion.item(1).getNodeValue());
+        	deduccion = new Deduccion();
+        	deduccion.setConcepto(nodoDeduccion.item(0).getChildNodes().item(0).getNodeValue());
+        	deduccion.setMonto(nodoDeduccion.item(1).getChildNodes().item(0).getNodeValue());
         	Deducciones.addElement(deduccion);
         }	
         pago.setDeducciones(Deducciones);
@@ -126,7 +136,7 @@ public class XMLParser {
         
         //Fecha Pago 
         pago.setFechaPago(nodoPago.item(3).getChildNodes().item(0).getNodeValue());
-        
+        		
 		return pago;
     }
     
@@ -152,7 +162,7 @@ public class XMLParser {
     	}	
 
     	NodeList nodoPago = elemento.getChildNodes();
-        pago = AuxiliarHonorariosPagados(nodoPago, pago);
+        pago = AuxiliarHonorariosPagados(nodoPago);
     	
 		return pago;
         
@@ -174,7 +184,7 @@ public class XMLParser {
     public Vector LeerHistoricoPagos(String xmlSource) 
     {        
     	Vector historicoPago = new Vector();
-    	Pago pago = new Pago();
+    	Pago pago;
     	
     	Document documento = PreprocesarXML(xmlSource);
     	Element elemento = documento.getDocumentElement();
@@ -190,27 +200,15 @@ public class XMLParser {
     	}	
 
     	NodeList nodoPagos = elemento.getChildNodes();
-    	
     	for( int i =0 ; i < nodoPagos.getLength(); i++ )
         {
     		NodeList nodoPago = nodoPagos.item(i).getChildNodes();
-    		pago = AuxiliarHonorariosPagados(nodoPago, pago);
+    		pago = new Pago();
+    		pago = AuxiliarHonorariosPagados(nodoPago);
     		historicoPago.addElement(pago);
         }
     	
     	return historicoPago;
-    	
-        /*Deduccion deduccion1 = new Deduccion("Gastos Administrativos A", "120");
-    	Deduccion deduccion2 = new Deduccion("Arrendamiento Consultorios", "560");
-    	Deduccion deduccion3 = new Deduccion("Descuento Laboratorio", "890");
-    	Vector deducciones = new Vector();
-    	deducciones.addElement(deduccion1);
-    	deducciones.addElement(deduccion2);
-    	deducciones.addElement(deduccion3);
-    	Pago pago1 = new Pago("1200", deducciones, "150" , "15/06/2011");
-    	Pago pago2 = new Pago("3000", deducciones, "2000", "30/06/2011");
-    	historicoPago.addElement(pago1);
-    	historicoPago.addElement(pago2);*/
     	
     }
     
@@ -302,19 +300,39 @@ public class XMLParser {
 		return edocta;
 	}
 
-	public Vector LeerHonorariosFacturados(String respuesta) 
+	public Vector LeerHonorariosFacturados(String xmlSource) 
 	{
 		Vector resumenFacturado = new Vector();
-		String hospitalizacion = "8.000";
-		String emergencia = "1500";
-		String cirugia = "500";
-		String convenios = "0";
-		String total = "20.000";
-		resumenFacturado.addElement(hospitalizacion);
-		resumenFacturado.addElement(emergencia);
-		resumenFacturado.addElement(cirugia);
-		resumenFacturado.addElement(convenios);
-		resumenFacturado.addElement(total);
+		
+		Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "Usted no facturó honorarios en el rango de fechas ingresado";
+            return null;
+    	}	
+
+    	NodeList nodoFacturado = elemento.getChildNodes();
+
+    	//Monto hospitalización 
+    	resumenFacturado.addElement(nodoFacturado.item(0).getChildNodes().item(0).getNodeValue()); 
+        
+        //Monto emergencia 
+    	resumenFacturado.addElement(nodoFacturado.item(1).getChildNodes().item(0).getNodeValue());
+        
+        //Monto cirugia
+    	resumenFacturado.addElement(nodoFacturado.item(2).getChildNodes().item(0).getNodeValue());
+        
+        //Monto convenios
+        resumenFacturado.addElement(nodoFacturado.item(3).getChildNodes().item(0).getNodeValue());
+        
+        //Total 
+        resumenFacturado.addElement(nodoFacturado.item(4).getChildNodes().item(0).getNodeValue());
+        
 		return resumenFacturado;
 	}
 }

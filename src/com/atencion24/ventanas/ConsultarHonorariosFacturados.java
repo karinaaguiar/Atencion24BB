@@ -4,6 +4,7 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import com.atencion24.control.ControlDates;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.GridFieldManager;
@@ -78,8 +79,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		//XML que me ha enviado el servidor procesado como 
 		//un objeto de control. 
 		XMLParser envioXml = new XMLParser();
-	    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Vector facturadoUDN = envioXml.LeerHonorariosFacturados(respuesta); //xmlInterno
+	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+	    final Vector facturadoUDN = envioXml.LeerHonorariosFacturados(xmlInterno); //xmlInterno
 	    
 	    //En caso de que el servidor haya enviado un error
 	    //El medico no facturo honorarios en el rango de fechas indicado
@@ -114,8 +115,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
+		//llamadaExitosa("");
+		
 		//Comparo las fechas. Fecha Desde < Fecha Hasta
 		if(fechaInicial.getDate() > fechaFinal.getDate() || fechaInicial.getDate() == fechaFinal.getDate()){
 			Dialog.alert("Error al ingresar las fechas. Fecha 'Desde' debe ser menor que fecha 'Hasta'");
@@ -127,7 +128,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 			System.out.println(fechaF);
 			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
 			thread.start();
-		}*/
+		}
 	}
 	
 	public void fieldChanged(Field field, int context) 
