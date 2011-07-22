@@ -230,9 +230,27 @@ public class XMLParser {
     	//Unidad de negocio 
     	caso.setUnidadNegocio(nodoCaso.item(3).getChildNodes().item(0).getNodeValue());
     	
-    	/*if (simple == 1)
+    	if (simple == 1)
     	{
-    		 //Deducciones
+        	//ciPaciente
+        	caso.setCiPaciente(nodoCaso.item(4).getChildNodes().item(0).getNodeValue());
+        	
+        	//responsablePago
+        	caso.setResponsablePago(nodoCaso.item(5).getChildNodes().item(0).getNodeValue());
+        	
+        	//montoFacturado
+        	caso.setMontoFacturado(nodoCaso.item(6).getChildNodes().item(0).getNodeValue());
+        	
+        	//montoExonerado
+        	caso.setMontoExonerado(nodoCaso.item(7).getChildNodes().item(0).getNodeValue());
+        	
+        	//montoAbonado
+        	caso.setMontoAbonado(nodoCaso.item(8).getChildNodes().item(0).getNodeValue());
+        	
+        	//totalDeuda
+        	caso.setTotalDeuda(nodoCaso.item(9).getChildNodes().item(0).getNodeValue());
+    		
+    		/* //Deducciones
             NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
             for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
             {
@@ -241,15 +259,9 @@ public class XMLParser {
             	deduccion.setConcepto(nodoDeduccion.item(0).getChildNodes().item(0).getNodeValue());
             	deduccion.setMonto(nodoDeduccion.item(1).getChildNodes().item(0).getNodeValue());
             	Deducciones.addElement(deduccion);
-            }	
-            pago.setDeducciones(Deducciones);
-            
-            //Monto Neto
-            pago.setMontoNeto(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
-            
-            //Fecha Pago 
-            pago.setFechaPago(nodoPago.item(3).getChildNodes().item(0).getNodeValue());
-    	}*/	
+            }*/	
+
+    	}
     	
 		return caso;
     }
@@ -285,13 +297,32 @@ public class XMLParser {
     	return listadoCasos;
     }
 
-	public Caso LeerCaso(String respuesta) {
-		Hashtable honorarios = new Hashtable();
+	public Caso LeerCaso(String xmlSource) 
+	{
+		Caso caso = new Caso();
+    	
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	System.out.println(tag);
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "No existen casos asociados al apellido ingresado";
+            return null;
+    	}	
+
+    	NodeList nodoCaso = elemento.getChildNodes();
+    	caso = AuxiliarDetalleCaso(nodoCaso, 1);
+    		
+		/*Hashtable honorarios = new Hashtable();
 		Honorario honorario1 = new Honorario("Cirugia1", "2500", "1000", "500", "1000");
 		Honorario honorario2 = new Honorario("Cirugia2", "1000", "0", "0", "1000");
 		honorarios.put((Integer) new Integer(0),honorario1);
 		honorarios.put((Integer) new Integer(1),honorario2);
-		Caso caso = new Caso("Ramírez Ariana", "25/07/2009", "2009533", "19162868", "Seguros Mercantil", "3500", "1000", "500", "2000", honorarios); 
+		Caso caso = new Caso("Ramírez Ariana", "25/07/2009", "2009533", "19162868", "Seguros Mercantil", "3500", "1000", "500", "2000", honorarios);*/ 
 		return caso;
 	}
 

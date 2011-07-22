@@ -119,7 +119,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	    {
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
-					ListarCasos listarCasos = new ListarCasos(listadoCasos);
+					ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado);
 			        UiApplication.getUiApplication().pushScreen(listarCasos);
 				}
 			});

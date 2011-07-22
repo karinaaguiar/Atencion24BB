@@ -17,6 +17,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 
 import com.atencion24.control.Caso;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.control.ManejoArray;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.ForegroundManager;
@@ -27,6 +28,7 @@ import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 public class ListarCasos extends plantilla_screen_http implements FieldChangeListener {
 
 	static Hashtable casos;
+	String codSeleccionado;
 	
     Manager _bodyWrapper;
     Manager _currentBody;
@@ -35,7 +37,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
    
     ListStyleButtonField [] botones;
 	
-	ListarCasos(Hashtable listadoCasos) 
+	ListarCasos(Hashtable listadoCasos, String codSeleccionado) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
@@ -43,6 +45,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		super.changeSubTitulo();
 		
 		casos = listadoCasos;
+		this.codSeleccionado = codSeleccionado;
 		
 		//Cambiar el font de la aplicación
 		try 
@@ -93,8 +96,8 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		//XML que me ha enviado el servidor procesado como 
 		//un objeto de control. 
 		XMLParser envioXml = new XMLParser();
-	    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Caso caso = envioXml.LeerCaso(respuesta); //xmlInterno
+	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+	    final Caso caso = envioXml.LeerCaso(xmlInterno); //xmlInterno
 	    
 	    //En este caso el servidor no puede enviar error
     	UiApplication.getUiApplication().invokeLater(new Runnable() {
@@ -115,12 +118,12 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
+		//llamadaExitosa("");
+		
 		String nroCaso = caso.getNroCaso();
 		String udn = caso.getUnidadNegocio();
-		HttpConexion thread = new HttpConexion("/consultarCaso?caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this);
-		thread.start();*/
+		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb=" + codSeleccionado + "&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this);
+		thread.start();
 	}
 	
 	public void fieldChanged(Field field, int context) {
