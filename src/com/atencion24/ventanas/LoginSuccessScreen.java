@@ -180,11 +180,10 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
-		String medico = sesion.getCodigoMedico();
+		//llamadaExitosa("");
+		
 		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + codSeleccionado, "GET", this);
-		thread.start();*/
+		thread.start();
     }
 	
 	public void cerrarSesion ()
@@ -234,8 +233,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     		//XML que me ha enviado el servidor procesado como 
     		//un objeto de control. 
 			XMLParser envioXml = new XMLParser();
-		    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final Hashtable fianzas = envioXml.LeerListadoFianzas(respuesta); //xmlInterno
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Hashtable fianzas = envioXml.LeerListadoFianzas(xmlInterno); //xmlInterno
 		    
 		    //En caso de que el servidor haya enviado un error
 		    //El medico no tiene asociada fianzas pendientes
