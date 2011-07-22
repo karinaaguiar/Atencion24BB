@@ -215,8 +215,8 @@ public class XMLParser {
     public Caso AuxiliarDetalleCaso(NodeList nodoCaso, int simple)
     {
     	Caso caso = new Caso();
-    	//Vector Honorarios = new Vector();
-    	//Honorario honorario = new Honorario();
+    	Hashtable honorarios = new Hashtable();
+    	Honorario honorario;
     	
         //Nombre del paciente 
     	caso.setNombrePaciente(nodoCaso.item(0).getChildNodes().item(0).getNodeValue());
@@ -250,17 +250,24 @@ public class XMLParser {
         	//totalDeuda
         	caso.setTotalDeuda(nodoCaso.item(9).getChildNodes().item(0).getNodeValue());
     		
-    		/* //Deducciones
-            NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
-            for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
-            {
-            	NodeList nodoDeduccion = nodoDeducciones.item(i).getChildNodes();
-            	deduccion = new Deduccion();
-            	deduccion.setConcepto(nodoDeduccion.item(0).getChildNodes().item(0).getNodeValue());
-            	deduccion.setMonto(nodoDeduccion.item(1).getChildNodes().item(0).getNodeValue());
-            	Deducciones.addElement(deduccion);
-            }*/	
-
+    		//Deducciones
+        	if (nodoCaso.getLength()==11)
+        	{	
+	            NodeList nodoHonorarios = nodoCaso.item(10).getChildNodes();
+	            for( int i =0 ; i < nodoHonorarios.getLength(); i++ )
+	            {
+	            	NodeList nodoHonorario = nodoHonorarios.item(i).getChildNodes();
+	            	honorario = new Honorario();
+	            	honorario.setNombre(nodoHonorario.item(0).getChildNodes().item(0).getNodeValue());
+	            	honorario.setMontoFacturado(nodoHonorario.item(1).getChildNodes().item(0).getNodeValue());
+	            	honorario.setMontoExonerado(nodoHonorario.item(2).getChildNodes().item(0).getNodeValue());
+	            	honorario.setMontoAbonado(nodoHonorario.item(3).getChildNodes().item(0).getNodeValue());
+	            	honorario.setTotalDeuda(nodoHonorario.item(4).getChildNodes().item(0).getNodeValue());
+	            	
+	            	honorarios.put(new Integer(i), honorario);
+	            }
+	            caso.setHonorarios(honorarios); 
+        	}
     	}
     	
 		return caso;
@@ -317,12 +324,6 @@ public class XMLParser {
     	NodeList nodoCaso = elemento.getChildNodes();
     	caso = AuxiliarDetalleCaso(nodoCaso, 1);
     		
-		/*Hashtable honorarios = new Hashtable();
-		Honorario honorario1 = new Honorario("Cirugia1", "2500", "1000", "500", "1000");
-		Honorario honorario2 = new Honorario("Cirugia2", "1000", "0", "0", "1000");
-		honorarios.put((Integer) new Integer(0),honorario1);
-		honorarios.put((Integer) new Integer(1),honorario2);
-		Caso caso = new Caso("Ramírez Ariana", "25/07/2009", "2009533", "19162868", "Seguros Mercantil", "3500", "1000", "500", "2000", honorarios);*/ 
 		return caso;
 	}
 
