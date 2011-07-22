@@ -212,16 +212,76 @@ public class XMLParser {
     	
     }
     
-    //Por ahora cableado
+    public Caso AuxiliarDetalleCaso(NodeList nodoCaso, int simple)
+    {
+    	Caso caso = new Caso();
+    	//Vector Honorarios = new Vector();
+    	//Honorario honorario = new Honorario();
+    	
+        //Nombre del paciente 
+    	caso.setNombrePaciente(nodoCaso.item(0).getChildNodes().item(0).getNodeValue());
+    	
+    	//Fecha emisión
+    	caso.setFechaEmisionFactura(nodoCaso.item(1).getChildNodes().item(0).getNodeValue());
+    	
+    	//Número de caso  
+    	caso.setNroCaso(nodoCaso.item(2).getChildNodes().item(0).getNodeValue());
+    	
+    	//Unidad de negocio 
+    	caso.setUnidadNegocio(nodoCaso.item(3).getChildNodes().item(0).getNodeValue());
+    	
+    	/*if (simple == 1)
+    	{
+    		 //Deducciones
+            NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
+            for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
+            {
+            	NodeList nodoDeduccion = nodoDeducciones.item(i).getChildNodes();
+            	deduccion = new Deduccion();
+            	deduccion.setConcepto(nodoDeduccion.item(0).getChildNodes().item(0).getNodeValue());
+            	deduccion.setMonto(nodoDeduccion.item(1).getChildNodes().item(0).getNodeValue());
+            	Deducciones.addElement(deduccion);
+            }	
+            pago.setDeducciones(Deducciones);
+            
+            //Monto Neto
+            pago.setMontoNeto(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
+            
+            //Fecha Pago 
+            pago.setFechaPago(nodoPago.item(3).getChildNodes().item(0).getNodeValue());
+    	}*/	
+    	
+		return caso;
+    }
+    
+    //Listado de casos
     public Hashtable  LeerListadoCasos (String xmlSource) 
     {  
     	Hashtable listadoCasos = new Hashtable();
-    	Caso caso1= new Caso("Ramírez Ariana", "25/07/2009", "2009533", "4" );
-    	Caso caso2= new Caso("Ramírez Antonio", "15/05/2011", "2011932", "4");
-    	Caso caso3= new Caso("Ramírez Carla", "01/12/2010", "20103432", "4");
-    	listadoCasos.put((Integer) new Integer(0), caso1);
-    	listadoCasos.put((Integer) new Integer(1), caso2);
-    	listadoCasos.put((Integer) new Integer(2), caso3);
+    	Caso caso;
+    	
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	System.out.println(tag);
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "No existen casos asociados al apellido ingresado";
+            return null;
+    	}	
+
+    	NodeList nodoCasos = elemento.getChildNodes();
+    	for( int i =0 ; i < nodoCasos.getLength(); i++ )
+        {
+    		NodeList nodoCaso = nodoCasos.item(i).getChildNodes();
+    		caso = new Caso();
+    		caso = AuxiliarDetalleCaso(nodoCaso, 0);
+    		listadoCasos.put((Integer) new Integer(i), caso);
+        }
+
     	return listadoCasos;
     }
 

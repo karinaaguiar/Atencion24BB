@@ -18,6 +18,7 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
+import com.atencion24.control.HttpConexion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomLabelField;
@@ -81,16 +82,16 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		//Por ahora llamo directo a llamadaExitosa luego será
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
-		llamadaExitosa("");
-		/*
-		 if (apellidoField.getTextLength() == 0){
+		//llamadaExitosa("");
+		
+		if (apellidoField.getTextLength() == 0){
 			Dialog.alert("Debe colocar algún apellido para poder realizar la consulta");
 		}
 		else{
 			String apellido = apellidoField.getText();
 			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido, "GET", this);
 			thread.start();
-		}*/
+		}
 	}
 	
 	public void llamadaExitosa(String respuesta) 
@@ -100,8 +101,8 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		//XML que me ha enviado el servidor procesado como 
 		//un objeto de control. 
 		XMLParser envioXml = new XMLParser();
-	    //String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Hashtable listadoCasos = envioXml.LeerListadoCasos(respuesta); //xmlInterno
+	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+	    final Hashtable listadoCasos = envioXml.LeerListadoCasos(xmlInterno); //xmlInterno
 	    
 	    //En caso de que el servidor haya enviado un error
 	    //No hay casos asociados al apellido y al medico 
