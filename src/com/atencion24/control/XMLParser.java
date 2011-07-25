@@ -119,18 +119,21 @@ public class XMLParser {
         //Monto Liberado
     	pago.setMontoLiberado(nodoPago.item(0).getChildNodes().item(0).getNodeValue());
     	
-        //Deducciones
-        NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
-        for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
-        {
-        	NodeList nodoDeduccion = nodoDeducciones.item(i).getChildNodes();
-        	deduccion = new Deduccion();
-        	deduccion.setConcepto(nodoDeduccion.item(0).getChildNodes().item(0).getNodeValue());
-        	deduccion.setMonto(nodoDeduccion.item(1).getChildNodes().item(0).getNodeValue());
-        	Deducciones.addElement(deduccion);
-        }	
-        pago.setDeducciones(Deducciones);
-        
+    	//Deducciones
+    	if(nodoPago.getLength()==4)
+    	{
+	        NodeList nodoDeducciones = nodoPago.item(1).getChildNodes();
+	        for( int i =0 ; i < nodoDeducciones.getLength(); i++ )
+	        {
+	        	NodeList nodoDeduccion = nodoDeducciones.item(i).getChildNodes();
+	        	deduccion = new Deduccion();
+	        	deduccion.setConcepto(nodoDeduccion.item(0).getChildNodes().item(0).getNodeValue());
+	        	deduccion.setMonto(nodoDeduccion.item(1).getChildNodes().item(0).getNodeValue());
+	        	Deducciones.addElement(deduccion);
+	        }	
+	        pago.setDeducciones(Deducciones);
+    	}
+    	
         //Monto Neto
         pago.setMontoNeto(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
         
