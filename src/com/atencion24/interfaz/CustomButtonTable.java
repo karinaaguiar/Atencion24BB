@@ -189,7 +189,7 @@ public class CustomButtonTable extends Field {
      */
     public int getPreferredWidth() {
         int width;
-        if (label2 == null){
+        if (label2 != null){
             width = getFont().getAdvance(label);
             width += getFont().getAdvance(label2);
             if (get_leftIcon() != null) {
@@ -213,29 +213,66 @@ public class CustomButtonTable extends Field {
             graphics.setColor(color);
             // Left Bitmap
             if( get_leftIcon() != null ) {
+            	text2X -=  get_leftIcon().getWidth();
             	if(tabulado != 0)
             	{	
+            		int referencia = _leftOffset*tabulado + _leftOffset;
             		graphics.drawBitmap( _leftOffset*tabulado, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
-            		graphics.drawText(label, _leftOffset*tabulado + _leftOffset -HPADDING, 0, DrawStyle.ELLIPSIS, text2X - 1);
+            		if(getWidth()- referencia - getFont().getAdvance(label2)- HPADDING >=6) 
+            			graphics.drawText(label, _leftOffset*tabulado + _leftOffset , 0, DrawStyle.ELLIPSIS, getWidth()- referencia - getFont().getAdvance(label2)- HPADDING );
+            		if ((getWidth() - getFont().getAdvance(label2)- HPADDING) <= referencia)
+            		{	
+            			graphics.drawText(label2, referencia , 0, DrawStyle.ELLIPSIS, getWidth() - referencia );
+            		}
+            		else
+            		{
+            			graphics.drawText(label2, getWidth() - getFont().getAdvance(label2)- HPADDING , 0);
+            		}	
             	}
             	else
             	{	
+            		int referencia = _leftOffset;
             		graphics.drawBitmap( HPADDING, VPADDING, get_leftIcon().getWidth(), get_leftIcon().getHeight(), get_leftIcon(), 0, 0 );
-            		graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, text2X - 1);
+            		if(getWidth()- referencia - getFont().getAdvance(label2)- HPADDING >=6) 
+            			graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, getWidth()- referencia - getFont().getAdvance(label2)- HPADDING );
+            		if ((getWidth() - getFont().getAdvance(label2)- HPADDING)<= referencia)
+            		{
+            			graphics.drawText(label2,  referencia , 0, DrawStyle.ELLIPSIS, getWidth() - referencia );
+            		}
+            		else
+            			graphics.drawText(label2, getWidth() - getFont().getAdvance(label2) - HPADDING , 0);
             	}
+            	
             }
             else
             {	
             	if(tabulado != 0)
             	{	
-            		graphics.drawText(label, 4*_leftOffset*tabulado , 0, DrawStyle.ELLIPSIS, text2X - 1);
+            		int referencia = 4*_leftOffset*tabulado;
+            		if(getWidth()- referencia - getFont().getAdvance(label2)- HPADDING >=6) 
+            			graphics.drawText(label, 4*_leftOffset*tabulado , 0, DrawStyle.ELLIPSIS,getWidth()- referencia - getFont().getAdvance(label2)- HPADDING );
+            		if ((getWidth() - getFont().getAdvance(label2)- HPADDING)<= referencia)
+            		{
+            			graphics.drawText(label2,  referencia , 0, DrawStyle.ELLIPSIS, getWidth() - referencia );
+            		}
+            		else
+            			graphics.drawText(label2, getWidth() - getFont().getAdvance(label2) - HPADDING , 0);
             	}
             	else
             	{	
-            		graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, text2X - 1);
+            		int referencia = _leftOffset;
+            		if(getWidth()- referencia - getFont().getAdvance(label2)- HPADDING >=6) 
+            			graphics.drawText(label, _leftOffset, 0, DrawStyle.ELLIPSIS, getWidth()- referencia - getFont().getAdvance(label2)- HPADDING );
+            		if ((getWidth() - getFont().getAdvance(label2)- HPADDING)<= referencia)
+            		{
+            			graphics.drawText(label2,  referencia , 0, DrawStyle.ELLIPSIS, getWidth() - referencia );
+            		}
+            		else
+            			graphics.drawText(label2, getWidth() - getFont().getAdvance(label2) - HPADDING , 0);
             	}
+            	
             }
-            graphics.drawText(label2, text2X, 0);
+            
             
         }
         else

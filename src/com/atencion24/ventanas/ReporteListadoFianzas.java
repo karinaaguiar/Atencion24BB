@@ -4,7 +4,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import com.atencion24.control.Descuento;
 import com.atencion24.control.Fianza;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.ForegroundManager;
@@ -37,8 +36,6 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
     
     Bitmap plus = Bitmap.getBitmapResource("com/atencion24/imagenes/plus_blanco.png");
     Bitmap minus = Bitmap.getBitmapResource("com/atencion24/imagenes/minus_blanco.png");
-    Bitmap arrow1 = Bitmap.getBitmapResource("com/atencion24/imagenes/arrow_down_vino.png");
-    Bitmap arrow = Bitmap.getBitmapResource("com/atencion24/imagenes/arrow_vino.png");
     Bitmap check = Bitmap.getBitmapResource("com/atencion24/imagenes/check_vinotinto.png");
     
 	ReporteListadoFianzas(Hashtable listaFianzas) 
@@ -219,59 +216,28 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 		                info.getHijo().put(new Integer(2), infohijo);
 		        		
 		                //Monto abonado
-			            infohijo = new InformacionNivel(arrow, "Monto abonado:", fianza.getMontoAbonado()+ " Bs", 2, new int[] {pos[0],3});
+			            infohijo = new InformacionNivel(check, "Monto abonado:", fianza.getMontoAbonado()+ " Bs", 0, new int[] {pos[0],3});
 		                info.getHijo().put(new Integer(3), infohijo);
 		                
-		                //Monto neto
-			            infohijo = new InformacionNivel(check, "Monto neto:", fianza.getMontoNeto() + " Bs", 0, new int[] {pos[0],4});
+		                //Monto reintegro 
+			            infohijo = new InformacionNivel(check, "Monto reintegro:", fianza.getMontoReintegro()+ " Bs", 0, new int[] {pos[0],4});
 		                info.getHijo().put(new Integer(4), infohijo);
+		                
+		                //Monto notas crédito 
+			            infohijo = new InformacionNivel(check, "Monto notas crédito:", fianza.getMontoNotasCred()+ " Bs", 0, new int[] {pos[0],5});
+		                info.getHijo().put(new Integer(5), infohijo);
+		                
+		                //Monto notas débito
+			            infohijo = new InformacionNivel(check, "Monto notas débito:", fianza.getMontoNotasDeb()+ " Bs", 0, new int[] {pos[0],6});
+		                info.getHijo().put(new Integer(6), infohijo);
+		                
+		                //Monto neto
+			            infohijo = new InformacionNivel(check, "Monto neto:", fianza.getMontoNeto() + " Bs", 0, new int[] {pos[0],7});
+		                info.getHijo().put(new Integer(7), infohijo);
 		        	}
 		        }	
 		        informacionNivelSuperior.setElementAt(info,pos[0]);
 		        crearParteMenu();  
-    		}
-    		else if (nivelPulsado == 2) //Si presionaste algun boton del primer nivel
-    		{
-    			int[] pos = botonPulsado.obtenerPosicion();
-    			int posicionNivel = pos[1];
-    			
-    			if (posicionNivel == 3) //Si presionaste el monto abonado de alguna fianza
-    			{
-        			int idFianza = pos[0];
-        			
-        			InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(idFianza);
-        			InformacionNivel hijoPresionado = (InformacionNivel) info.getHijo().get(new Integer(3)); 
-        			if (hijoPresionado.isMostrar()) 
-    	            {
-        				hijoPresionado.setMostrar(false);
-        				hijoPresionado.setIcono(arrow);
-    	            }
-    		        else 
-    		        {
-    		        	//Asociarle hijos a info para convertirlo en menu desplegable
-    		        	hijoPresionado.setMostrar(true);
-    		        	hijoPresionado.setIcono(arrow1);
-    		        	if(hijoPresionado.getHijo() == null)
-    		        	{
-    		        		hijoPresionado.setHijo(new Hashtable());
-    			            InformacionNivel infohijo;
-    			            Enumeration descuentos = ((Fianza)fianzas.get(new Integer(idFianza))).getDescuentos().elements();
-    			            int count = 0; 
-    			            while(descuentos.hasMoreElements())
-    			            {
-    			            	Descuento descuento = (Descuento) descuentos.nextElement();
-    			            	infohijo = new InformacionNivel(descuento.getFecha(), descuento.getMonto()+ " Bs", 0, new int[] {idFianza,posicionNivel,count},1);
-        		        		hijoPresionado.getHijo().put(new Integer(count), infohijo);
-        		        		count ++;
-    			            }
-    		        	}
-    		        }
-        			info.getHijo().remove(new Integer(3));
-        			info.getHijo().put(new Integer(3), hijoPresionado);
-    		        informacionNivelSuperior.setElementAt(info,idFianza);
-    		        crearParteMenu();  
-    				
-    			}
     		}
     	}	
     }

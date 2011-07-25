@@ -1,7 +1,5 @@
 package com.atencion24.control;
 
-import java.util.Vector;
-
 public class Fianza {
 
 	private String nroCaso;
@@ -9,21 +7,26 @@ public class Fianza {
 	private String paciente;
 	private String montoACobrar;
 	private String montoAbonado;
+	private String montoReintegro;
+	private String montoNotasCred;
+	private String montoNotasDeb;
 	private String montoNeto;
-	private Vector descuentos;
 	
 	public Fianza() {}
 	
 	public Fianza(String nroCaso, String fechaEmisionFactura, String paciente , 
-			String montoACobrar, String montoAbonado , String montoNeto, Vector descuentos) 
+			String montoACobrar, String montoAbonado , String montoReintegro, String montoNotasCred, 
+			String montoNotasDeb, String montoNeto)
 	{  
 		this.setNroCaso(nroCaso);
 	    this.setFechaEmisionFactura(fechaEmisionFactura);
 	    this.setPaciente(paciente);
 	    this.setMontoACobrar(montoACobrar);
 	    this.setMontoAbonado(montoAbonado);
+	    this.setMontoReintegro(montoReintegro);
+	    this.setMontoNotasCred(montoNotasCred);
+	    this.setMontoNotasDeb(montoNotasDeb);
 	    this.setMontoNeto(montoNeto);
-	    this.setDescuentos(descuentos);
 	}
 
 	public void setNroCaso(String nroCaso) {
@@ -66,19 +69,35 @@ public class Fianza {
 		return montoAbonado;
 	}
 
+	public void setMontoReintegro(String montoReintegro) {
+		this.montoReintegro = montoReintegro;
+	}
+
+	public String getMontoReintegro() {
+		return montoReintegro;
+	}
+
+	public void setMontoNotasCred(String montoNotasCred) {
+		this.montoNotasCred = montoNotasCred;
+	}
+
+	public String getMontoNotasCred() {
+		return montoNotasCred;
+	}
+	
+	public void setMontoNotasDeb(String montoNotasDeb) {
+		this.montoNotasDeb = montoNotasDeb;
+	}
+
+	public String getMontoNotasDeb() {
+		return montoNotasDeb;
+	}
+	
 	public void setMontoNeto(String montoNeto) {
 		this.montoNeto = montoNeto;
 	}
 
 	public String getMontoNeto() {
 		return montoNeto;
-	}
-
-	public void setDescuentos(Vector descuentos) {
-		this.descuentos = descuentos;
-	}
-
-	public Vector getDescuentos() {
-		return descuentos;
 	}
 }

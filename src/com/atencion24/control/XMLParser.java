@@ -327,26 +327,69 @@ public class XMLParser {
 		return caso;
 	}
 
-	public Hashtable LeerListadoFianzas(String respuesta) {
-		Hashtable fianzas = new Hashtable();
-		
-		Vector descuentos = new Vector();
-		Descuento descuento1 = new Descuento("30/09/2010", "300");
-		Descuento descuento2 = new Descuento("15/10/2010", "200");
-		descuentos.addElement(descuento1);
-		descuentos.addElement(descuento2);
-		Fianza fianza1 = new Fianza("20106921", "25/08/2010", "González Jesús", "20.500" , "500", "20.000", descuentos);
-		
-		descuentos = new Vector();
-		descuento1 = new Descuento("15/06/2009", "2000");
-		descuento2 = new Descuento("30/06/2009", "500");
-		descuentos.addElement(descuento1);
-		descuentos.addElement(descuento2);
-		Fianza fianza2 = new Fianza("20112321", "2/05/2009", "González Ana", "12.500" , "2.500", "10.000", descuentos);
+    public Fianza AuxiliarFianzasPendientes(NodeList nodoFianza)
+    {
+    	Fianza fianza = new Fianza();
 
-		fianzas.put(new Integer(0), fianza1);
-		fianzas.put(new Integer(1), fianza2);
-		return fianzas;
+        //Nro de caso 
+    	fianza.setNroCaso(nodoFianza.item(0).getChildNodes().item(0).getNodeValue());
+    	
+    	//Fecha emisión
+    	fianza.setFechaEmisionFactura(nodoFianza.item(1).getChildNodes().item(0).getNodeValue());
+    	
+    	//Paciente  
+    	fianza.setPaciente(nodoFianza.item(2).getChildNodes().item(0).getNodeValue());
+
+    	//Monto a cobrar
+    	fianza.setMontoACobrar(nodoFianza.item(3).getChildNodes().item(0).getNodeValue());
+    	
+    	//Monto Abonado 
+		fianza.setMontoAbonado(nodoFianza.item(4).getChildNodes().item(0).getNodeValue());
+    	
+		//montoFacturado
+		fianza.setMontoReintegro(nodoFianza.item(5).getChildNodes().item(0).getNodeValue());
+    	
+    	//montoExonerado
+		fianza.setMontoNotasCred(nodoFianza.item(6).getChildNodes().item(0).getNodeValue());
+    	
+    	//montoAbonado
+		fianza.setMontoNotasDeb(nodoFianza.item(7).getChildNodes().item(0).getNodeValue());
+		
+		
+		//Monto Deuda 
+		fianza.setMontoNeto(nodoFianza.item(8).getChildNodes().item(0).getNodeValue());
+    	
+		return fianza;
+    }
+    
+	public Hashtable LeerListadoFianzas(String xmlSource)
+	{
+		Hashtable fianzas = new Hashtable();
+    	Fianza fianza;
+    	
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	System.out.println(tag);
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "Usted no posee fianzas pendientes";
+            return null;
+    	}	
+
+    	NodeList nodoFianzas = elemento.getChildNodes();
+    	for( int i =0 ; i < nodoFianzas.getLength(); i++ )
+        {
+    		NodeList nodoFianza = nodoFianzas.item(i).getChildNodes();
+    		fianza = new Fianza();
+    		fianza = AuxiliarFianzasPendientes(nodoFianza);
+    		fianzas.put((Integer) new Integer(i), fianza);
+        }
+
+    	return fianzas;
 	}
 
 	/**
