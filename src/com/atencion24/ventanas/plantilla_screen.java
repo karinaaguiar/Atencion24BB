@@ -18,6 +18,7 @@ import net.rim.device.api.ui.container.MainScreen;
  */
 public abstract class plantilla_screen extends MainScreen {
 	
+	private String cookie="";
 	private String titulo;
 	private String subtitulo = null;
 	private static Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
@@ -92,6 +93,14 @@ public abstract class plantilla_screen extends MainScreen {
 		setDirty(false);
 		close();
 		return true;
+	}
+
+	public void setcookie(String cookie) {
+		this.cookie = cookie;
+	}
+
+	public String getcookie() {
+		return cookie;
 	}
 	
 }

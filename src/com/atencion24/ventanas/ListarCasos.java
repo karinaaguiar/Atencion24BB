@@ -98,12 +98,13 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		XMLParser envioXml = new XMLParser();
 	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 	    final Caso caso = envioXml.LeerCaso(xmlInterno); //xmlInterno
-	    
+	    final String cookie = this.getcookie();
 	    //En este caso el servidor no puede enviar error
     	UiApplication.getUiApplication().invokeLater(new Runnable() {
 			public void run() {
 				DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
-		        UiApplication.getUiApplication().pushScreen(ventanaCaso);
+		        ventanaCaso.setcookie(cookie);
+				UiApplication.getUiApplication().pushScreen(ventanaCaso);
 			}
 		});
 	}
@@ -122,7 +123,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		
 		String nroCaso = caso.getNroCaso();
 		String udn = caso.getUnidadNegocio();
-		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb=" + codSeleccionado + "&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this);
+		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb=" + codSeleccionado + "&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this, false);
 		thread.start();
 	}
 	

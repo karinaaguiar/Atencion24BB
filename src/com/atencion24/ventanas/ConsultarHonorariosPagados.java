@@ -109,7 +109,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			XMLParser envioXml = new XMLParser();
 		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 		    final Pago pagoEnProceso = envioXml.LeerProximoPago(xmlInterno);
-		    
+		    final String cookie = this.getcookie();
 		    //En caso de que el servidor haya enviado un error
 		    //No hay pago en proceso (tabla pagoshonorarios vacia)
 		    if (pagoEnProceso == null)
@@ -126,7 +126,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso);
-				        UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
+						honorariosPagadosEnProceso.setcookie(cookie);
+						UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
 					}
 				});
 		    }
@@ -141,7 +142,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			XMLParser envioXml = new XMLParser();
 		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 		    final Vector historicoPagos = envioXml.LeerHistoricoPagos(xmlInterno); 
-		    
+		    final String cookie = this.getcookie();
 		    //En caso de que el servidor haya enviado un error
 		    //No hay datos (pagos de nomina) entre las fechas indicadas
 		    if (historicoPagos == null)
@@ -158,7 +159,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos, fechaInicial.toString(), fechaFinal.toString());
-				        UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
+						honorariosPagadosHistorico.setcookie(cookie);
+						UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
 					}
 				});
 		    }
@@ -186,7 +188,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			System.out.println(fechaI);
 			String fechaF = fechaFinal.toString();
 			System.out.println(fechaF);
-			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
+			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
 		}
 			
@@ -198,7 +200,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		//el hilo de la conexion quien se encargue
 		//Cuando implemente el web service utilizar codigo de abajo
 		//llamadaExitosa("");
-		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + codSeleccionado, "GET", this);
+		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
 	}
 	

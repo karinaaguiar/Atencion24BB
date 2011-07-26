@@ -101,7 +101,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 			Sesion usu = new Sesion("Karina", "Aguiar", CodigoMedico, "c"); 
 			LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
 	        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);*/
-			HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
+			HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this, true);
 			thread.start();
 		}
 			
@@ -124,6 +124,8 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    String xmlInterno = envioXml.extraerCapaWebService(result);
 	    System.out.println("stoy en llamada exitosa dspues de extraer capa Web services " +xmlInterno);
 	    final Sesion usu = envioXml.LeerXMLInicio(xmlInterno);
+	    final String cookie = this.getcookie();
+	    System.out.println("El cookie de la ventana inicio de sesion es " + cookie);
 	    System.out.println("stoy en llamada exitosa dspues de leer XML Inicio");
 	    if (usu == null)
 	    {
@@ -139,6 +141,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
 					LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
+					loginSuccessScreen.setcookie(cookie); 
 			        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);
 				}
 			});

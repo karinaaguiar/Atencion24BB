@@ -20,6 +20,7 @@ public class HttpConexion extends Thread {
     private String method; // GET or POST
     private plantilla_screen_http ventana;
     private byte[] postData;
+    private boolean esInicio = false; 
   
   //Constructor método get
 	public HttpConexion(String datosAEnviar, String method, plantilla_screen_http screen) {
@@ -27,6 +28,14 @@ public class HttpConexion extends Thread {
 		this.method = method;
 		this.ventana = screen;
 	}
+	
+	public HttpConexion(String datosAEnviar, String method, plantilla_screen_http screen, boolean esInicio ) {
+		this.url = url + datosAEnviar;
+		this.method = method;
+		this.ventana = screen;
+		this.esInicio = esInicio;
+	}
+	
 	
 	//Constructor método post
     public HttpConexion(String method, plantilla_screen_http screen, byte[] postData) {
@@ -145,6 +154,9 @@ public class HttpConexion extends Thread {
             HttpConnection connection = (HttpConnection) Connector.open(url + connectionParameters);
             connection.setRequestMethod(method);
             
+            //Envío Session ID en el cookie, para mantener la sesión 
+            if(!esInicio) connection.setRequestProperty("Cookie", "ASP.NET_SessionId="+ventana.getcookie());
+            
             System.out.println("Se estableció la conexion");
             System.out.println(connectionParameters);
             
@@ -167,6 +179,26 @@ public class HttpConexion extends Thread {
 				return;
 			}
 			
+			
+			//Manejo de cookies para mantener la sesion
+	        if(esInicio)
+			{
+	        	String cookie="";
+	        	String key;
+	            for (int i = 0;(key = connection.getHeaderFieldKey(i)) != null; i++)
+	            {
+	                if (key.equalsIgnoreCase("Set-Cookie"))
+	                {
+	                    cookie = connection.getHeaderField(key);
+	                    System.out.println("Cookie " +cookie);
+	                    cookie = cookie.substring(18, 42);
+	                    System.out.println("Cookie " +cookie);
+	                    ventana.setcookie(cookie);
+	                } 
+	            }  
+	            //"ASP.NET_SessionId=sqokah45sfs4tw55umvfl145; path=/; HttpOnly"
+			}
+	        
 			//GET method. Se lee el response
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			
@@ -180,10 +212,10 @@ public class HttpConexion extends Thread {
 			baos.close();
 			connection.close();
 			System.out.println("Terminó de leer los datos");
-            ventana.llamadaExitosa(new String(baos.toByteArray()));
+			ventana.llamadaExitosa(new String(baos.toByteArray()));
 
         } catch (IOException ex) {
-            ventana.llamadaFallada("Puede que su señal de datos sea debil o no este configurada correctamente");
+            ventana.llamadaFallada("Puede que su señal de datos sea débil o no este configurada correctamente");
             //ventana.llamadaFallada("Error en clase Connection.java: " + ex.toString());
         }
     }    

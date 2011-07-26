@@ -157,22 +157,25 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//llamadaExitosa("");
 		
 		//String medico = sesion.getCodigoMedico();
-		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + codSeleccionado, "GET", this);
+		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
     }
 	
 	public void honPagados(){
         ConsultarHonorariosPagados consultarHonPagados = new ConsultarHonorariosPagados(codSeleccionado);
+        consultarHonPagados.setcookie(this.getcookie());
         UiApplication.getUiApplication().pushScreen(consultarHonPagados);
     }
 	
 	public void honFact(){
         ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(codSeleccionado);
+        consultarHonFacturados.setcookie(this.getcookie());
         UiApplication.getUiApplication().pushScreen(consultarHonFacturados);
     }
 	
 	public void detCaso(){
         ConsultarDetalleDeCaso consultarDetCaso = new ConsultarDetalleDeCaso(codSeleccionado);
+        consultarDetCaso.setcookie(this.getcookie());
         UiApplication.getUiApplication().pushScreen(consultarDetCaso);
     }
 	
@@ -182,7 +185,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//Cuando implemente el web service utilizar codigo de abajo
 		//llamadaExitosa("");
 		
-		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + codSeleccionado, "GET", this);
+		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
     }
 	
@@ -235,7 +238,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			XMLParser envioXml = new XMLParser();
 		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 		    final Hashtable fianzas = envioXml.LeerListadoFianzas(xmlInterno); //xmlInterno
-		    
+		    final String cookie = this.getcookie();  
 		    //En caso de que el servidor haya enviado un error
 		    //El medico no tiene asociada fianzas pendientes
 		    if (fianzas == null)
@@ -252,6 +255,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
+						reporteFianzas.setcookie(cookie);
 				        UiApplication.getUiApplication().pushScreen(reporteFianzas);
 					}
 				});
@@ -267,7 +271,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			XMLParser envioXml = new XMLParser();
 		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 		    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(xmlInterno); //xmlInterno
-		    
+		    final String cookie = this.getcookie();
 		    //En caso de que el servidor haya enviado un error
 		    //La Clínica no posee deuda con el médico
 		    if (edoCta == null)
@@ -284,7 +288,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta);
-				        UiApplication.getUiApplication().pushScreen(EdoCta);
+						EdoCta.setcookie(cookie);
+						UiApplication.getUiApplication().pushScreen(EdoCta);
 					}
 				});
 		    }

@@ -81,7 +81,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		XMLParser envioXml = new XMLParser();
 	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 	    final Vector facturadoUDN = envioXml.LeerHonorariosFacturados(xmlInterno); //xmlInterno
-	    
+	    final String cookie = this.getcookie();
 	    //En caso de que el servidor haya enviado un error
 	    //El medico no facturo honorarios en el rango de fechas indicado
 	    if (facturadoUDN  == null)
@@ -98,7 +98,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
 					HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN, fechaInicial.toString(), fechaFinal.toString());
-			        UiApplication.getUiApplication().pushScreen(honorariosFacturados);
+					honorariosFacturados.setcookie(cookie);
+					UiApplication.getUiApplication().pushScreen(honorariosFacturados);
 				}
 			});
 	    }
@@ -126,7 +127,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 			System.out.println(fechaI);
 			String fechaF = fechaFinal.toString();
 			System.out.println(fechaF);
-			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this);
+			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
 		}
 	}

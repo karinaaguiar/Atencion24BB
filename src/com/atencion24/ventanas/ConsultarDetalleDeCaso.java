@@ -89,7 +89,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		}
 		else{
 			String apellido = apellidoField.getText();
-			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido, "GET", this);
+			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido, "GET", this, false);
 			thread.start();
 		}
 	}
@@ -103,7 +103,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		XMLParser envioXml = new XMLParser();
 	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 	    final Hashtable listadoCasos = envioXml.LeerListadoCasos(xmlInterno); //xmlInterno
-	    
+	    final String cookie = this.getcookie();
 	    //En caso de que el servidor haya enviado un error
 	    //No hay casos asociados al apellido y al medico 
 	    if (listadoCasos == null)
@@ -120,7 +120,8 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
 					ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado);
-			        UiApplication.getUiApplication().pushScreen(listarCasos);
+					listarCasos.setcookie(cookie);
+					UiApplication.getUiApplication().pushScreen(listarCasos);
 				}
 			});
 	    }
