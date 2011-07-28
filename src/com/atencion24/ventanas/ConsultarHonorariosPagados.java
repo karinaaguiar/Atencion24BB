@@ -35,6 +35,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     DateField fechaInicial;
     DateField fechaFinal;
     CustomButtonField verRepor;
+	boolean cerrarSesion = false;
     
     String codSeleccionado;
     int tipoConsulta = 0; //Si vale 0 ->pago en proceso. Si vale 1 -> historico de pagos
@@ -99,73 +100,75 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 	}
 
 	public void llamadaExitosa(String respuesta) {
-		//Consulta Pago en proceso
-		if (tipoConsulta==0)
+		if(cerrarSesion == false)
 		{
-    		//Con el String XML que recibo del servidor debo hacer llamada
-    		//a mi parser XML para que se encargue de darme el 
-    		//XML que me ha enviado el servidor procesado como 
-    		//un objeto de control. 
-			XMLParser envioXml = new XMLParser();
-		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final Pago pagoEnProceso = envioXml.LeerProximoPago(xmlInterno);
-		    final String cookie = this.getcookie();
-		    //En caso de que el servidor haya enviado un error
-		    //No hay pago en proceso (tabla pagoshonorarios vacia)
-		    if (pagoEnProceso == null)
-		    {
-		        final String mostrarError = envioXml.obtenerError();
-		        UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						Dialog.alert(mostrarError);
-					}
-				});
-		    }
-		    else
-		    {
-		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso);
-						honorariosPagadosEnProceso.setcookie(cookie);
-						UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
-					}
-				});
-		    }
+			//Consulta Pago en proceso
+			if (tipoConsulta==0)
+			{
+	    		//Con el String XML que recibo del servidor debo hacer llamada
+	    		//a mi parser XML para que se encargue de darme el 
+	    		//XML que me ha enviado el servidor procesado como 
+	    		//un objeto de control. 
+				XMLParser envioXml = new XMLParser();
+			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+			    final Pago pagoEnProceso = envioXml.LeerProximoPago(xmlInterno);
+			    final String cookie = this.getcookie();
+			    //En caso de que el servidor haya enviado un error
+			    //No hay pago en proceso (tabla pagoshonorarios vacia)
+			    if (pagoEnProceso == null)
+			    {
+			        final String mostrarError = envioXml.obtenerError();
+			        UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							Dialog.alert(mostrarError);
+						}
+					});
+			    }
+			    else
+			    {
+			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso);
+							honorariosPagadosEnProceso.setcookie(cookie);
+							UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
+						}
+					});
+			    }
+			}
+			//Consulta historico de pagos
+			else if (tipoConsulta==1)
+			{
+	    		//Con el String XML que recibo del servidor debo hacer llamada
+	    		//a mi parser XML para que se encargue de darme el 
+	    		//XML que me ha enviado el servidor procesado como 
+	    		//un objeto de control. 
+				XMLParser envioXml = new XMLParser();
+			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+			    final Vector historicoPagos = envioXml.LeerHistoricoPagos(xmlInterno); 
+			    final String cookie = this.getcookie();
+			    //En caso de que el servidor haya enviado un error
+			    //No hay datos (pagos de nomina) entre las fechas indicadas
+			    if (historicoPagos == null)
+			    {
+			        final String mostrarError = envioXml.obtenerError();
+			        UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							Dialog.alert(mostrarError);
+						}
+					});
+			    }
+			    else
+			    {
+			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos, fechaInicial.toString(), fechaFinal.toString());
+							honorariosPagadosHistorico.setcookie(cookie);
+							UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
+						}
+					});
+			    }
+			}
 		}
-		//Consulta historico de pagos
-		else if (tipoConsulta==1)
-		{
-    		//Con el String XML que recibo del servidor debo hacer llamada
-    		//a mi parser XML para que se encargue de darme el 
-    		//XML que me ha enviado el servidor procesado como 
-    		//un objeto de control. 
-			XMLParser envioXml = new XMLParser();
-		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final Vector historicoPagos = envioXml.LeerHistoricoPagos(xmlInterno); 
-		    final String cookie = this.getcookie();
-		    //En caso de que el servidor haya enviado un error
-		    //No hay datos (pagos de nomina) entre las fechas indicadas
-		    if (historicoPagos == null)
-		    {
-		        final String mostrarError = envioXml.obtenerError();
-		        UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						Dialog.alert(mostrarError);
-					}
-				});
-		    }
-		    else
-		    {
-		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos, fechaInicial.toString(), fechaFinal.toString());
-						honorariosPagadosHistorico.setcookie(cookie);
-						UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
-					}
-				});
-		    }
-		}
-
 	}
 
 	public void llamadaFallada(String respuesta) {
@@ -237,6 +240,9 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			cerrarSesion = true;
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}

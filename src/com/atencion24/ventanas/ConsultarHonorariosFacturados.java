@@ -29,6 +29,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
     DateField fechaInicial;
     DateField fechaFinal;
     CustomButtonField verRepor;
+    boolean cerrarSesion = false;
     
     String codSeleccionado;
     
@@ -74,36 +75,39 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 
 	public void llamadaExitosa(String respuesta) 
 	{
-		//Con el String XML que recibo del servidor debo hacer llamada
-		//a mi parser XML para que se encargue de darme el 
-		//XML que me ha enviado el servidor procesado como 
-		//un objeto de control. 
-		XMLParser envioXml = new XMLParser();
-	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Vector facturadoUDN = envioXml.LeerHonorariosFacturados(xmlInterno); //xmlInterno
-	    final String cookie = this.getcookie();
-	    //En caso de que el servidor haya enviado un error
-	    //El medico no facturo honorarios en el rango de fechas indicado
-	    if (facturadoUDN  == null)
-	    {
-	        final String mostrarError = envioXml.obtenerError();
-	        UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					Dialog.alert(mostrarError);
-				}
-			});
-	    }
-	    else
-	    {
-	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN, fechaInicial.toString(), fechaFinal.toString());
-					honorariosFacturados.setcookie(cookie);
-					UiApplication.getUiApplication().pushScreen(honorariosFacturados);
-				}
-			});
-	    }
 		
+		if(cerrarSesion == false)
+		{
+
+			//a mi parser XML para que se encargue de darme el 
+			//XML que me ha enviado el servidor procesado como 
+			//un objeto de control. 
+			XMLParser envioXml = new XMLParser();
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Vector facturadoUDN = envioXml.LeerHonorariosFacturados(xmlInterno); //xmlInterno
+		    final String cookie = this.getcookie();
+		    //En caso de que el servidor haya enviado un error
+		    //El medico no facturo honorarios en el rango de fechas indicado
+		    if (facturadoUDN  == null)
+		    {
+		        final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert(mostrarError);
+					}
+				});
+		    }
+		    else
+		    {
+		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN, fechaInicial.toString(), fechaFinal.toString());
+						honorariosFacturados.setcookie(cookie);
+						UiApplication.getUiApplication().pushScreen(honorariosFacturados);
+					}
+				});
+		    }
+		}
 	}
 
 	public void llamadaFallada(String respuesta) {
@@ -145,6 +149,9 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			cerrarSesion = true;
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}

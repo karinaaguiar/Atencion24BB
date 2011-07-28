@@ -3,6 +3,7 @@ package com.atencion24.ventanas;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import com.atencion24.control.HttpConexion;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
@@ -20,7 +21,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public class HonorariosFacturados extends plantilla_screen {
+public class HonorariosFacturados extends plantilla_screen_http {
 
 	static Vector facturado;
 	String fechaI; 
@@ -97,6 +98,8 @@ public class HonorariosFacturados extends plantilla_screen {
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}
@@ -131,6 +134,16 @@ public class HonorariosFacturados extends plantilla_screen {
 				cerrarSesion();
 			}
 		});
+	}
+
+	public void llamadaExitosa(String respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void llamadaFallada(String respuesta) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

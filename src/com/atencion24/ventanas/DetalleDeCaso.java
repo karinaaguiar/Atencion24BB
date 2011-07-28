@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import com.atencion24.control.Caso;
 import com.atencion24.control.Honorario;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
@@ -29,7 +30,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
 
-public class DetalleDeCaso extends plantilla_screen implements FieldChangeListener{
+public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeListener{
 
 	static Caso caso;
 	int posBotonPresionado = 0;
@@ -331,6 +332,8 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}
@@ -379,5 +382,15 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 				cerrarSesion();
 			}
 		});
+	}
+
+	public void llamadaExitosa(String respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void llamadaFallada(String respuesta) {
+		// TODO Auto-generated method stub
+		
 	}
 }

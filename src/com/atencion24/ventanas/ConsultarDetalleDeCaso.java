@@ -30,6 +30,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	BitmapField logoField;
 	EditField apellidoField;
 	CustomButtonField consultarButtom;
+	boolean cerrarSesion = false;
 	
 	String codSeleccionado;
 	
@@ -96,35 +97,38 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	
 	public void llamadaExitosa(String respuesta) 
 	{
-		//Con el String XML que recibo del servidor debo hacer llamada
-		//a mi parser XML para que se encargue de darme el 
-		//XML que me ha enviado el servidor procesado como 
-		//un objeto de control. 
-		XMLParser envioXml = new XMLParser();
-	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Hashtable listadoCasos = envioXml.LeerListadoCasos(xmlInterno); //xmlInterno
-	    final String cookie = this.getcookie();
-	    //En caso de que el servidor haya enviado un error
-	    //No hay casos asociados al apellido y al medico 
-	    if (listadoCasos == null)
-	    {
-	        final String mostrarError = envioXml.obtenerError();
-	        UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					Dialog.alert(mostrarError);
-				}
-			});
-	    }
-	    else
-	    {
-	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado);
-					listarCasos.setcookie(cookie);
-					UiApplication.getUiApplication().pushScreen(listarCasos);
-				}
-			});
-	    }
+		if(cerrarSesion == false)
+		{	
+			//Con el String XML que recibo del servidor debo hacer llamada
+			//a mi parser XML para que se encargue de darme el 
+			//XML que me ha enviado el servidor procesado como 
+			//un objeto de control. 
+			XMLParser envioXml = new XMLParser();
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Hashtable listadoCasos = envioXml.LeerListadoCasos(xmlInterno); //xmlInterno
+		    final String cookie = this.getcookie();
+		    //En caso de que el servidor haya enviado un error
+		    //No hay casos asociados al apellido y al medico 
+		    if (listadoCasos == null)
+		    {
+		        final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert(mostrarError);
+					}
+				});
+		    }
+		    else
+		    {
+		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado);
+						listarCasos.setcookie(cookie);
+						UiApplication.getUiApplication().pushScreen(listarCasos);
+					}
+				});
+		    }
+		}
 	}
 
 	public void llamadaFallada(String respuesta) {
@@ -145,6 +149,9 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			cerrarSesion = true;
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}

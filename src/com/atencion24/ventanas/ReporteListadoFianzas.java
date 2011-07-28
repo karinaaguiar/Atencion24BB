@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import com.atencion24.control.Fianza;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
@@ -23,7 +24,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
 
-public class ReporteListadoFianzas extends plantilla_screen implements FieldChangeListener {
+public class ReporteListadoFianzas extends plantilla_screen_http implements FieldChangeListener {
 
 	static Hashtable fianzas;
 	static final int diferenciaEnDias = 1;
@@ -269,6 +270,8 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}
@@ -292,6 +295,16 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 				cerrarSesion();
 			}
 		});
+	}
+
+	public void llamadaExitosa(String respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void llamadaFallada(String respuesta) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

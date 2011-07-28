@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import com.atencion24.control.Deduccion;
+import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Pago;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
@@ -40,7 +41,7 @@ import net.rim.device.api.ui.component.SeparatorField;
  * botonesF -> Arreglo de CustomButtonTable (Contiene todos los elementos expandibles del reporte del nivel superior) 
  * 
  */
-public class HonorariosPagadosHistorico extends plantilla_screen implements FieldChangeListener {
+public class HonorariosPagadosHistorico extends plantilla_screen_http implements FieldChangeListener {
 
 	static Vector pagos;
 	
@@ -285,6 +286,8 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}
@@ -319,6 +322,16 @@ public class HonorariosPagadosHistorico extends plantilla_screen implements Fiel
 				cerrarSesion();
 			}
 		});
+	}
+
+	public void llamadaExitosa(String respuesta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void llamadaFallada(String respuesta) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 	

@@ -38,6 +38,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 	
 	static Sesion sesion;
 	String codSeleccionado;
+	boolean cerrarSesion = false;
 	
 	int reporteElegido;
 	
@@ -195,6 +196,9 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			cerrarSesion = true;
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}
@@ -229,70 +233,73 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 
 	public void llamadaExitosa(String respuesta) {
 		//Si el usuario eligio consultar el reporte Listado de Fianzas
-		if (reporteElegido ==5)
+		if(cerrarSesion == false)
 		{
-			//Con el String XML que recibo del servidor debo hacer llamada
-    		//a mi parser XML para que se encargue de darme el 
-    		//XML que me ha enviado el servidor procesado como 
-    		//un objeto de control. 
-			XMLParser envioXml = new XMLParser();
-		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final Hashtable fianzas = envioXml.LeerListadoFianzas(xmlInterno); //xmlInterno
-		    final String cookie = this.getcookie();  
-		    //En caso de que el servidor haya enviado un error
-		    //El medico no tiene asociada fianzas pendientes
-		    if (fianzas == null)
-		    {
-		        final String mostrarError = envioXml.obtenerError();
-		        UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						Dialog.alert(mostrarError);
-					}
-				});
-		    }
-		    else
-		    {
-		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
-						reporteFianzas.setcookie(cookie);
-				        UiApplication.getUiApplication().pushScreen(reporteFianzas);
-					}
-				});
-		    }
-		}
-		//Si el usuario eligio consultar el reporte Estado de Cuenta
-		if (reporteElegido ==1)
-		{
-			//Con el String XML que recibo del servidor debo hacer llamada
-    		//a mi parser XML para que se encargue de darme el 
-    		//XML que me ha enviado el servidor procesado como 
-    		//un objeto de control. 
-			XMLParser envioXml = new XMLParser();
-		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-		    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(xmlInterno); //xmlInterno
-		    final String cookie = this.getcookie();
-		    //En caso de que el servidor haya enviado un error
-		    //La Clínica no posee deuda con el médico
-		    if (edoCta == null)
-		    {
-		        final String mostrarError = envioXml.obtenerError();
-		        UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						Dialog.alert(mostrarError);
-					}
-				});
-		    }
-		    else
-		    {
-		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta);
-						EdoCta.setcookie(cookie);
-						UiApplication.getUiApplication().pushScreen(EdoCta);
-					}
-				});
-		    }
+			if (reporteElegido ==5)
+			{
+				//Con el String XML que recibo del servidor debo hacer llamada
+	    		//a mi parser XML para que se encargue de darme el 
+	    		//XML que me ha enviado el servidor procesado como 
+	    		//un objeto de control. 
+				XMLParser envioXml = new XMLParser();
+			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+			    final Hashtable fianzas = envioXml.LeerListadoFianzas(xmlInterno); //xmlInterno
+			    final String cookie = this.getcookie();  
+			    //En caso de que el servidor haya enviado un error
+			    //El medico no tiene asociada fianzas pendientes
+			    if (fianzas == null)
+			    {
+			        final String mostrarError = envioXml.obtenerError();
+			        UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							Dialog.alert(mostrarError);
+						}
+					});
+			    }
+			    else
+			    {
+			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
+							reporteFianzas.setcookie(cookie);
+					        UiApplication.getUiApplication().pushScreen(reporteFianzas);
+						}
+					});
+			    }
+			}
+			//Si el usuario eligio consultar el reporte Estado de Cuenta
+			if (reporteElegido ==1)
+			{
+				//Con el String XML que recibo del servidor debo hacer llamada
+	    		//a mi parser XML para que se encargue de darme el 
+	    		//XML que me ha enviado el servidor procesado como 
+	    		//un objeto de control. 
+				XMLParser envioXml = new XMLParser();
+			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+			    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(xmlInterno); //xmlInterno
+			    final String cookie = this.getcookie();
+			    //En caso de que el servidor haya enviado un error
+			    //La Clínica no posee deuda con el médico
+			    if (edoCta == null)
+			    {
+			        final String mostrarError = envioXml.obtenerError();
+			        UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							Dialog.alert(mostrarError);
+						}
+					});
+			    }
+			    else
+			    {
+			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta);
+							EdoCta.setcookie(cookie);
+							UiApplication.getUiApplication().pushScreen(EdoCta);
+						}
+					});
+			    }
+			}
 		}
 	}
 

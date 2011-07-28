@@ -33,6 +33,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 	static Hashtable casos;
 	String codSeleccionado;
 	static final int diferenciaEnDias = 1;
+	boolean cerrarSesion = false;
 	
     Manager _bodyWrapper;
     Manager _currentBody;
@@ -103,22 +104,25 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 
 	public void llamadaExitosa(String respuesta) 
 	{
-		//Con el String XML que recibo del servidor debo hacer llamada
-		//a mi parser XML para que se encargue de darme el 
-		//XML que me ha enviado el servidor procesado como 
-		//un objeto de control. 
-		XMLParser envioXml = new XMLParser();
-	    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
-	    final Caso caso = envioXml.LeerCaso(xmlInterno); //xmlInterno
-	    final String cookie = this.getcookie();
-	    //En este caso el servidor no puede enviar error
-    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-			public void run() {
-				DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
-		        ventanaCaso.setcookie(cookie);
-				UiApplication.getUiApplication().pushScreen(ventanaCaso);
-			}
-		});
+		if(cerrarSesion == false)
+		{
+			//Con el String XML que recibo del servidor debo hacer llamada
+			//a mi parser XML para que se encargue de darme el 
+			//XML que me ha enviado el servidor procesado como 
+			//un objeto de control. 
+			XMLParser envioXml = new XMLParser();
+		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+		    final Caso caso = envioXml.LeerCaso(xmlInterno); //xmlInterno
+		    final String cookie = this.getcookie();
+		    //En este caso el servidor no puede enviar error
+	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+				public void run() {
+					DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
+			        ventanaCaso.setcookie(cookie);
+					UiApplication.getUiApplication().pushScreen(ventanaCaso);
+				}
+			});
+		}
 	}
 
 	public void llamadaFallada(String respuesta) {
@@ -159,6 +163,9 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		if (dialog == Dialog.YES)
 		{
 			//Debería hacer cierre de sesion
+			HttpConexion thread = new HttpConexion("/cerrarSesion", "GET", this, false);
+			cerrarSesion = true;
+			thread.start();
 			Dialog.alert("Hasta luego!");
 			System.exit(0);
 		}
