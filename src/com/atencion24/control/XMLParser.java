@@ -16,6 +16,10 @@ import net.rim.device.api.xml.parsers.DocumentBuilderFactory;
  * @author Karina
  *
  */
+/**
+ * @author Karina
+ *
+ */
 public class XMLParser {
 	
 	String error = "";
@@ -53,57 +57,53 @@ public class XMLParser {
     }
 
 
-    public Sesion LeerXMLInicio(String xmlSource) {        
-    	Sesion usu = new Sesion();
-    	try 
-        {   
-            String nombre;
-            String apellido;
-            Vector CodigoMedico = new Vector();
-            String nombreUsuario;
-            
-        	Document documento = PreprocesarXML(xmlSource);
-        	Element elemento = documento.getDocumentElement();
-        	elemento.normalize();
-        	String tag = elemento.getNodeName();
-        	System.out.println(tag);
-        	
-        	if(tag.equals("error"))
-        	{
-        		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
-        			this.error = "Clave inválida";
-        		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))	
-        			this.error = "El nombre de usuario que ingresó no existe";
-                return null;
-        	}	
-
-        	System.out.println(elemento.getChildNodes().getLength());
-            NodeList nodoUsuario = elemento.getChildNodes();
-            nombre = nodoUsuario.item(0).getChildNodes().item(0).getNodeValue(); 
-            System.out.println(nodoUsuario.item(0).getNodeName());
-            System.out.println(nombre);
-            apellido = nodoUsuario.item(1).getChildNodes().item(0).getNodeValue(); 
-            System.out.println(nodoUsuario.item(1).getNodeName());
-            System.out.println(apellido);
-            
-            CodigoPago codpago;
-            codpago = new CodigoPago(nodoUsuario.item(2).getChildNodes().item(0).getNodeValue(), "Karina Aguiar");
-            CodigoMedico.addElement(codpago);
-            codpago = new CodigoPago("123", "Sociedad medica X");
-            CodigoMedico.addElement(codpago);
-            codpago = new CodigoPago("563", "Anestesiologos");
-            CodigoMedico.addElement(codpago);      
-            
-            nombreUsuario = nodoUsuario.item(3).getChildNodes().item(0).getNodeValue(); 
-            System.out.println(nodoUsuario.item(3).getNodeName());
-            System.out.println(nombreUsuario);
-            usu = new Sesion(nombre,apellido,CodigoMedico,nombreUsuario);
-        } 
-        catch ( Exception e ) 
-        {
-            System.out.println( "Error: "+e.toString() );
-        }
-		return usu;
+    /**
+     * Método encargado de procesar el XML de respuesta para el Inicio de Sesión
+     * @param xmlSource
+     * @return Sesion con datos del usuario loggeado
+     */
+    public Sesion LeerXMLInicio(String xmlSource) 
+    {        
+    	Sesion usuario = new Sesion();
+        Vector CodigosMedico = new Vector();
+        CodigoPago codigoMedico = new CodigoPago(); 
+        
+    	Document documento = PreprocesarXML(xmlSource);
+    	Element elemento = documento.getDocumentElement();
+    	elemento.normalize();
+    	String tag = elemento.getNodeName();
+    	System.out.println(tag);
+    	
+    	if(tag.equals("error"))
+    	{
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+    			this.error = "Clave inválida";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))	
+    			this.error = "El nombre de usuario que ingresó no existe";
+            return null;
+    	}	
+    	
+    	NodeList nodoUsuario = elemento.getChildNodes();
+    	System.out.println(xmlSource);
+        //Nombre Usuario
+    	usuario.setNombre(nodoUsuario.item(0).getChildNodes().item(0).getNodeValue());
+    	
+    	//Codigos de pago
+    	if(nodoUsuario.getLength()==2)
+    	{
+	        NodeList nodoCodigos = nodoUsuario.item(1).getChildNodes();
+	        for( int i =0 ; i < nodoCodigos.getLength(); i++ )
+	        {
+	        	NodeList nodoCodigo = nodoCodigos.item(i).getChildNodes();
+	        	codigoMedico = new CodigoPago();
+	        	codigoMedico.setCodigo(nodoCodigo.item(0).getChildNodes().item(0).getNodeValue());
+	        	codigoMedico.setNombre(nodoCodigo.item(1).getChildNodes().item(0).getNodeValue());
+	        	CodigosMedico.addElement(codigoMedico);
+	        }	
+	        usuario.setCodigoMedico(CodigosMedico);
+    	}
+    		
+		return usuario;
     }
     
     /**

@@ -90,17 +90,6 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		else{
 			String usuario = nombreusuarioField.getText();
 			String clave = passwordField.getText();
-			/*Vector CodigoMedico = new Vector();
-			CodigoPago codpago;
-            codpago = new CodigoPago("124", "Karina Aguiar");
-            CodigoMedico.addElement(codpago);
-            codpago = new CodigoPago("123", "Sociedad medica X");
-            CodigoMedico.addElement(codpago);
-            codpago = new CodigoPago("563", "Anestesiologos");
-            CodigoMedico.addElement(codpago);  
-			Sesion usu = new Sesion("Karina", "Aguiar", CodigoMedico, "c"); 
-			LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
-	        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);*/
 			HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this, true);
 			thread.start();
 		}

@@ -1,11 +1,15 @@
 package com.atencion24.ventanas;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
+import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Font;
@@ -21,6 +25,7 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 public class EstadoDeCuentaAntiguedadSaldo extends plantilla_screen
 {
 	static EstadoCuentaAS edoCuenta;
+	static final int diferenciaEnDias = 1;
 	
 	ListStyleButtonSet contenido   = new ListStyleButtonSet();
     VerticalFieldManager fieldManager;
@@ -31,6 +36,14 @@ public class EstadoDeCuentaAntiguedadSaldo extends plantilla_screen
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Estado de Cuenta");
 		super.changeTitulo();
+		
+		//El reporte corresponde a los datos cargados hasta ayer 
+		Date fechaActual = Calendar.getInstance().getTime();
+		long tiempoActual = fechaActual.getTime();
+		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
+		Date fechaAyer = new Date(tiempoActual - unDia);
+		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
+		super.setSubTitulo("(" + ayer +")");
 		super.changeSubTitulo();
 		
 		edoCuenta = edoCta;

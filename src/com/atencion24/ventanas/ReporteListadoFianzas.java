@@ -1,5 +1,7 @@
 package com.atencion24.ventanas;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -12,13 +14,11 @@ import com.atencion24.interfaz.ListStyleButtonSet;
 
 import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -26,6 +26,7 @@ import net.rim.device.api.ui.component.SeparatorField;
 public class ReporteListadoFianzas extends plantilla_screen implements FieldChangeListener {
 
 	static Hashtable fianzas;
+	static final int diferenciaEnDias = 1;
 	
 	int posBotonPresionado = 0;
 	
@@ -43,10 +44,16 @@ public class ReporteListadoFianzas extends plantilla_screen implements FieldChan
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Fianzas Pendientes");
 		super.changeTitulo();
-        DateField fecha = new DateField("", System.currentTimeMillis(), new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT);                        
-        long date = fecha.getDate();
-		super.setSubTitulo("(" + String.valueOf(date) +")");
+        
+		//El reporte corresponde a los datos cargados hasta ayer 
+		Date fechaActual = Calendar.getInstance().getTime();
+		long tiempoActual = fechaActual.getTime();
+		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
+		Date fechaAyer = new Date(tiempoActual - unDia);
+		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
+		super.setSubTitulo("(" + ayer +")");
 		super.changeSubTitulo();
+		
 		fianzas = listaFianzas;
 		
 		//Inserto los managers donde irá el reporte.

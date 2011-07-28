@@ -61,7 +61,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//ojo con NO_VERTICAL_SCROLL
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		sesion = ses;
-		super.setTitulo("Bienvenido " +sesion.getNombre() + " " + sesion.getApellido());
+		super.setTitulo("Bienvenido " +sesion.getNombre());
 		super.changeTitulo();
 		super.changeSubTitulo();
 		
@@ -95,7 +95,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 				i++;
 			}	
 			codPagos = new ObjectChoiceField("Códigos de pago:", nombresCodigosAsociados,0);
-			//codPagos.setChangeListener(this);
+			codPagos.setChangeListener(this);
 			foreground.add(codPagos);
 			foreground.add(new SpacerField());
 			foreground.add(new SpacerField());

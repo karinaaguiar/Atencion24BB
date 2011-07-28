@@ -1,5 +1,7 @@
 package com.atencion24.ventanas;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -12,6 +14,7 @@ import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
+import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -30,6 +33,7 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 
 	static Caso caso;
 	int posBotonPresionado = 0;
+	static final int diferenciaEnDias = 1;
 	
 	Manager foreground = new ForegroundManager();
 	ListStyleButtonSet contenido   = new ListStyleButtonSet();
@@ -47,6 +51,14 @@ public class DetalleDeCaso extends plantilla_screen implements FieldChangeListen
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
 		super.changeTitulo();
+		
+		//El reporte corresponde a los datos cargados hasta ayer 
+		Date fechaActual = Calendar.getInstance().getTime();
+		long tiempoActual = fechaActual.getTime();
+		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
+		Date fechaAyer = new Date(tiempoActual - unDia);
+		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
+		super.setSubTitulo("(" + ayer +")");
 		super.changeSubTitulo();
 		
 		caso = detalleCaso;
