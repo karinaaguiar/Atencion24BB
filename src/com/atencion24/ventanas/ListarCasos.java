@@ -115,13 +115,32 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		    final Caso caso = envioXml.LeerCaso(xmlInterno); //xmlInterno
 		    final String cookie = this.getcookie();
 		    //En este caso el servidor no puede enviar error
-	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
-			        ventanaCaso.setcookie(cookie);
-					UiApplication.getUiApplication().pushScreen(ventanaCaso);
-				}
-			});
+		    
+		    if (caso == null)
+		    {
+		        final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert(mostrarError);
+						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
+						{	
+							UiApplication.getUiApplication().popScreen((UiApplication.getUiApplication().getActiveScreen().getScreenBelow()).getScreenBelow()); 							irInicio();
+							V_InicioSesion loginpage = new V_InicioSesion();
+							UiApplication.getUiApplication().pushScreen(loginpage);
+						}
+					}
+				});
+		    }
+		    else
+		    {	
+		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
+				        ventanaCaso.setcookie(cookie);
+						UiApplication.getUiApplication().pushScreen(ventanaCaso);
+					}
+				});
+		    }
 		}
 	}
 

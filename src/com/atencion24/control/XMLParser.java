@@ -161,6 +161,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "Aún no se han generado pagos a su nombre para la próxima nómina";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 
@@ -199,6 +201,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "No existen pagos en el rango de fechas indicado";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 
@@ -292,6 +296,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "No existen casos asociados al apellido ingresado";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 
@@ -321,6 +327,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "No existen casos asociados al apellido ingresado";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 
@@ -380,6 +388,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "Usted no posee fianzas pendientes";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 
@@ -410,8 +420,10 @@ public class XMLParser {
     	
     	if(tag.equals("error"))
     	{
-    		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
+            if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "La Clínica actualmente no tiene deudas con usted";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 
@@ -451,6 +463,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "Usted no facturó honorarios en el rango de fechas ingresado";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
+    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
     	}	
 

@@ -121,6 +121,13 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			        UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
 							Dialog.alert(mostrarError);
+							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
+							{	
+								UiApplication.getUiApplication().popScreen(UiApplication.getUiApplication().getActiveScreen().getScreenBelow()); 
+								irInicio();
+								V_InicioSesion loginpage = new V_InicioSesion();
+								UiApplication.getUiApplication().pushScreen(loginpage);
+							}
 						}
 					});
 			    }
@@ -154,6 +161,13 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			        UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
 							Dialog.alert(mostrarError);
+							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
+							{	
+								UiApplication.getUiApplication().popScreen(UiApplication.getUiApplication().getActiveScreen().getScreenBelow()); 
+								irInicio();
+								V_InicioSesion loginpage = new V_InicioSesion();
+								UiApplication.getUiApplication().pushScreen(loginpage);
+							}
 						}
 					});
 			    }

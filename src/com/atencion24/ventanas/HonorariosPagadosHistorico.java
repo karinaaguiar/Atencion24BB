@@ -100,7 +100,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen_http implements
     	while (listadoPagos.hasMoreElements()) 
     	{
     		pago = (Pago) listadoPagos.nextElement();
-    		info = new InformacionNivel(plus, pago.getFechaPago(), pago.getMontoNeto()+ " Bs", 3, new int[] {size-count});
+    		info = new InformacionNivel(plus, pago.getFechaPago(), pago.getMontoNeto(), 3, new int[] {size-count});
     		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
@@ -125,7 +125,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen_http implements
 	    try {
             FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font boldFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt).derive(Font.BOLD);
-            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Fecha", " Monto", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus("   Fecha", " Monto Bs", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(boldFont);
             contenido.add(encabezado);
 	    }
@@ -243,7 +243,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen_http implements
                 	info.setHijo(new Hashtable());
     	            InformacionNivel infohijo;
     	            int posicion = 0 ; 
-    	            infohijo = new InformacionNivel("Monto Liberado:" , pago.getMontoLiberado()+ " Bs", 0, new int[] {posicion});
+    	            infohijo = new InformacionNivel("Monto Liberado:" , pago.getMontoLiberado(), 0, new int[] {posicion});
     	            info.getHijo().put(new Integer(posicion), infohijo);
     	            
     	            Enumeration deducciones = pago.getDeducciones().elements();
@@ -252,7 +252,7 @@ public class HonorariosPagadosHistorico extends plantilla_screen_http implements
     	            {
     	            	posicion ++;
     	            	deduccion = (Deduccion) deducciones.nextElement();
-    	            	infohijo = new InformacionNivel(deduccion.getConcepto() + ":" , "-" + deduccion.getMonto()+ " Bs", 0, new int[] {posicion});
+    	            	infohijo = new InformacionNivel(deduccion.getConcepto() + ":" , "-" + deduccion.getMonto(), 0, new int[] {posicion});
     	                info.getHijo().put(new Integer(posicion),infohijo);
     	            }	
             	}

@@ -55,10 +55,10 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
 		foreground.add(contenido);
         add(foreground);
         
-        crearReporte();
+        crearReporte(ayer);
 	}
 	
-	public void crearReporte()
+	public void crearReporte(String ayer)
     {
         contenido.deleteAll();
         fieldManager = new VerticalFieldManager();
@@ -68,12 +68,12 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
             //Encabezado
-            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Al " + pago.getFechaPago()," ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            CustomButtonTableNotFocus encabezado = new CustomButtonTableNotFocus(" Al " + ayer, "Monto Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             
             //Monto liberado
-            CustomButtonTable botonS = new CustomButtonTable("Monto Liberado:", pago.getMontoLiberado() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            CustomButtonTable botonS = new CustomButtonTable("Monto Liberado:", pago.getMontoLiberado() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             botonS.setFont(appFont);
             fieldManager.add(botonS);
             
@@ -82,12 +82,12 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
             while (deducciones.hasMoreElements())
             {
             	Deduccion deduccion = (Deduccion) deducciones.nextElement();
-            	boton = new CustomButtonTable(deduccion.getConcepto()+ ": ", "-" + deduccion.getMonto() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            	boton = new CustomButtonTable(deduccion.getConcepto()+ ": ", "-" + deduccion.getMonto() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
                 boton.setFont(appFont);
                 fieldManager.add(boton);
             }
             //Monto neto 
-            encabezado = new CustomButtonTableNotFocus("Monto neto:", pago.getMontoNeto() + " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus("Monto neto:", pago.getMontoNeto() , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             

@@ -70,37 +70,37 @@ public class EstadoDeCuentaAntiguedadSaldo extends plantilla_screen_http
             CustomButtonTableNotFocus encabezado;
             
             //Encabezado
-            encabezado = new CustomButtonTableNotFocus(" Antigüedad ", "Monto" , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus(" Antigüedad ", "Monto Bs " , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             
             //Deuda A 30 dias
-            CustomButtonTable botonS = new CustomButtonTable(" A 30 días:", edoCuenta.getA30dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            CustomButtonTable botonS = new CustomButtonTable(" A 30 días:", edoCuenta.getA30dias() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             botonS.setFont(appFont);
             fieldManager.add(botonS);
             
             //Deuda A 60 dias
-            boton = new CustomButtonTable(" A 60 días:", edoCuenta.getA60dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" De 31 a 60 días:", edoCuenta.getA60dias(), 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
             //Deuda A 90 dias
-            boton = new CustomButtonTable(" A 90 días:", edoCuenta.getA90dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" De 61 a 90 días:", edoCuenta.getA90dias() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
             //Deuda A 180 dias
-            boton = new CustomButtonTable(" A 180 días:", edoCuenta.getA180dias() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" De 91 a 180 días:", edoCuenta.getA180dias() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
             //Deuda A mas 180 dias
-            boton = new CustomButtonTable(" A más de 180 días:", edoCuenta.getMas180() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" A más de 180 días:", edoCuenta.getMas180() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
             //Total Deuda
-            encabezado = new CustomButtonTableNotFocus(" Total deuda:", edoCuenta.getTotalDeuda() + " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus(" Total deuda:", edoCuenta.getTotalDeuda() , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             

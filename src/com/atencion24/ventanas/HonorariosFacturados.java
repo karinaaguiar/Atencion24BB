@@ -62,27 +62,27 @@ public class HonorariosFacturados extends plantilla_screen_http {
             Enumeration detallefact = facturado.elements();
             
             //Encabezado
-            encabezado = new CustomButtonTableNotFocus(" Unidad de Negocio ", "Monto" , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus(" Unidad de Negocio ", "Monto Bs " , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             
-            CustomButtonTable botonS = new CustomButtonTable(" Hospitalización:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            CustomButtonTable botonS = new CustomButtonTable(" Hospitalización:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             botonS.setFont(appFont);
             fieldManager.add(botonS);
             
-            boton = new CustomButtonTable(" Emergencia:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" Emergencia:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
-            boton = new CustomButtonTable(" Cirugía Ambulatoria:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" Cirugía Ambulatoria:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
-            boton = new CustomButtonTable(" Convenios:", detallefact.nextElement() + " Bs ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" Convenios:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             
-            encabezado = new CustomButtonTableNotFocus(" Total facturado:", detallefact.nextElement()+ " Bs ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus(" Total facturado:", detallefact.nextElement()+ " ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             

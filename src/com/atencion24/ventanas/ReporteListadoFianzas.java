@@ -80,7 +80,7 @@ public class ReporteListadoFianzas extends plantilla_screen_http implements Fiel
     	while (listadoFianzas.hasMoreElements()) 
     	{
     		fianza = (Fianza) listadoFianzas.nextElement();
-    		info = new InformacionNivel(plus, " Caso", fianza.getNroCaso(), 3, new int[] {size-count});
+    		info = new InformacionNivel(plus, fianza.getPaciente() , fianza.getFechaEmisionFactura(), 3, new int[] {size-count});
     		informacionNivelSuperior.addElement(info);
     		count --;
     	}	
@@ -212,35 +212,31 @@ public class ReporteListadoFianzas extends plantilla_screen_http implements Fiel
 			            Fianza fianza = (Fianza) fianzas.get(new Integer(pos[0]));
 			            
 			            //Fecha Emision
-			            infohijo = new InformacionNivel(check, "Fecha emisión:", fianza.getFechaEmisionFactura(), 0, new int[] {pos[0],0});
+			            infohijo = new InformacionNivel(check, "Caso:", fianza.getNroCaso(), 0, new int[] {pos[0],0});
 		                info.getHijo().put(new Integer(0), infohijo);
 		                
-		                //Paciente
-			            infohijo = new InformacionNivel(check, "Paciente:", fianza.getPaciente(), 0, new int[] {pos[0],1});
-		                info.getHijo().put(new Integer(1), infohijo);
-		                
 		                //Monto a cobrar
-			            infohijo = new InformacionNivel(check, "Monto a cobrar:", fianza.getMontoACobrar()+ " Bs", 0, new int[] {pos[0],2});
+			            infohijo = new InformacionNivel(check, "Monto a cobrar:", fianza.getMontoACobrar(), 0, new int[] {pos[0],1});
 		                info.getHijo().put(new Integer(2), infohijo);
 		        		
 		                //Monto abonado
-			            infohijo = new InformacionNivel(check, "Monto abonado:", fianza.getMontoAbonado()+ " Bs", 0, new int[] {pos[0],3});
+			            infohijo = new InformacionNivel(check, "Monto abonado:", fianza.getMontoAbonado(), 0, new int[] {pos[0],2});
 		                info.getHijo().put(new Integer(3), infohijo);
 		                
 		                //Monto reintegro 
-			            infohijo = new InformacionNivel(check, "Monto reintegro:", fianza.getMontoReintegro()+ " Bs", 0, new int[] {pos[0],4});
+			            infohijo = new InformacionNivel(check, "Monto reintegro:", fianza.getMontoReintegro(), 0, new int[] {pos[0],3});
 		                info.getHijo().put(new Integer(4), infohijo);
 		                
 		                //Monto notas crédito 
-			            infohijo = new InformacionNivel(check, "Monto notas crédito:", fianza.getMontoNotasCred()+ " Bs", 0, new int[] {pos[0],5});
+			            infohijo = new InformacionNivel(check, "Monto notas crédito:", fianza.getMontoNotasCred(), 0, new int[] {pos[0],4});
 		                info.getHijo().put(new Integer(5), infohijo);
 		                
 		                //Monto notas débito
-			            infohijo = new InformacionNivel(check, "Monto notas débito:", fianza.getMontoNotasDeb()+ " Bs", 0, new int[] {pos[0],6});
+			            infohijo = new InformacionNivel(check, "Monto notas débito:", fianza.getMontoNotasDeb(), 0, new int[] {pos[0],5});
 		                info.getHijo().put(new Integer(6), infohijo);
 		                
 		                //Monto neto
-			            infohijo = new InformacionNivel(check, "Monto neto:", fianza.getMontoNeto() + " Bs", 0, new int[] {pos[0],7});
+			            infohijo = new InformacionNivel(check, "Monto neto:", fianza.getMontoNeto(), 0, new int[] {pos[0],6});
 		                info.getHijo().put(new Integer(7), infohijo);
 		        	}
 		        }	

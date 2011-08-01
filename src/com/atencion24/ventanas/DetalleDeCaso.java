@@ -92,23 +92,23 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
 		informacionNivelSuperior.addElement(info);		
     	
     	//Honorarios (Unico campo desplegable)
-		info = new InformacionNivel(plus,"Honorarios: ", "", 2, new int[] {3});
+		info = new InformacionNivel(plus,"Honorarios: ", " ", 2, new int[] {3});
 		informacionNivelSuperior.addElement(info);		
 		
 		//Total Facturado
-		info = new InformacionNivel(check, "Total Facturado: ", caso.getMontoFacturado() + " Bs", 0, new int[] {4});
+		info = new InformacionNivel(check, "Total Facturado: ", caso.getMontoFacturado(), 0, new int[] {4});
 		informacionNivelSuperior.addElement(info);		
 		
 		//Total Exonerado
-		info = new InformacionNivel(check, "Total Exonerado: ", caso.getMontoExonerado()+ " Bs", 0, new int[] {5});
+		info = new InformacionNivel(check, "Total Exonerado: ", caso.getMontoExonerado(), 0, new int[] {5});
 		informacionNivelSuperior.addElement(info);
 		
 		//Total Abonado
-		info = new InformacionNivel(check, "Total Abonado: ", caso.getMontoAbonado()+ " Bs", 0, new int[] {6});
+		info = new InformacionNivel(check, "Total Abonado: ", caso.getMontoAbonado(), 0, new int[] {6});
 		informacionNivelSuperior.addElement(info);
 		
 		//Total Deuda
-		info = new InformacionNivel(check, "Total Deuda: ", caso.getTotalDeuda()+ " Bs", 0, new int[] {7});
+		info = new InformacionNivel(check, "Total Deuda: ", caso.getTotalDeuda(), 0, new int[] {7});
 		informacionNivelSuperior.addElement(info);
 		
     	crearReporte();
@@ -292,16 +292,16 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
 		        		Honorario honorario = (Honorario) caso.getHonorarios().get(posNivel);
 		        	    
 		        		//Monto Facturado
-		        		infohijo = new InformacionNivel("Facturado: ", honorario.getMontoFacturado() + " Bs", 0, new int[] {3,posicionNivel,0},2);
+		        		infohijo = new InformacionNivel("Facturado: ", honorario.getMontoFacturado() , 0, new int[] {3,posicionNivel,0},2);
 		        		hijoPresionado.getHijo().put(new Integer(0), infohijo);
 		        		//Monto Exonerado
-		        		infohijo = new InformacionNivel("Exonerado: ", honorario.getMontoExonerado() + " Bs", 0, new int[] {3,posicionNivel,1},2);
+		        		infohijo = new InformacionNivel("Exonerado: ", honorario.getMontoExonerado() , 0, new int[] {3,posicionNivel,1},2);
 		        		hijoPresionado.getHijo().put(new Integer(1), infohijo);
 		        		//Monto Abonado
-		        		infohijo = new InformacionNivel("Abonado: ", honorario.getMontoAbonado()+ " Bs", 0, new int[] {3,posicionNivel,2},2);
+		        		infohijo = new InformacionNivel("Abonado: ", honorario.getMontoAbonado(), 0, new int[] {3,posicionNivel,2},2);
 		        		hijoPresionado.getHijo().put(new Integer(2), infohijo);
 		        		//Deuda
-		        		infohijo = new InformacionNivel("Deuda: ", honorario.getTotalDeuda()+ " Bs", 0, new int[] {3,posicionNivel,3},2);
+		        		infohijo = new InformacionNivel("Deuda: ", honorario.getTotalDeuda(), 0, new int[] {3,posicionNivel,3},2);
 		        		hijoPresionado.getHijo().put(new Integer(3), infohijo);
 		        	}
 		        }

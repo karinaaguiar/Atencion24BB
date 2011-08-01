@@ -228,16 +228,16 @@ public class InformacionNivel {
             case (3): if(this.getIcono()!=null)
   		  			  {
             			if(tabulacion != 0)
-                			botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0xAB0303/*0x400000*/, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+                			botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0xE50505/*0xCD0505/*0x400000*/, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			else
-            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0xAB0303, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+            				botones[0] = new CustomButtonTable(this.getIcono(), this.getNombre(), this.valor, 0xE50505, Color.LIGHTYELLOW, 0x600808 , Color.LIGHTYELLOW, 0x600808, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
             			break;
   		  			  }
             		  else {
             			  if(tabulacion != 0)
-            				  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xAB0303, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
+            				  botones[0] = new CustomButtonTable(this.getNombre(), this.valor, 0xE50505, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos, this.tabulacion);
             			  else
-                			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor,0xAB0303, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
+                			  botones[0] = new CustomButtonTable(this.getNombre(), this.valor,0xE50505, Color.LIGHTYELLOW, 0x600808, Color.LIGHTYELLOW, 0xA06B6B, Field.USE_ALL_WIDTH, 0xBBBBBB, nivel, this.pos);
               		  	  break;
             		  } 
             case (2): if(this.getIcono()!=null)
