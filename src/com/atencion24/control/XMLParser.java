@@ -80,6 +80,8 @@ public class XMLParser {
     			this.error = "Clave inválida";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))	
     			this.error = "El nombre de usuario que ingresó no existe";
+            if(elemento.getChildNodes().item(0).getNodeValue().equals("3"))	
+    			this.error = "Excedió el número de intentos. Su usuario será bloqueado por 20 minutos";
             return null;
     	}	
     	

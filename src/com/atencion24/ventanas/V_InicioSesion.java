@@ -36,6 +36,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	PasswordEditField passwordField;
 	LabelField passwordLabel;
 	CustomButtonField accederButtom;
+	boolean primeraVez = true;
 	
 	
 	/**
@@ -90,8 +91,16 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		else{
 			String usuario = nombreusuarioField.getText();
 			String clave = passwordField.getText();
-			HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this, true);
-			thread.start();
+			if(primeraVez)
+			{
+				HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this, true);
+				thread.start();
+			}
+			else
+			{
+				HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
+				thread.start();
+			}
 		}
 			
 	}
@@ -107,6 +116,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 
 	public void llamadaExitosa( String result)
 	{
+		primeraVez = false;
 		System.out.println("stoy en llamada exitosa");
 		System.out.println("Respuesta servidor orignal "+ result);
 		XMLParser envioXml = new XMLParser();
