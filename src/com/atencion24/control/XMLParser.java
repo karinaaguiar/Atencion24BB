@@ -81,9 +81,11 @@ public class XMLParser {
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))	
     			this.error = "El nombre de usuario que ingresó no existe";
             if(elemento.getChildNodes().item(0).getNodeValue().equals("3"))	
-    			this.error = "Excedió el número de intentos. Su usuario será bloqueado por 20 minutos";
-            if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
-    			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    			this.error = "Excedió el número de intentos. Su usuario será bloqueado por algunos minutos";
+            if(elemento.getChildNodes().item(0).getNodeValue().equals("4"))	
+    			this.error = "Su usuario está bloqueado por exceder el máximo número de intentos establecidos para iniciar sesión. Espere unos minutos";
+            if(elemento.getChildNodes().item(0).getNodeValue().equals("502"))
+            	this.error = "502";
             return null;
     	}	
     	

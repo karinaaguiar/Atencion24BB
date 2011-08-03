@@ -129,11 +129,28 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    if (usu == null)
 	    {
 	        final String mostrarError = envioXml.obtenerError();
-	        UiApplication.getUiApplication().invokeLater(new Runnable() {
-				public void run() {
-					Dialog.alert(mostrarError);
-				}
-			});
+	        if(!(mostrarError.equals("502")))
+	        {	
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert(mostrarError);
+					}
+				});
+	        }
+	        else 
+	        {
+	        	nombreusuarioField.setText("");
+				passwordField.setText("");
+				primeraVez = true;
+				setcookie("");
+	        	UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						Dialog.alert("Su usuario ha sido desbloqueado. Intente iniciar sesión nuevamente");
+						
+					}
+				});
+	        	
+	        }
 	    }
 	    else
 	    {

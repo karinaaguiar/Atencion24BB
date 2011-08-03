@@ -56,7 +56,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     ListStyleButtonField detCaso;
     ListStyleButtonField listFianzas;
 	
-	
+    public LoginSuccessScreen() {super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );}
+
 	public LoginSuccessScreen(Sesion ses) 
 	{
 		//ojo con NO_VERTICAL_SCROLL
@@ -204,6 +205,12 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		}
 	}
 
+	public boolean onClose ()
+	{
+		cerrarSesion();
+		return true;
+	}
+	
 	public void setCodSeleccionado(){
 		codSeleccionado = (String) ((CodigoPago)sesion.getCodigoMedico().elementAt(codPagos.getSelectedIndex())).getCodigo();
 	}
