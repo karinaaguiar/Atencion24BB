@@ -117,6 +117,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 						Dialog.alert(mostrarError);
 						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 						{	
+							UiApplication.getUiApplication().popScreen((UiApplication.getUiApplication().getActiveScreen().getScreenBelow()).getScreenBelow()); 
 							UiApplication.getUiApplication().popScreen(UiApplication.getUiApplication().getActiveScreen().getScreenBelow()); 
 							irInicio();
 							V_InicioSesion loginpage = new V_InicioSesion();
