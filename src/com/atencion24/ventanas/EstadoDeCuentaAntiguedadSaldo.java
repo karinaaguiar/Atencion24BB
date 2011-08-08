@@ -94,8 +94,13 @@ public class EstadoDeCuentaAntiguedadSaldo extends plantilla_screen_http
             boton.setFont(appFont);
             fieldManager.add(boton);
             
+            //Deuda A 360 dias
+            boton = new CustomButtonTable(" De 181 a 360 días:", edoCuenta.getA360dias() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton.setFont(appFont);
+            fieldManager.add(boton);
+            
             //Deuda A mas 180 dias
-            boton = new CustomButtonTable(" A más de 180 días:", edoCuenta.getMas180() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" A más de 360 días:", edoCuenta.getMas360() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             

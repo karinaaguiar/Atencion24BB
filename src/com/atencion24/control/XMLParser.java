@@ -447,11 +447,14 @@ public class XMLParser {
         //Deuda a 180 días 
         edocta.setA180dias(nodoEstadoCtaAS.item(3).getChildNodes().item(0).getNodeValue());
         
-        //Deuda a más 180 días 
-        edocta.setMas180(nodoEstadoCtaAS.item(4).getChildNodes().item(0).getNodeValue());
+        //Deuda a 360 días 
+        edocta.setA360dias(nodoEstadoCtaAS.item(4).getChildNodes().item(0).getNodeValue());
+        
+        //Deuda a más 360 días 
+        edocta.setMas360(nodoEstadoCtaAS.item(5).getChildNodes().item(0).getNodeValue());
         
         //Deuda total 
-        edocta.setTotalDeuda(nodoEstadoCtaAS.item(5).getChildNodes().item(0).getNodeValue());
+        edocta.setTotalDeuda(nodoEstadoCtaAS.item(6).getChildNodes().item(0).getNodeValue());
         
 		return edocta;
 	}
