@@ -65,7 +65,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
         gridFieldManager.add(apellidoLabel);
         gridFieldManager.add(apellidoField);
         add(gridFieldManager);
-        
+
         add(new SpacerField());
         add(new SpacerField());
         add(new SpacerField());
@@ -78,6 +78,26 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		
 	}
 	
+    public static String replaceAll(String source, String pattern,String replacement)
+    {
+        if(source == null) return "";
+
+        StringBuffer    buffer = new StringBuffer();
+        int             idx = -1;
+        int             patIdx = 0;
+
+        while ((idx = source.indexOf(pattern, patIdx)) != -1)
+        {
+            buffer.append(source.substring(patIdx, idx));
+            buffer.append(replacement);
+            patIdx = idx + pattern.length();
+        }
+
+        buffer.append(source.substring(patIdx));
+
+        return buffer.toString();
+    }
+
 	public void consultarListadoDeCaso()
 	{
 		//Por ahora llamo directo a llamadaExitosa luego será
@@ -90,7 +110,8 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		}
 		else{
 			String apellido = apellidoField.getText();
-			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido, "GET", this, false);
+			String apellido1 =  replaceAll(apellido, " ", "_");
+			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido1, "GET", this, false);
 			thread.start();
 		}
 	}
