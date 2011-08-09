@@ -23,6 +23,7 @@ import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomLabelField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
 
 public class ConsultarDetalleDeCaso extends plantilla_screen_http implements FieldChangeListener {
@@ -34,6 +35,8 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	
 	String codSeleccionado;
 	
+    PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
+    
 	ConsultarDetalleDeCaso(String codSeleccionado) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
@@ -113,6 +116,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 			String apellido1 =  replaceAll(apellido, " ", "_");
 			HttpConexion thread = new HttpConexion("/consultarListadoDeCaso?medico_tb=" + codSeleccionado + "&apellido_tb=" + apellido1, "GET", this, false);
 			thread.start();
+			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 	}
 	
@@ -135,6 +139,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		        final String mostrarError = envioXml.obtenerError();
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						Dialog.alert(mostrarError);
 						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 						{	
@@ -151,6 +156,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		    {
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado);
 						listarCasos.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(listarCasos);

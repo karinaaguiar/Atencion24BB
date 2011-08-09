@@ -8,6 +8,7 @@ import com.atencion24.control.HttpConexion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.i18n.SimpleDateFormat;
@@ -32,6 +33,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
     boolean cerrarSesion = false;
     
     String codSeleccionado;
+    
+    PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
     
 	ConsultarHonorariosFacturados(String codSeleccionado) 
 	{
@@ -93,6 +96,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		        final String mostrarError = envioXml.obtenerError();
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						Dialog.alert(mostrarError);
 						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 						{	
@@ -109,6 +113,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		    {
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN, fechaInicial.toString(), fechaFinal.toString());
 						honorariosFacturados.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(honorariosFacturados);
@@ -141,6 +146,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 			System.out.println(fechaF);
 			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
+			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 	}
 	

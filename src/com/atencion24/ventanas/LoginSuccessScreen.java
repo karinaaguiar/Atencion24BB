@@ -16,6 +16,7 @@ import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
 import com.atencion24.interfaz.ListStyleButtonField;
 import com.atencion24.interfaz.ListStyleButtonSet;
+import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.system.Bitmap;
@@ -55,6 +56,8 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     ListStyleButtonField honFact;
     ListStyleButtonField detCaso;
     ListStyleButtonField listFianzas;
+    
+    PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
 	
     public LoginSuccessScreen() {super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );}
 
@@ -161,6 +164,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//String medico = sesion.getCodigoMedico();
 		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
+		UiApplication.getUiApplication().pushModalScreen(wait);
     }
 	
 	public void honPagados(){
@@ -189,6 +193,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		
 		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
+		UiApplication.getUiApplication().pushModalScreen(wait);
     }
 	
 	public void cerrarSesion ()
@@ -259,6 +264,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			        final String mostrarError = envioXml.obtenerError();
 			        UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 							{	
@@ -274,6 +280,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			    {
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
 							reporteFianzas.setcookie(cookie);
 					        UiApplication.getUiApplication().pushScreen(reporteFianzas);
@@ -299,6 +306,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			        final String mostrarError = envioXml.obtenerError();
 			        UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 							{	
@@ -314,6 +322,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			    {
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta);
 							EdoCta.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(EdoCta);

@@ -8,6 +8,7 @@ import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.ui.Color;
@@ -38,6 +39,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	CustomButtonField accederButtom;
 	boolean primeraVez = true;
 	
+	PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
 	
 	/**
 	 * Constructor de la ventana inicio de sesión
@@ -101,6 +103,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 				HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
 				thread.start();
 			}
+			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 			
 	}
@@ -133,6 +136,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	        {	
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						Dialog.alert(mostrarError);
 					}
 				});
@@ -145,6 +149,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 				setcookie("");
 	        	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						Dialog.alert("Su usuario ha sido desbloqueado. Intente iniciar sesión nuevamente");
 						
 					}
@@ -156,6 +161,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    {
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
+					UiApplication.getUiApplication().popScreen(wait);
 					LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
 					loginSuccessScreen.setcookie(cookie); 
 			        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);
@@ -167,6 +173,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	public void llamadaFallada(final String error){
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 			public void run() {
+				UiApplication.getUiApplication().popScreen(wait);
 				Dialog.alert("Error de conexión: " + error);
 			}
 		}); 

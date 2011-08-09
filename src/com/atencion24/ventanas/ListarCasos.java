@@ -27,6 +27,7 @@ import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonField;
 import com.atencion24.interfaz.ListStyleButtonSet;
 import com.atencion24.interfaz.NegativeMarginVerticalFieldManager;
+import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 
 public class ListarCasos extends plantilla_screen_http implements FieldChangeListener {
 
@@ -41,6 +42,8 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
     BitmapField bitmapField;
    
     ListStyleButtonField [] botones;
+    
+    PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
 	
 	ListarCasos(Hashtable listadoCasos, String codSeleccionado) 
 	{
@@ -121,6 +124,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		        final String mostrarError = envioXml.obtenerError();
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						Dialog.alert(mostrarError);
 						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 						{	
@@ -137,6 +141,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		    {	
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
+						UiApplication.getUiApplication().popScreen(wait);
 						DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
 				        ventanaCaso.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(ventanaCaso);
@@ -162,6 +167,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		String udn = caso.getUnidadNegocio();
 		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb=" + codSeleccionado + "&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this, false);
 		thread.start();
+		UiApplication.getUiApplication().pushModalScreen(wait);
 	}
 	
 	public void fieldChanged(Field field, int context) {

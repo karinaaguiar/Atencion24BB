@@ -25,6 +25,7 @@ import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
 import com.atencion24.interfaz.CustomRadioButtom;
 import com.atencion24.interfaz.GridFieldManager;
+import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
 
 public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
@@ -45,6 +46,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     int insertIndex;
     GridFieldManager gridFieldManager;
     SpacerField nulo;
+    
+    PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
     
 	ConsultarHonorariosPagados(String codSeleccionado) 
 	{
@@ -120,6 +123,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			        final String mostrarError = envioXml.obtenerError();
 			        UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 							{	
@@ -136,6 +140,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			    {
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso);
 							honorariosPagadosEnProceso.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
@@ -161,6 +166,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			        final String mostrarError = envioXml.obtenerError();
 			        UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
 							{	
@@ -176,6 +182,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			    {
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
 							HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos, fechaInicial.toString(), fechaFinal.toString());
 							honorariosPagadosHistorico.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
@@ -208,6 +215,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			System.out.println(fechaF);
 			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
+			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 			
 	}
@@ -220,6 +228,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		//llamadaExitosa("");
 		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
+		UiApplication.getUiApplication().pushModalScreen(wait);
 	}
 	
 	
