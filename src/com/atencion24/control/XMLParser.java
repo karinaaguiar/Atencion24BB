@@ -138,14 +138,21 @@ public class XMLParser {
 	        	Deducciones.addElement(deduccion);
 	        }	
 	        pago.setDeducciones(Deducciones);
+	        
+	        //Monto Neto
+	        pago.setMontoNeto(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
+	        
+	        //Fecha Pago 
+	        pago.setFechaPago(nodoPago.item(3).getChildNodes().item(0).getNodeValue());
     	}
-    	
-        //Monto Neto
-        pago.setMontoNeto(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
-        
-        //Fecha Pago 
-        pago.setFechaPago(nodoPago.item(3).getChildNodes().item(0).getNodeValue());
-        		
+    	else
+    	{
+	        //Monto Neto
+	        pago.setMontoNeto(nodoPago.item(1).getChildNodes().item(0).getNodeValue());
+	        
+	        //Fecha Pago 
+	        pago.setFechaPago(nodoPago.item(2).getChildNodes().item(0).getNodeValue());
+    	}		
 		return pago;
     }
     
@@ -207,6 +214,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "No existen pagos en el rango de fechas indicado";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))
+    			this.error = "Debe refinar el criterio de búsqueda";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
@@ -263,7 +272,7 @@ public class XMLParser {
         	//totalDeuda
         	caso.setTotalDeuda(nodoCaso.item(9).getChildNodes().item(0).getNodeValue());
     		
-    		//Deducciones
+    		//Honorarios
         	if (nodoCaso.getLength()==11)
         	{	
 	            NodeList nodoHonorarios = nodoCaso.item(10).getChildNodes();
@@ -365,15 +374,14 @@ public class XMLParser {
     	//Monto Abonado 
 		fianza.setMontoAbonado(nodoFianza.item(4).getChildNodes().item(0).getNodeValue());
     	
-		//montoFacturado
+		//montoReintegro
 		fianza.setMontoReintegro(nodoFianza.item(5).getChildNodes().item(0).getNodeValue());
     	
-    	//montoExonerado
+    	//montoNotasCred
 		fianza.setMontoNotasCred(nodoFianza.item(6).getChildNodes().item(0).getNodeValue());
     	
-    	//montoAbonado
+    	//montoNotasDeb
 		fianza.setMontoNotasDeb(nodoFianza.item(7).getChildNodes().item(0).getNodeValue());
-		
 		
 		//Monto Deuda 
 		fianza.setMontoNeto(nodoFianza.item(8).getChildNodes().item(0).getNodeValue());
