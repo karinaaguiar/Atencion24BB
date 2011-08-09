@@ -49,7 +49,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		try{
 			FontFamily familiaFont = FontFamily.forName("BBAlpha Serif");
 			Font boldFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt).derive(Font.BOLD);
-			CustomLabelField label = new CustomLabelField("  Introduzca el apellido del paciente: " , 0x400000, Color.WHITE, 0);
+			CustomLabelField label = new CustomLabelField("  Introduzca el nombre del paciente: " , 0x400000, Color.WHITE, 0);
 			label.setFont(boldFont);
 			add(label);
 		}catch (ClassNotFoundException e){}
@@ -58,8 +58,8 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		add(new SpacerField());
         add(new SpacerField());
 		//Campos Nombre de usuario y clave
-		apellidoField = new EditField("", "", 20, EditField.NO_NEWLINE);
-		LabelField apellidoLabel = new LabelField("Apellido: ", Field.FIELD_LEFT);
+		apellidoField = new EditField("", "", 50, EditField.NO_NEWLINE);
+		LabelField apellidoLabel = new LabelField("Nombre: ", Field.FIELD_LEFT);
 
         GridFieldManager gridFieldManager = new GridFieldManager(2, 0);
         gridFieldManager.add(apellidoLabel);

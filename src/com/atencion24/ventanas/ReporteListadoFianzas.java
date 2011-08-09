@@ -52,7 +52,7 @@ public class ReporteListadoFianzas extends plantilla_screen_http implements Fiel
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
 		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
-		super.setSubTitulo("(" + ayer +")");
+		super.setSubTitulo("Al " + ayer +"");
 		super.changeSubTitulo();
 		
 		fianzas = listaFianzas;

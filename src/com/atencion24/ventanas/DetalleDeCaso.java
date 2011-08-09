@@ -50,7 +50,7 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
 	public DetalleDeCaso(Caso detalleCaso) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
-		super.setTitulo("Detalle de un caso");
+		super.setTitulo("Detalle del caso al");
 		super.changeTitulo();
 		
 		//El reporte corresponde a los datos cargados hasta ayer 
@@ -59,7 +59,7 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
 		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
-		super.setSubTitulo("(" + ayer +")");
+		super.setSubTitulo(" " + ayer +" ");
 		super.changeSubTitulo();
 		
 		caso = detalleCaso;

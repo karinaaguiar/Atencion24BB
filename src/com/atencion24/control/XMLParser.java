@@ -302,6 +302,8 @@ public class XMLParser {
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "No existen casos asociados al apellido ingresado";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))
+    			this.error = "Debe refinar el criterio de búsqueda";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
