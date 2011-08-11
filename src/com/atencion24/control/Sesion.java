@@ -5,6 +5,7 @@ import java.util.Vector;
 public class Sesion {
 
 	private String nombre;
+	private String fechaAct;
 	private Vector codigoMedico;
 
 	public Sesion(){}
@@ -29,6 +30,14 @@ public class Sesion {
 	
 	public void setCodigoMedico(Vector codigosPago) {
 		this.codigoMedico = codigosPago;
+	}
+
+	public void setFechaAct(String fechaAct) {
+		this.fechaAct = fechaAct;
+	}
+
+	public String getFechaAct() {
+		return fechaAct;
 	}
 
 }

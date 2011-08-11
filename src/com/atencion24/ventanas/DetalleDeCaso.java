@@ -1,7 +1,7 @@
 package com.atencion24.ventanas;
 
-import java.util.Calendar;
-import java.util.Date;
+//import java.util.Calendar;
+//import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -15,7 +15,7 @@ import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
-import net.rim.device.api.i18n.SimpleDateFormat;
+//import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -47,19 +47,22 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
     Bitmap arrow = Bitmap.getBitmapResource("com/atencion24/imagenes/arrow_vino.png");
     Bitmap check = Bitmap.getBitmapResource("com/atencion24/imagenes/check_vinotinto.png");
     
-	public DetalleDeCaso(Caso detalleCaso) 
+	public DetalleDeCaso(Caso detalleCaso, String fechaAct) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
-		super.setTitulo("Detalle del caso al");
+		super.setTitulo("Detalle del caso");
 		super.changeTitulo();
 		
 		//El reporte corresponde a los datos cargados hasta ayer 
-		Date fechaActual = Calendar.getInstance().getTime();
+		/*Date fechaActual = Calendar.getInstance().getTime();
 		long tiempoActual = fechaActual.getTime();
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
 		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
 		super.setSubTitulo(" " + ayer +" ");
+		super.changeSubTitulo();*/
+		
+		super.setSubTitulo("Al " + fechaAct +" ");
 		super.changeSubTitulo();
 		
 		caso = detalleCaso;
@@ -79,36 +82,41 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
 	public void llenarVectorInformacionNivelSup()
 	{
     	InformacionNivel info;
+    	
+    	//Fecha emisión de la factura del caso
+		info = new InformacionNivel(check, "Fecha de emisión: ", caso.getFechaEmisionFactura(), 0, new int[] {0});
+		informacionNivelSuperior.addElement(info);
+		
     	//Nombre del paciente
-		info = new InformacionNivel(check, "Paciente: ", caso.getNombrePaciente(), 0, new int[] {0});
+		info = new InformacionNivel(check, "Paciente: ", caso.getNombrePaciente(), 0, new int[] {1});
 		informacionNivelSuperior.addElement(info);
 		
 		//Cédula del paciente
-		info = new InformacionNivel(check, "CI Paciente: ", caso.getCiPaciente(), 0, new int[] {1});
+		info = new InformacionNivel(check, "CI Paciente: ", caso.getCiPaciente(), 0, new int[] {2});
 		informacionNivelSuperior.addElement(info);
 		
 		//Responsable de pago
-		info = new InformacionNivel(check, "Responsable: ", caso.getResponsablePago(), 0, new int[] {2});
+		info = new InformacionNivel(check, "Responsable: ", caso.getResponsablePago(), 0, new int[] {3});
 		informacionNivelSuperior.addElement(info);		
     	
     	//Honorarios (Unico campo desplegable)
-		info = new InformacionNivel(plus,"Honorarios: ", " ", 2, new int[] {3});
+		info = new InformacionNivel(plus,"Honorarios: ", " ", 2, new int[] {4});
 		informacionNivelSuperior.addElement(info);		
 		
 		//Total Facturado
-		info = new InformacionNivel(check, "Total Facturado: ", caso.getMontoFacturado(), 0, new int[] {4});
+		info = new InformacionNivel(check, "Total Facturado: ", caso.getMontoFacturado(), 0, new int[] {5});
 		informacionNivelSuperior.addElement(info);		
 		
 		//Total Exonerado
-		info = new InformacionNivel(check, "Total Exonerado: ", caso.getMontoExonerado(), 0, new int[] {5});
+		info = new InformacionNivel(check, "Total Exonerado: ", caso.getMontoExonerado(), 0, new int[] {6});
 		informacionNivelSuperior.addElement(info);
 		
 		//Total Abonado
-		info = new InformacionNivel(check, "Total Abonado: ", caso.getMontoAbonado(), 0, new int[] {6});
+		info = new InformacionNivel(check, "Total Abonado: ", caso.getMontoAbonado(), 0, new int[] {7});
 		informacionNivelSuperior.addElement(info);
 		
 		//Total Deuda
-		info = new InformacionNivel(check, "Total Deuda: ", caso.getTotalDeuda(), 0, new int[] {7});
+		info = new InformacionNivel(check, "Total Deuda: ", caso.getTotalDeuda(), 0, new int[] {8});
 		informacionNivelSuperior.addElement(info);
 		
     	crearReporte();
@@ -234,9 +242,9 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
     		{
     			int[] pos = botonPulsado.obtenerPosicion();
     			//Si presione el boton de honorarios
-    			if(pos[0]==3)
+    			if(pos[0]==4)
     			{
-    				InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(3);
+    				InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(4);
     				if (info.isMostrar()) 
     	            {
     	            	info.setMostrar(false);
@@ -257,13 +265,13 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
     		        	    while(honorarios.hasMoreElements())
     		        	    {
     		        	    	honorario = (Honorario) honorarios.nextElement();
-    			            	infohijo = new InformacionNivel(arrow, honorario.getNombre(), "", 1, new int[] {3,count},1);
+    			            	infohijo = new InformacionNivel(arrow, honorario.getNombre(), "", 1, new int[] {4,count},1);
     			                info.getHijo().put(new Integer(count), infohijo);
     			                count++;
     		        	    }	
     		        	}
     		        }	
-    		        informacionNivelSuperior.setElementAt(info,3);
+    		        informacionNivelSuperior.setElementAt(info,4);
     		        crearParteMenu();  
     			}
     		}
@@ -273,7 +281,7 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
     			int posicionNivel = pos[1];
     			Integer posNivel  = new Integer(posicionNivel); 
     			
-    			InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(3);
+    			InformacionNivel info = (InformacionNivel) informacionNivelSuperior.elementAt(4);
     			InformacionNivel hijoPresionado = (InformacionNivel) info.getHijo().get(posNivel); 
     			if (hijoPresionado.isMostrar()) 
 	            {
@@ -292,22 +300,22 @@ public class DetalleDeCaso extends plantilla_screen_http implements FieldChangeL
 		        		Honorario honorario = (Honorario) caso.getHonorarios().get(posNivel);
 		        	    
 		        		//Monto Facturado
-		        		infohijo = new InformacionNivel("Facturado: ", honorario.getMontoFacturado() , 0, new int[] {3,posicionNivel,0},2);
+		        		infohijo = new InformacionNivel("Facturado: ", honorario.getMontoFacturado() , 0, new int[] {4,posicionNivel,0},2);
 		        		hijoPresionado.getHijo().put(new Integer(0), infohijo);
 		        		//Monto Exonerado
-		        		infohijo = new InformacionNivel("Exonerado: ", honorario.getMontoExonerado() , 0, new int[] {3,posicionNivel,1},2);
+		        		infohijo = new InformacionNivel("Exonerado: ", honorario.getMontoExonerado() , 0, new int[] {4,posicionNivel,1},2);
 		        		hijoPresionado.getHijo().put(new Integer(1), infohijo);
 		        		//Monto Abonado
-		        		infohijo = new InformacionNivel("Abonado: ", honorario.getMontoAbonado(), 0, new int[] {3,posicionNivel,2},2);
+		        		infohijo = new InformacionNivel("Abonado: ", honorario.getMontoAbonado(), 0, new int[] {4,posicionNivel,2},2);
 		        		hijoPresionado.getHijo().put(new Integer(2), infohijo);
 		        		//Deuda
-		        		infohijo = new InformacionNivel("Deuda: ", honorario.getTotalDeuda(), 0, new int[] {3,posicionNivel,3},2);
+		        		infohijo = new InformacionNivel("Deuda: ", honorario.getTotalDeuda(), 0, new int[] {4,posicionNivel,3},2);
 		        		hijoPresionado.getHijo().put(new Integer(3), infohijo);
 		        	}
 		        }
     			info.getHijo().remove(posNivel);
     			info.getHijo().put(posNivel, hijoPresionado);
-		        informacionNivelSuperior.setElementAt(info,3);
+		        informacionNivelSuperior.setElementAt(info,4);
 		        crearParteMenu();  
     		}
     	}	

@@ -34,10 +34,11 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 	boolean cerrarSesion = false;
 	
 	String codSeleccionado;
+	String fechaAct;
 	
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
     
-	ConsultarDetalleDeCaso(String codSeleccionado) 
+	ConsultarDetalleDeCaso(String codSeleccionado, String fechaAct) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Detalle de un caso");
@@ -45,6 +46,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		super.changeSubTitulo();
 		
 		this.codSeleccionado = codSeleccionado;
+		this.fechaAct = fechaAct;
 		
 		add(new SpacerField());
 		add(new SeparatorField());
@@ -157,7 +159,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						UiApplication.getUiApplication().popScreen(wait);
-						ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado);
+						ListarCasos listarCasos = new ListarCasos(listadoCasos, codSeleccionado, fechaAct);
 						listarCasos.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(listarCasos);
 					}

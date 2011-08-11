@@ -1,7 +1,7 @@
 package com.atencion24.ventanas;
 
-import java.util.Calendar;
-import java.util.Date;
+//import java.util.Calendar;
+//import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -13,7 +13,7 @@ import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.control.InformacionNivel;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
-import net.rim.device.api.i18n.SimpleDateFormat;
+//import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -40,19 +40,22 @@ public class ReporteListadoFianzas extends plantilla_screen_http implements Fiel
     Bitmap minus = Bitmap.getBitmapResource("com/atencion24/imagenes/minus_blanco.png");
     Bitmap check = Bitmap.getBitmapResource("com/atencion24/imagenes/check_vinotinto.png");
     
-	ReporteListadoFianzas(Hashtable listaFianzas) 
+	ReporteListadoFianzas(Hashtable listaFianzas, String fechaAct ) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Fianzas Pendientes");
 		super.changeTitulo();
         
 		//El reporte corresponde a los datos cargados hasta ayer 
-		Date fechaActual = Calendar.getInstance().getTime();
+		/*Date fechaActual = Calendar.getInstance().getTime();
 		long tiempoActual = fechaActual.getTime();
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
 		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
 		super.setSubTitulo("Al " + ayer +"");
+		super.changeSubTitulo();*/
+		
+		super.setSubTitulo("Al " + fechaAct +"");
 		super.changeSubTitulo();
 		
 		fianzas = listaFianzas;

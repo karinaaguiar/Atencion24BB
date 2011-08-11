@@ -94,10 +94,13 @@ public class XMLParser {
         //Nombre Usuario
     	usuario.setNombre(nodoUsuario.item(0).getChildNodes().item(0).getNodeValue());
     	
+    	//Fecha actualizacion BD
+    	usuario.setFechaAct(nodoUsuario.item(1).getChildNodes().item(0).getNodeValue());
+    	
     	//Codigos de pago
-    	if(nodoUsuario.getLength()==2)
+    	if(nodoUsuario.getLength()==3)
     	{
-	        NodeList nodoCodigos = nodoUsuario.item(1).getChildNodes();
+	        NodeList nodoCodigos = nodoUsuario.item(2).getChildNodes();
 	        for( int i =0 ; i < nodoCodigos.getLength(); i++ )
 	        {
 	        	NodeList nodoCodigo = nodoCodigos.item(i).getChildNodes();
@@ -215,7 +218,7 @@ public class XMLParser {
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
     			this.error = "No existen pagos en el rango de fechas indicado";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))
-    			this.error = "Debe refinar el criterio de búsqueda";
+    			this.error = "Debe acotar el rango de fechas de la búsqueda";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
             return null;
@@ -460,11 +463,14 @@ public class XMLParser {
         //Deuda a 360 días 
         edocta.setA360dias(nodoEstadoCtaAS.item(4).getChildNodes().item(0).getNodeValue());
         
+        //Deuda a 720 días 
+        edocta.setA720dias(nodoEstadoCtaAS.item(5).getChildNodes().item(0).getNodeValue());
+        
         //Deuda a más 360 días 
-        edocta.setMas360(nodoEstadoCtaAS.item(5).getChildNodes().item(0).getNodeValue());
+        edocta.setMas720(nodoEstadoCtaAS.item(6).getChildNodes().item(0).getNodeValue());
         
         //Deuda total 
-        edocta.setTotalDeuda(nodoEstadoCtaAS.item(6).getChildNodes().item(0).getNodeValue());
+        edocta.setTotalDeuda(nodoEstadoCtaAS.item(7).getChildNodes().item(0).getNodeValue());
         
 		return edocta;
 	}

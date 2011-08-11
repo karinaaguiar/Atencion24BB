@@ -1,11 +1,11 @@
 package com.atencion24.ventanas;
 
-import java.util.Calendar;
-import java.util.Date;
+//import java.util.Calendar;
+//import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import net.rim.device.api.i18n.SimpleDateFormat;
+//import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -33,6 +33,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 
 	static Hashtable casos;
 	String codSeleccionado;
+	String fechaAct;
 	static final int diferenciaEnDias = 1;
 	boolean cerrarSesion = false;
 	
@@ -45,23 +46,27 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
     
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
 	
-	ListarCasos(Hashtable listadoCasos, String codSeleccionado) 
+	ListarCasos(Hashtable listadoCasos, String codSeleccionado, String fechaAct) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Listado de casos");
 		super.changeTitulo();
 		
 		//El reporte corresponde a los datos cargados hasta ayer 
-		Date fechaActual = Calendar.getInstance().getTime();
+		/*Date fechaActual = Calendar.getInstance().getTime();
 		long tiempoActual = fechaActual.getTime();
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
 		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
 		super.setSubTitulo("(" + ayer +")");
+		super.changeSubTitulo();*/
+		
+		super.setSubTitulo("Al " + fechaAct +"");
 		super.changeSubTitulo();
 		
 		casos = listadoCasos;
 		this.codSeleccionado = codSeleccionado;
+		this.fechaAct = fechaAct;
 		
 		//Cambiar el font de la aplicación
 		try 
@@ -142,7 +147,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						UiApplication.getUiApplication().popScreen(wait);
-						DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso);
+						DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso, fechaAct);
 				        ventanaCaso.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(ventanaCaso);
 					}

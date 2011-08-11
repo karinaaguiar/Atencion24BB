@@ -1,7 +1,7 @@
 package com.atencion24.ventanas;
 
-import java.util.Calendar;
-import java.util.Date;
+//import java.util.Calendar;
+//import java.util.Date;
 
 import com.atencion24.control.EstadoCuentaAS;
 import com.atencion24.control.HttpConexion;
@@ -10,7 +10,7 @@ import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
-import net.rim.device.api.i18n.SimpleDateFormat;
+//import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Font;
@@ -32,20 +32,24 @@ public class EstadoDeCuentaAntiguedadSaldo extends plantilla_screen_http
     VerticalFieldManager fieldManager;
 	Manager foreground = new ForegroundManager();
 	
-	EstadoDeCuentaAntiguedadSaldo(EstadoCuentaAS edoCta) 
+	EstadoDeCuentaAntiguedadSaldo(EstadoCuentaAS edoCta, String fechaAct) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Estado de Cuenta");
 		super.changeTitulo();
 		
 		//El reporte corresponde a los datos cargados hasta ayer 
-		Date fechaActual = Calendar.getInstance().getTime();
+		/*Date fechaActual = Calendar.getInstance().getTime();
 		long tiempoActual = fechaActual.getTime();
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
 		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
 		super.setSubTitulo("Al " + ayer +"");
+		super.changeSubTitulo();*/
+		
+		super.setSubTitulo("Al " + fechaAct +"");
 		super.changeSubTitulo();
+		
 		
 		edoCuenta = edoCta;
 		
@@ -99,8 +103,13 @@ public class EstadoDeCuentaAntiguedadSaldo extends plantilla_screen_http
             boton.setFont(appFont);
             fieldManager.add(boton);
             
+            //Deuda A 720 dias
+            boton = new CustomButtonTable(" De 361 a 720 días:", edoCuenta.getA720dias() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton.setFont(appFont);
+            fieldManager.add(boton);
+            
             //Deuda A mas 180 dias
-            boton = new CustomButtonTable(" A más de 360 días:", edoCuenta.getMas360() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+            boton = new CustomButtonTable(" A más de 720 días:", edoCuenta.getMas720() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
             boton.setFont(appFont);
             fieldManager.add(boton);
             

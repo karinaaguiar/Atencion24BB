@@ -30,15 +30,20 @@ import com.atencion24.interfaz.SpacerField;
 
 public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
 	
-	static String dateTime = "01/01/2008";
+	static String dateTime = "31/12/2002";
 	CustomRadioButtom reciente;
 	CustomRadioButtom historico;
+	
     DateField fechaInicial;
     DateField fechaFinal;
+    DateField fechaAux;
+    DateField fechaAux1;
+    
     CustomButtonField verRepor;
 	boolean cerrarSesion = false;
     
     String codSeleccionado;
+    String fechaAct;
     int tipoConsulta = 0; //Si vale 0 ->pago en proceso. Si vale 1 -> historico de pagos
     
     BitmapField bitmapField;
@@ -49,7 +54,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
     
-	ConsultarHonorariosPagados(String codSeleccionado) 
+	ConsultarHonorariosPagados(String codSeleccionado, String fechaAct) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Honorarios Pagados");
@@ -57,6 +62,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		super.changeSubTitulo();
 		
 		this.codSeleccionado = codSeleccionado;
+		this.fechaAct = fechaAct;
 		
         add(new SpacerField());
         add(new SpacerField());
@@ -73,12 +79,22 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
         ControlDates dates = new ControlDates();
         fechaInicial = new DateField("", System.currentTimeMillis(), new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT);                        
         fechaInicial.setTimeZone(TimeZone.getDefault());
-        fechaInicial.setDate(dates.stringToDate(dateTime)); 
+        fechaInicial.setDate(dates.primerDiaMes(this.fechaAct)); 
         LabelField fechaI = new LabelField("Desde: ", Field.FIELD_RIGHT);
             
         fechaFinal = new DateField("",  System.currentTimeMillis() , new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT); 
+        fechaFinal.setTimeZone(TimeZone.getDefault());
+        fechaFinal.setDate(dates.stringToDate(this.fechaAct)); 
         LabelField fechaF = new LabelField("Hasta: ", Field.FIELD_RIGHT);
         
+        fechaAux = new DateField("",  System.currentTimeMillis() , new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT); 
+        fechaAux.setTimeZone(TimeZone.getDefault());
+        fechaAux.setDate(dates.stringToDate(this.fechaAct)); 
+        
+        fechaAux1 = new DateField("",  System.currentTimeMillis() , new SimpleDateFormat("dd/MM/yyyy"), DrawStyle.LEFT); 
+        fechaAux1.setTimeZone(TimeZone.getDefault());
+        fechaAux1.setDate(dates.stringToDate(dateTime)); 
+      
 	  	gridFieldManager = new GridFieldManager(2, 0);
 	  	gridFieldManager.add(fechaI);
         gridFieldManager.add(fechaInicial);
@@ -141,7 +157,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
 							UiApplication.getUiApplication().popScreen(wait);
-							HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso);
+							HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso, fechaAct);
 							honorariosPagadosEnProceso.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
 						}
@@ -205,7 +221,11 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		//llamadaExitosa("");
 		
 		//Comparo las fechas. Fecha Desde < Fecha Hasta
-		if(fechaInicial.getDate() > fechaFinal.getDate() || fechaInicial.getDate() == fechaFinal.getDate()){
+		if (fechaInicial.getDate() < fechaAux1.getDate() ){
+			Dialog.alert("Error al ingresar la fecha 'Desde'. No existe información de honorarios facturados en fechas anteriores al 01/01/2003 ");}
+		else if(fechaFinal.getDate() > fechaAux.getDate() ){
+			Dialog.alert("Error al ingresar la fecha 'Hasta'. No existe información de honorarios facturados en fechas posteriores al " + fechaAct);}
+		else if (fechaInicial.getDate() > fechaFinal.getDate() || fechaInicial.getDate() == fechaFinal.getDate()){
 			Dialog.alert("Error al ingresar las fechas. Fecha 'Desde' debe ser menor que fecha 'Hasta'");
 		}
 		else{

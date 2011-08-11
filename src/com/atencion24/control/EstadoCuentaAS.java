@@ -7,19 +7,21 @@ public class EstadoCuentaAS {
 	private String a90dias;
 	private String a180dias;
 	private String a360dias;
-	private String mas360;
+	private String a720dias;
+	private String mas720;
 	private String totalDeuda;
 	
 	public EstadoCuentaAS() {}
 	
-	public EstadoCuentaAS(String a30dias, String a60dias, String a90dias, String a180dias, String a360dias, String mas360, String totalDeuda) 
+	public EstadoCuentaAS(String a30dias, String a60dias, String a90dias, String a180dias, String a360dias, String a720dias, String mas720, String totalDeuda) 
 	{  
 		this.setA30dias(a30dias);
 		this.setA60dias(a60dias);
 		this.setA90dias(a90dias);
 		this.setA180dias(a180dias);
 		this.setA360dias(a360dias);
-		this.setMas360(mas360);
+		this.setA720dias(a720dias);
+		this.setMas720(mas720);
 		this.setTotalDeuda(totalDeuda);
 	}
 
@@ -71,11 +73,19 @@ public class EstadoCuentaAS {
 		return a360dias;
 	}
 
-	public void setMas360(String mas360) {
-		this.mas360 = mas360;
+	public void setA720dias(String a720dias) {
+		this.a720dias = a720dias;
 	}
 
-	public String getMas360() {
-		return mas360;
+	public String getA720dias() {
+		return a720dias;
+	}
+
+	public void setMas720(String mas720) {
+		this.mas720 = mas720;
+	}
+
+	public String getMas720() {
+		return mas720;
 	}
 }

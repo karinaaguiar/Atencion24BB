@@ -168,19 +168,19 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     }
 	
 	public void honPagados(){
-        ConsultarHonorariosPagados consultarHonPagados = new ConsultarHonorariosPagados(codSeleccionado);
+        ConsultarHonorariosPagados consultarHonPagados = new ConsultarHonorariosPagados(codSeleccionado, sesion.getFechaAct());
         consultarHonPagados.setcookie(this.getcookie());
         UiApplication.getUiApplication().pushScreen(consultarHonPagados);
     }
 	
 	public void honFact(){
-        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(codSeleccionado);
+        ConsultarHonorariosFacturados consultarHonFacturados = new ConsultarHonorariosFacturados(codSeleccionado,sesion.getFechaAct());
         consultarHonFacturados.setcookie(this.getcookie());
         UiApplication.getUiApplication().pushScreen(consultarHonFacturados);
     }
 	
 	public void detCaso(){
-        ConsultarDetalleDeCaso consultarDetCaso = new ConsultarDetalleDeCaso(codSeleccionado);
+        ConsultarDetalleDeCaso consultarDetCaso = new ConsultarDetalleDeCaso(codSeleccionado,sesion.getFechaAct());
         consultarDetCaso.setcookie(this.getcookie());
         UiApplication.getUiApplication().pushScreen(consultarDetCaso);
     }
@@ -281,7 +281,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
 							UiApplication.getUiApplication().popScreen(wait);
-							ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas);
+							ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas, sesion.getFechaAct());
 							reporteFianzas.setcookie(cookie);
 					        UiApplication.getUiApplication().pushScreen(reporteFianzas);
 						}
@@ -323,7 +323,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
 							UiApplication.getUiApplication().popScreen(wait);
-							EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta);
+							EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta,sesion.getFechaAct());
 							EdoCta.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(EdoCta);
 						}

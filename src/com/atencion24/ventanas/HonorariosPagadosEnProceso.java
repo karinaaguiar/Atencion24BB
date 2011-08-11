@@ -1,7 +1,7 @@
 package com.atencion24.ventanas;
 
-import java.util.Calendar;
-import java.util.Date;
+//import java.util.Calendar;
+//import java.util.Date;
 import java.util.Enumeration;
 
 import com.atencion24.control.Deduccion;
@@ -12,7 +12,7 @@ import com.atencion24.interfaz.CustomButtonTableNotFocus;
 import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.ListStyleButtonSet;
 
-import net.rim.device.api.i18n.SimpleDateFormat;
+//import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Font;
@@ -34,18 +34,18 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
     VerticalFieldManager fieldManager;
 	Manager foreground = new ForegroundManager();
 	
-	public HonorariosPagadosEnProceso(Pago pagoEnProceso) {
+	public HonorariosPagadosEnProceso(Pago pagoEnProceso, String fechaAct) {
 		
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
 		super.setTitulo("Pago en proceso");
 		super.changeTitulo();
 		
 		//El reporte corresponde a los datos cargados hasta ayer 
-		Date fechaActual = Calendar.getInstance().getTime();
+		/*Date fechaActual = Calendar.getInstance().getTime();
 		long tiempoActual = fechaActual.getTime();
 		long unDia = diferenciaEnDias * 24 * 60 * 60 * 1000;
 		Date fechaAyer = new Date(tiempoActual - unDia);
-		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);
+		String ayer = new SimpleDateFormat("dd/MM/yyyy").format(fechaAyer);¨*/
 		//super.setSubTitulo("(" + ayer +")");
 		//super.changeSubTitulo();
 		
@@ -55,7 +55,7 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
 		foreground.add(contenido);
         add(foreground);
         
-        crearReporte(ayer);
+        crearReporte(fechaAct);
 	}
 	
 	public void crearReporte(String ayer)
