@@ -495,21 +495,25 @@ public class XMLParser {
 
     	NodeList nodoFacturado = elemento.getChildNodes();
 
-    	//Monto hospitalización 
-    	resumenFacturado.addElement(nodoFacturado.item(0).getChildNodes().item(0).getNodeValue()); 
-        
-        //Monto emergencia 
-    	resumenFacturado.addElement(nodoFacturado.item(1).getChildNodes().item(0).getNodeValue());
-        
-        //Monto cirugia
-    	resumenFacturado.addElement(nodoFacturado.item(2).getChildNodes().item(0).getNodeValue());
-        
-        //Monto convenios
-        resumenFacturado.addElement(nodoFacturado.item(3).getChildNodes().item(0).getNodeValue());
-        
-        //Total 
-        resumenFacturado.addElement(nodoFacturado.item(4).getChildNodes().item(0).getNodeValue());
-        
+    	//Total 
+    	Facturado fact = new Facturado();
+    	fact.setUdn("Total facturado");
+    	fact.setMonto(nodoFacturado.item(0).getChildNodes().item(0).getNodeValue());
+    	
+    	resumenFacturado.addElement(fact);
+    	
+        //Facturado por UDN 
+        if(nodoFacturado.getLength()>1)
+        {
+        	for(int i = 1; i < nodoFacturado.getLength(); i++)
+        	{
+        		fact = new Facturado();
+        		fact.setMonto(nodoFacturado.item(i).getChildNodes().item(0).getNodeValue());
+        		fact.setUdn(nodoFacturado.item(i).getChildNodes().item(0).getNodeName());
+        		resumenFacturado.addElement(fact);
+        	}
+        }
+      
 		return resumenFacturado;
 	}
 }

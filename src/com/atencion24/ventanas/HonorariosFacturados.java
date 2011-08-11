@@ -3,6 +3,7 @@ package com.atencion24.ventanas;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import com.atencion24.control.Facturado;
 import com.atencion24.control.HttpConexion;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
@@ -58,36 +59,44 @@ public class HonorariosFacturados extends plantilla_screen_http {
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
             CustomButtonTable boton;
+            CustomButtonTable botonS = null;
             CustomButtonTableNotFocus encabezado;
-            Enumeration detallefact = facturado.elements();
             
-            //Encabezado
+            Facturado totalFact = (Facturado) facturado.firstElement();
+            facturado.removeElementAt(0);
+            
+            Enumeration detallefactUDN = facturado.elements();
+            
             encabezado = new CustomButtonTableNotFocus(" Unidad de Negocio ", "Monto Bs " , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             
-            CustomButtonTable botonS = new CustomButtonTable(" Hospitalización:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            botonS.setFont(appFont);
-            fieldManager.add(botonS);
+            //Encabezado
+            if(facturado.capacity()>=1)
+            {
+	            //Primer detalle por udn 
+	            botonS = new CustomButtonTable(" "+ ((Facturado) detallefactUDN.nextElement()).getUdn() +":", ((Facturado) detallefactUDN.nextElement()).getMonto() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+	            botonS.setFont(appFont);
+	            fieldManager.add(botonS);
+	            
+	            if(facturado.capacity()>1)
+	            {
+		            while(detallefactUDN.hasMoreElements())
+		            {
+		            	boton = new CustomButtonTable(" "+ ((Facturado) detallefactUDN.nextElement()).getUdn() +":", ((Facturado) detallefactUDN.nextElement()).getMonto() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+		                botonS.setFont(appFont);
+		                fieldManager.add(boton);
+		            }
+	            }
+            }
             
-            boton = new CustomButtonTable(" Emergencia:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
-            
-            boton = new CustomButtonTable(" Cirugía Ambulatoria:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
-            
-            boton = new CustomButtonTable(" Convenios:", detallefact.nextElement() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-            boton.setFont(appFont);
-            fieldManager.add(boton);
-            
-            encabezado = new CustomButtonTableNotFocus(" Total facturado:", detallefact.nextElement()+ " ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            //Total facturado
+            encabezado = new CustomButtonTableNotFocus(" "+ totalFact.getUdn()+":", totalFact.getMonto()+ " ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             
             contenido.add(fieldManager);
-            botonS.setFocus();
+            if(botonS != null) botonS.setFocus();
         }         
         catch (ClassNotFoundException e) {}
     }
