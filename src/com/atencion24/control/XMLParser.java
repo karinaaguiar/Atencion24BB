@@ -179,6 +179,8 @@ public class XMLParser {
     			this.error = "Aún no se han generado pagos a su nombre para la próxima nómina";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 
@@ -221,6 +223,8 @@ public class XMLParser {
     			this.error = "Debe acotar el rango de fechas de la búsqueda";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 
@@ -318,6 +322,8 @@ public class XMLParser {
     			this.error = "Debe refinar el criterio de búsqueda";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 
@@ -349,6 +355,8 @@ public class XMLParser {
     			this.error = "No existen casos asociados al apellido ingresado";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 
@@ -409,6 +417,8 @@ public class XMLParser {
     			this.error = "Usted no posee fianzas pendientes";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 
@@ -443,6 +453,8 @@ public class XMLParser {
     			this.error = "La Clínica actualmente no tiene deudas con usted";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 
@@ -490,6 +502,8 @@ public class XMLParser {
     			this.error = "Usted no facturó honorarios en el rango de fechas ingresado";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
+    			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
             return null;
     	}	
 

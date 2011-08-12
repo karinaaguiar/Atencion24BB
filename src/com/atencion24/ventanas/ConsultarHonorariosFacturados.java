@@ -114,7 +114,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 					public void run() {
 						UiApplication.getUiApplication().popScreen(wait);
 						Dialog.alert(mostrarError);
-						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión"))
+						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
+						   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
 						{	
 							UiApplication.getUiApplication().popScreen((UiApplication.getUiApplication().getActiveScreen().getScreenBelow()).getScreenBelow());
 							UiApplication.getUiApplication().popScreen(UiApplication.getUiApplication().getActiveScreen().getScreenBelow()); 
