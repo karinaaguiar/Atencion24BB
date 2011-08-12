@@ -1,9 +1,10 @@
 package com.atencion24.ventanas;
 
-import java.util.Enumeration;
+//import java.util.Enumeration;
 import java.util.Vector;
 
-import com.atencion24.control.Facturado;
+import com.atencion24.control.Deduccion;
+//import com.atencion24.control.Facturado;
 import com.atencion24.control.HttpConexion;
 import com.atencion24.interfaz.CustomButtonTable;
 import com.atencion24.interfaz.CustomButtonTableNotFocus;
@@ -58,40 +59,45 @@ public class HonorariosFacturados extends plantilla_screen_http {
             FontFamily alphaSansFamily = FontFamily.forName("BBClarity");
             Font appFont = alphaSansFamily.getFont(Font.PLAIN, 7, Ui.UNITS_pt);
             
-            CustomButtonTable boton;
             CustomButtonTable botonS = null;
             CustomButtonTableNotFocus encabezado;
             
-            Facturado totalFact = (Facturado) facturado.firstElement();
+            System.out.println("Numero de cosas por udn al inicio " + facturado.size());
+            
+            Deduccion totalFact = (Deduccion) facturado.firstElement();
             facturado.removeElementAt(0);
             
-            Enumeration detallefactUDN = facturado.elements();
             
             encabezado = new CustomButtonTableNotFocus(" Unidad de Negocio ", "Monto Bs " , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             
-            //Encabezado
-            if(facturado.capacity()>=1)
+            System.out.println("Numero de cosas por udn " + facturado.size());
+            
+            if(facturado.size()>0)
             {
-	            //Primer detalle por udn 
-	            botonS = new CustomButtonTable(" "+ ((Facturado) detallefactUDN.nextElement()).getUdn() +":", ((Facturado) detallefactUDN.nextElement()).getMonto() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+
+            	//Primer detalle por udn 
+	            botonS = new CustomButtonTable(" "+ ((Deduccion) facturado.elementAt(0)).getConcepto() +":", ((Deduccion) facturado.elementAt(0)).getMonto() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
 	            botonS.setFont(appFont);
 	            fieldManager.add(botonS);
 	            
-	            if(facturado.capacity()>1)
+	            System.out.println("Numero de cosas por udn " + facturado.size());
+	            
+	            if(facturado.size()>1)
 	            {
-		            while(detallefactUDN.hasMoreElements())
-		            {
-		            	boton = new CustomButtonTable(" "+ ((Facturado) detallefactUDN.nextElement()).getUdn() +":", ((Facturado) detallefactUDN.nextElement()).getMonto() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-		                botonS.setFont(appFont);
+	            	for(int i = 1; i <facturado.size(); i++)
+	            	{
+	            		System.out.println("Entre ");
+		            	CustomButtonTable boton = new CustomButtonTable(" "+ ((Deduccion) facturado.elementAt(i)).getConcepto() +":", ((Deduccion) facturado.elementAt(i)).getMonto() + " ", 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+		                boton.setFont(appFont);
 		                fieldManager.add(boton);
-		            }
-	            }
+	            	}
+	            }	
             }
             
             //Total facturado
-            encabezado = new CustomButtonTableNotFocus(" "+ totalFact.getUdn()+":", totalFact.getMonto()+ " ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
+            encabezado = new CustomButtonTableNotFocus(" "+ totalFact.getConcepto()+":", totalFact.getMonto()+ " ", Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);
             fieldManager.add(encabezado);
             

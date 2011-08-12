@@ -496,8 +496,8 @@ public class XMLParser {
     	NodeList nodoFacturado = elemento.getChildNodes();
 
     	//Total 
-    	Facturado fact = new Facturado();
-    	fact.setUdn("Total facturado");
+    	Deduccion fact = new Deduccion();
+    	fact.setConcepto("Total facturado");
     	fact.setMonto(nodoFacturado.item(0).getChildNodes().item(0).getNodeValue());
     	
     	resumenFacturado.addElement(fact);
@@ -507,9 +507,10 @@ public class XMLParser {
         {
         	for(int i = 1; i < nodoFacturado.getLength(); i++)
         	{
-        		fact = new Facturado();
-        		fact.setMonto(nodoFacturado.item(i).getChildNodes().item(0).getNodeValue());
-        		fact.setUdn(nodoFacturado.item(i).getChildNodes().item(0).getNodeName());
+        		NodeList nodoFactUDN = nodoFacturado.item(i).getChildNodes();
+        		fact = new Deduccion();
+        		fact.setConcepto(nodoFactUDN.item(0).getChildNodes().item(0).getNodeValue());
+        		fact.setMonto(nodoFactUDN.item(1).getChildNodes().item(0).getNodeValue());
         		resumenFacturado.addElement(fact);
         	}
         }
