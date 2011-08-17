@@ -41,6 +41,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	CustomButtonField accederButtom;
 	boolean primeraVez = true;
 	Hashtable countUsuarios = new Hashtable();
+	boolean estaWait = false; 
 	
 	PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
 	
@@ -111,6 +112,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 					thread.start();
 				}
 				UiApplication.getUiApplication().pushModalScreen(wait);
+				estaWait  =true;
 			}
 			else
 			{
@@ -184,27 +186,39 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						UiApplication.getUiApplication().popScreen(wait);
+						estaWait = false;
 						Dialog.alert(mostrarError);
 					}
 				});
 	        }
 	        else 
 	        {
-	        	if(mostrarError.equals("503"))
-		        {
-		        	//La sesion expiró y no pude bloquear al usuario.
-		        	countUsuarios.put(nombreusuarioField.getText(),new Integer(0));
-		        }
-	        	
         		//nombreusuarioField.setText("");
         		//passwordField.setText("");
 	        	primeraVez = true;
         		setcookie("");
-	        	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						UiApplication.getUiApplication().popScreen(wait);
-					}
-				});
+        		
+	        	if(mostrarError.equals("503"))
+		        {
+		        	//La sesion expiró y no pude bloquear al usuario
+	        		//Entonces intento nuevamente bloquear al usuario
+		        	//countUsuarios.put(nombreusuarioField.getText(),new Integer(0));
+		        	HttpConexion thread = new HttpConexion("/bloquear?usuario_tb=" + nombreusuarioField.getText(), "GET", this, true);
+					thread.start();
+		        	
+		        }
+	        	else
+	        	{
+	        		UiApplication.getUiApplication().invokeLater(new Runnable() {
+						public void run() {
+							UiApplication.getUiApplication().popScreen(wait);
+							estaWait = false;
+							Dialog.alert("Intente iniciar sesión nuevamente");
+						}
+					});
+	        		
+	        	}
+
 	        }
 	    }
 	    else
@@ -212,6 +226,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
 					UiApplication.getUiApplication().popScreen(wait);
+					estaWait = false;
 					LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
 					loginSuccessScreen.setcookie(cookie); 
 			        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);
@@ -220,21 +235,24 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    }
 	}
 
-	public void llamadaFallada(final String error){
-		UiApplication.getUiApplication().invokeLater(new Runnable() {
-			public void run() {
-				UiApplication.getUiApplication().popScreen(wait);
-				Dialog.alert("Error de conexión: " + error);
-			}
-		}); 
-	}
-	
 	//Sobreescribes el metodo makeMenu y le agregas sus menuItems
 	protected void makeMenu(Menu menu, int instance){
 		super.makeMenu(menu, instance);
 		menu.add(new MenuItem("Iniciar Sesion", 20,10) {
 			public void run(){
 				iniciarSesion();
+			}
+		});
+	}
+	
+	public void llamadaFallada(final String error){
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+			public void run() {
+				if(estaWait){
+					UiApplication.getUiApplication().popScreen(wait);
+					estaWait = false;
+				}
+				Dialog.alert("Error de conexión: " + error);
 			}
 		});
 	}

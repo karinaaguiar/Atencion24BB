@@ -301,9 +301,8 @@ public class ReporteListadoFianzas extends plantilla_screen_http implements Fiel
 		
 	}
 
-	public void llamadaFallada(String respuesta) {
+	public void llamadaFallada(final String respuesta) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

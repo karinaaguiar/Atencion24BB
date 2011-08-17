@@ -335,9 +335,12 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		}
 	}
 
-	public void llamadaFallada(String respuesta) {
-		// TODO Auto-generated method stub
-		
+	public void llamadaFallada(final String respuesta) {
+		synchronized (UiApplication.getEventLock()) 
+		{
+			UiApplication.getUiApplication().popScreen(wait);
+			Dialog.alert("Error de conexión: " + respuesta);
+		}
 	}
 	
 	public void irInicio()

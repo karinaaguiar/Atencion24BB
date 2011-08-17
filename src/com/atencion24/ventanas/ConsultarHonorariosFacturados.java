@@ -40,6 +40,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
     String fechaAct;
     
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
+	boolean estaWait = false; 
     
 	ConsultarHonorariosFacturados(String codSeleccionado, String fechaAct) 
 	{
@@ -140,9 +141,17 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		}
 	}
 
-	public void llamadaFallada(String respuesta) {
-		// TODO Auto-generated method stub
+	public void llamadaFallada(final String error){
 		
+		synchronized (UiApplication.getEventLock()) 
+		{
+			if(estaWait)
+			{
+				UiApplication.getUiApplication().popScreen(wait);
+				estaWait = false;
+			}
+				Dialog.alert("Error de conexión: " + error);
+		}
 	}
 	
 	private void consultarHonorariosFacturados() 
@@ -168,6 +177,7 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
 			UiApplication.getUiApplication().pushModalScreen(wait);
+			estaWait = true;
 		}
 	}
 	

@@ -111,7 +111,7 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		//llamadaExitosa("");
 		
 		if (apellidoField.getTextLength() == 0){
-			Dialog.alert("Debe colocar algún apellido para poder realizar la consulta");
+			Dialog.alert("Debe llenar el campo nombre para poder realizar la consulta");
 		}
 		else{
 			String apellido = apellidoField.getText();
@@ -169,9 +169,12 @@ public class ConsultarDetalleDeCaso extends plantilla_screen_http implements Fie
 		}
 	}
 
-	public void llamadaFallada(String respuesta) {
-		// TODO Auto-generated method stub
-
+	public void llamadaFallada(final String respuesta) {
+		synchronized (UiApplication.getEventLock()) 
+		{
+			UiApplication.getUiApplication().popScreen(wait);
+			Dialog.alert("Error de conexión: " + respuesta);
+		}
 	}
 
 	public void fieldChanged(Field field, int context) {

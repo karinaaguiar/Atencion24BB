@@ -319,7 +319,7 @@ public class XMLParser {
     	if(tag.equals("error"))
     	{
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("0"))
-    			this.error = "No existen casos asociados al apellido ingresado";
+    			this.error = "No existen casos asociados al nombre ingresado";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("1"))
     			this.error = "Debe refinar el criterio de búsqueda";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("500"))	

@@ -146,9 +146,8 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
 		
 	}
 
-	public void llamadaFallada(String respuesta) {
+	public void llamadaFallada(final String respuesta) {
 		// TODO Auto-generated method stub
-		
 	}
 }
 

@@ -329,9 +329,8 @@ public class HonorariosPagadosHistorico extends plantilla_screen_http implements
 		
 	}
 
-	public void llamadaFallada(String respuesta) {
+	public void llamadaFallada(final String respuesta) {
 		// TODO Auto-generated method stub
-		
 	}
 }
 	
