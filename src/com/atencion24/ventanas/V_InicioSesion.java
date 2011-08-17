@@ -3,6 +3,8 @@
  */
 package com.atencion24.ventanas;
 
+import java.util.Hashtable;
+
 import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Sesion;
 import com.atencion24.control.XMLParser;
@@ -38,6 +40,7 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	LabelField passwordLabel;
 	CustomButtonField accederButtom;
 	boolean primeraVez = true;
+	Hashtable countUsuarios = new Hashtable();
 	
 	PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
 	
@@ -91,19 +94,36 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 			Dialog.alert("Debe completar todos los campos para poder acceder al sistema");
 		}
 		else{
+			
 			String usuario = nombreusuarioField.getText();
 			String clave = passwordField.getText();
-			if(primeraVez)
+			
+			if((usuario.indexOf(" ") == -1) && (clave.indexOf(" ") == -1) )
 			{
-				HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this, true);
-				thread.start();
+				if(primeraVez)
+				{
+					HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this, true);
+					thread.start();
+				}
+				else
+				{
+					HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
+					thread.start();
+				}
+				UiApplication.getUiApplication().pushModalScreen(wait);
 			}
 			else
 			{
-				HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
-				thread.start();
+				if(usuario.indexOf(" ") != -1)
+				{
+					Dialog.alert("Usuario inválido. No están permitidos los espacios en blanco");
+				}
+				if(clave.indexOf(" ") != -1)
+				{
+					Dialog.alert("Contraseña inválida. No están permitidos los espacios en blanco");
+				}
+				
 			}
-			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 			
 	}
@@ -132,8 +152,35 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    if (usu == null)
 	    {
 	        final String mostrarError = envioXml.obtenerError();
-	        if(!(mostrarError.equals("502")))
+	        if((!(mostrarError.equals("502"))) && (!(mostrarError.equals("503"))) )
 	        {	
+	        	String usuario = nombreusuarioField.getText();
+
+		        if(mostrarError.equals("Clave inválida"))
+		        {
+		        	//Como el usuario es válido creamos su count de intentos fallidos (en caso de que no exista)
+	        		if (countUsuarios.get(usuario)==null)
+		        		countUsuarios.put(usuario , new Integer(0));
+	        		
+		        	int nuevo = ((Integer)countUsuarios.get(usuario)).intValue() + 1;
+		        	if(nuevo == 3)
+		        	{
+		        		HttpConexion thread = new HttpConexion("/bloquear?usuario_tb=" + usuario, "GET", this, true);
+						thread.start();
+						return; 
+		        	}
+		        	else
+		        	{
+		        		Integer nuevoI = new Integer(nuevo);
+		        		countUsuarios.put(usuario,nuevoI);
+		        	}
+		        }
+		        else if (mostrarError.equals("Excedió el número de intentos. Su usuario será bloqueado por algunos minutos"))
+		        {
+		        	//Reseteamos el count de intentos válidos
+		        	countUsuarios.put(usuario,new Integer(0));
+		        }
+		        
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						UiApplication.getUiApplication().popScreen(wait);
@@ -143,18 +190,21 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	        }
 	        else 
 	        {
-	        	nombreusuarioField.setText("");
-				passwordField.setText("");
-				primeraVez = true;
-				setcookie("");
+	        	if(mostrarError.equals("503"))
+		        {
+		        	//La sesion expiró y no pude bloquear al usuario.
+		        	countUsuarios.put(nombreusuarioField.getText(),new Integer(0));
+		        }
+	        	
+        		//nombreusuarioField.setText("");
+        		//passwordField.setText("");
+	        	primeraVez = true;
+        		setcookie("");
 	        	UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						UiApplication.getUiApplication().popScreen(wait);
-						Dialog.alert("Su usuario ha sido desbloqueado. Intente iniciar sesión nuevamente");
-						
 					}
 				});
-	        	
 	        }
 	    }
 	    else

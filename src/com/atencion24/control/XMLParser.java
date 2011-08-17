@@ -86,6 +86,8 @@ public class XMLParser {
     			this.error = "Su usuario está bloqueado por exceder el máximo número de intentos establecidos para iniciar sesión. Espere unos minutos";
             if(elemento.getChildNodes().item(0).getNodeValue().equals("502"))
             	this.error = "502";
+            if(elemento.getChildNodes().item(0).getNodeValue().equals("503"))
+            	this.error = "503";
             return null;
     	}	
     	

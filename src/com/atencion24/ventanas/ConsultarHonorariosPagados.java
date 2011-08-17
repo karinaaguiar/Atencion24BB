@@ -231,7 +231,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			Dialog.alert("Error al ingresar la fecha 'Desde'. No existe información de honorarios facturados en fechas anteriores al 01/01/2003 ");}
 		else if(fechaFinal.getDate() > fechaAux.getDate() ){
 			Dialog.alert("Error al ingresar la fecha 'Hasta'. No existe información de honorarios facturados en fechas posteriores al " + fechaAct);}
-		else if (fechaInicial.getDate() > fechaFinal.getDate() || fechaInicial.getDate() == fechaFinal.getDate()){
+		else if (fechaInicial.getDate() > fechaFinal.getDate()){
 			Dialog.alert("Error al ingresar las fechas. Fecha 'Desde' debe ser menor que fecha 'Hasta'");
 		}
 		else{
