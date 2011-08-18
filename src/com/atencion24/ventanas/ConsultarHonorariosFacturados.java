@@ -98,22 +98,25 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 		
 		if(cerrarSesion == false)
 		{
-
-			//a mi parser XML para que se encargue de darme el 
-			//XML que me ha enviado el servidor procesado como 
-			//un objeto de control. 
 			XMLParser envioXml = new XMLParser();
 		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 		    final Vector facturadoUDN = envioXml.LeerHonorariosFacturados(xmlInterno); //xmlInterno
 		    final String cookie = this.getcookie();
-		    //En caso de que el servidor haya enviado un error
-		    //El medico no facturo honorarios en el rango de fechas indicado
-		    if (facturadoUDN  == null)
-		    {
-		        final String mostrarError = envioXml.obtenerError();
-		        UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
+		    final String mostrarError = envioXml.obtenerError();
+	        
+		    UiApplication.getUiApplication().invokeLater(new Runnable() {
+				public void run() 
+				{
+					if(estaWait)
+					{
 						UiApplication.getUiApplication().popScreen(wait);
+						estaWait = false;
+					}
+					
+					//En caso de que el servidor haya enviado un error
+				    //El medico no facturo honorarios en el rango de fechas indicado
+					if (facturadoUDN  == null)
+				    {
 						Dialog.alert(mostrarError);
 						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
 						   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
@@ -124,34 +127,30 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 							V_InicioSesion loginpage = new V_InicioSesion();
 							UiApplication.getUiApplication().pushScreen(loginpage);
 						}
-					}
-				});
-		    }
-		    else
-		    {
-		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						UiApplication.getUiApplication().popScreen(wait);
+				    }
+				    else
+				    {
 						HonorariosFacturados honorariosFacturados = new HonorariosFacturados(facturadoUDN, fechaInicial.toString(), fechaFinal.toString());
 						honorariosFacturados.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(honorariosFacturados);
-					}
-				});
-		    }
+				    }
+				}
+			});
 		}
 	}
 
 	public void llamadaFallada(final String error){
-		
-		synchronized (UiApplication.getEventLock()) 
+		UiApplication.getUiApplication().invokeLater(new Runnable() 
 		{
-			if(estaWait)
-			{
-				UiApplication.getUiApplication().popScreen(wait);
-				estaWait = false;
-			}
-				Dialog.alert("Error de conexión: " + error);
-		}
+		    public void run() {
+			    if(estaWait)
+				{
+					UiApplication.getUiApplication().popScreen(wait);
+					estaWait =false; 
+				}
+		    	Dialog.alert("Error de conexión: " + error);
+		    }
+		});
 	}
 	
 	private void consultarHonorariosFacturados() 
@@ -176,8 +175,8 @@ public class ConsultarHonorariosFacturados extends plantilla_screen_http impleme
 			System.out.println(fechaF);
 			HttpConexion thread = new HttpConexion("/ConsultarHonorariosFacturados?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
-			UiApplication.getUiApplication().pushModalScreen(wait);
 			estaWait = true;
+			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 	}
 	

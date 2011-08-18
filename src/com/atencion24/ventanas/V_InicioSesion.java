@@ -111,8 +111,9 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 					HttpConexion thread = new HttpConexion("/InicioSesion?usuario_tb=" + usuario + "&clave_tb=" + clave, "GET", this);
 					thread.start();
 				}
-				UiApplication.getUiApplication().pushModalScreen(wait);
 				estaWait  =true;
+				UiApplication.getUiApplication().pushModalScreen(wait);
+				
 			}
 			else
 			{
@@ -142,15 +143,10 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	public void llamadaExitosa( String result)
 	{
 		primeraVez = false;
-		System.out.println("stoy en llamada exitosa");
-		System.out.println("Respuesta servidor orignal "+ result);
 		XMLParser envioXml = new XMLParser();
 	    String xmlInterno = envioXml.extraerCapaWebService(result);
-	    System.out.println("stoy en llamada exitosa dspues de extraer capa Web services " +xmlInterno);
 	    final Sesion usu = envioXml.LeerXMLInicio(xmlInterno);
 	    final String cookie = this.getcookie();
-	    System.out.println("El cookie de la ventana inicio de sesion es " + cookie);
-	    System.out.println("stoy en llamada exitosa dspues de leer XML Inicio");
 	    if (usu == null)
 	    {
 	        final String mostrarError = envioXml.obtenerError();
@@ -185,8 +181,11 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 		        
 		        UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
-						UiApplication.getUiApplication().popScreen(wait);
-						estaWait = false;
+						if(estaWait)
+						{
+							UiApplication.getUiApplication().popScreen(wait);
+							estaWait = false;
+						}
 						Dialog.alert(mostrarError);
 					}
 				});
@@ -211,8 +210,11 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	        	{
 	        		UiApplication.getUiApplication().invokeLater(new Runnable() {
 						public void run() {
-							UiApplication.getUiApplication().popScreen(wait);
-							estaWait = false;
+							if(estaWait)
+							{
+								UiApplication.getUiApplication().popScreen(wait);
+								estaWait = false;
+							}
 							Dialog.alert("Intente iniciar sesión nuevamente");
 						}
 					});
@@ -225,8 +227,11 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	    {
 	    	UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
-					UiApplication.getUiApplication().popScreen(wait);
-					estaWait = false;
+					if(estaWait)
+					{
+						UiApplication.getUiApplication().popScreen(wait);
+						estaWait = false;
+					}
 					LoginSuccessScreen loginSuccessScreen = new LoginSuccessScreen(usu);
 					loginSuccessScreen.setcookie(cookie); 
 			        UiApplication.getUiApplication().pushScreen(loginSuccessScreen);
@@ -248,7 +253,8 @@ public class V_InicioSesion extends plantilla_screen_http implements FieldChange
 	public void llamadaFallada(final String error){
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 			public void run() {
-				if(estaWait){
+				if(estaWait)
+				{
 					UiApplication.getUiApplication().popScreen(wait);
 					estaWait = false;
 				}

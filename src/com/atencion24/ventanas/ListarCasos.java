@@ -45,6 +45,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
     ListStyleButtonField [] botones;
     
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
+    boolean estaWait =false;
 	
 	ListarCasos(Hashtable listadoCasos, String codSeleccionado, String fechaAct) 
 	{
@@ -122,14 +123,19 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 		    final Caso caso = envioXml.LeerCaso(xmlInterno); //xmlInterno
 		    final String cookie = this.getcookie();
-		    //En este caso el servidor no puede enviar error
 		    
-		    if (caso == null)
-		    {
-		        final String mostrarError = envioXml.obtenerError();
-		        UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
+		    final String mostrarError = envioXml.obtenerError();
+	        UiApplication.getUiApplication().invokeLater(new Runnable() {
+				public void run() 
+				{
+					if(estaWait)
+					{
 						UiApplication.getUiApplication().popScreen(wait);
+						estaWait = false;
+					}
+					
+					if (caso == null)
+				    {
 						Dialog.alert(mostrarError);
 						if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
 						   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
@@ -140,29 +146,30 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 							V_InicioSesion loginpage = new V_InicioSesion();
 							UiApplication.getUiApplication().pushScreen(loginpage);
 						}
-					}
-				});
-		    }
-		    else
-		    {	
-		    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						UiApplication.getUiApplication().popScreen(wait);
+				    }
+				    else
+				    {	
 						DetalleDeCaso ventanaCaso = new DetalleDeCaso(caso, fechaAct);
 				        ventanaCaso.setcookie(cookie);
 						UiApplication.getUiApplication().pushScreen(ventanaCaso);
-					}
-				});
-		    }
+				    }
+				}
+			});
 		}
 	}
 
 	public void llamadaFallada(final String respuesta) {
-		synchronized (UiApplication.getEventLock()) 
+		UiApplication.getUiApplication().invokeLater(new Runnable() 
 		{
-			UiApplication.getUiApplication().popScreen(wait);
-			Dialog.alert("Error de conexión: " + respuesta);
-		}
+		    public void run() {
+			    if(estaWait)
+				{
+					UiApplication.getUiApplication().popScreen(wait);
+					estaWait =false; 
+				}
+		    	Dialog.alert("Error de conexión: " + respuesta);
+		    }
+		});
 	}
 	
 	public void consultarCaso(Caso caso)
@@ -176,6 +183,7 @@ public class ListarCasos extends plantilla_screen_http implements FieldChangeLis
 		String udn = caso.getUnidadNegocio();
 		HttpConexion thread = new HttpConexion("/consultarCaso?medico_tb=" + codSeleccionado + "&caso_tb="+nroCaso+"&udn_tb="+udn, "GET", this, false);
 		thread.start();
+		estaWait = true;
 		UiApplication.getUiApplication().pushModalScreen(wait);
 	}
 	

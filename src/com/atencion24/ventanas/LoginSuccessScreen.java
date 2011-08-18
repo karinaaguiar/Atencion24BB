@@ -58,6 +58,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
     ListStyleButtonField listFianzas;
     
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
+    boolean estaWait =false; 
 	
     public LoginSuccessScreen() {super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );}
 
@@ -164,6 +165,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		//String medico = sesion.getCodigoMedico();
 		HttpConexion thread = new HttpConexion("/edoCtaAntiguedadSaldo?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
+		estaWait = true;
 		UiApplication.getUiApplication().pushModalScreen(wait);
     }
 	
@@ -193,6 +195,7 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 		
 		HttpConexion thread = new HttpConexion("/listFianzas?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
+		estaWait = true; 
 		UiApplication.getUiApplication().pushModalScreen(wait);
     }
 	
@@ -257,14 +260,21 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 			    final Hashtable fianzas = envioXml.LeerListadoFianzas(xmlInterno); //xmlInterno
 			    final String cookie = this.getcookie();  
-			    //En caso de que el servidor haya enviado un error
-			    //El medico no tiene asociada fianzas pendientes
-			    if (fianzas == null)
-			    {
-			        final String mostrarError = envioXml.obtenerError();
-			        UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
+			    
+			    final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() 
+					{
+						if(estaWait)
+						{
 							UiApplication.getUiApplication().popScreen(wait);
+							estaWait = false;
+						}
+						
+						//En caso de que el servidor haya enviado un error
+					    //El medico no tiene asociada fianzas pendientes
+					    if (fianzas == null)
+					    {
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
 							   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
@@ -274,20 +284,15 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 								V_InicioSesion loginpage = new V_InicioSesion();
 								UiApplication.getUiApplication().pushScreen(loginpage);
 							}
-						}
-					});
-			    }
-			    else
-			    {
-			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
-							UiApplication.getUiApplication().popScreen(wait);
+					    }
+					    else
+					    {
 							ReporteListadoFianzas reporteFianzas = new ReporteListadoFianzas(fianzas, sesion.getFechaAct());
 							reporteFianzas.setcookie(cookie);
 					        UiApplication.getUiApplication().pushScreen(reporteFianzas);
-						}
-					});
-			    }
+					    }
+					}
+				});
 			}
 			//Si el usuario eligio consultar el reporte Estado de Cuenta
 			if (reporteElegido ==1)
@@ -300,14 +305,21 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 			    final EstadoCuentaAS edoCta = envioXml.LeerEstadoCtaAntiguedadSaldo(xmlInterno); //xmlInterno
 			    final String cookie = this.getcookie();
-			    //En caso de que el servidor haya enviado un error
-			    //La Clínica no posee deuda con el médico
-			    if (edoCta == null)
-			    {
-			        final String mostrarError = envioXml.obtenerError();
-			        UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
+			    
+			    final String mostrarError = envioXml.obtenerError();
+		        UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() 
+					{
+						if(estaWait)
+						{
 							UiApplication.getUiApplication().popScreen(wait);
+							estaWait = false;
+						}
+						
+						//En caso de que el servidor haya enviado un error
+					    //La Clínica no posee deuda con el médico
+					    if (edoCta == null)
+					    {
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
 							   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
@@ -317,30 +329,31 @@ public class LoginSuccessScreen extends plantilla_screen_http implements FieldCh
 								V_InicioSesion loginpage = new V_InicioSesion();
 								UiApplication.getUiApplication().pushScreen(loginpage);
 							}
-						}
-					});
-			    }
-			    else
-			    {
-			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
-							UiApplication.getUiApplication().popScreen(wait);
+					    }
+					    else
+					    {
 							EstadoDeCuentaAntiguedadSaldo EdoCta = new EstadoDeCuentaAntiguedadSaldo(edoCta,sesion.getFechaAct());
 							EdoCta.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(EdoCta);
-						}
-					});
-			    }
+					    }
+					}
+				});
 			}
 		}
 	}
 
 	public void llamadaFallada(final String respuesta) {
-		synchronized (UiApplication.getEventLock()) 
+		UiApplication.getUiApplication().invokeLater(new Runnable() 
 		{
-			UiApplication.getUiApplication().popScreen(wait);
-			Dialog.alert("Error de conexión: " + respuesta);
-		}
+		    public void run() {
+			    if(estaWait)
+				{
+					UiApplication.getUiApplication().popScreen(wait);
+					estaWait =false; 
+				}
+		    	Dialog.alert("Error de conexión: " + respuesta);
+		    }
+		});
 	}
 	
 	public void irInicio()

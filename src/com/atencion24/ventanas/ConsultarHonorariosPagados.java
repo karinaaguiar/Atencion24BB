@@ -53,6 +53,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     SpacerField nulo;
     
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
+    boolean estaWait = false; 
     
 	ConsultarHonorariosPagados(String codSeleccionado, String fechaAct) 
 	{
@@ -124,25 +125,30 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			//Consulta Pago en proceso
 			if (tipoConsulta==0)
 			{
-	    		//Con el String XML que recibo del servidor debo hacer llamada
+				//Con el String XML que recibo del servidor debo hacer llamada
 	    		//a mi parser XML para que se encargue de darme el 
 	    		//XML que me ha enviado el servidor procesado como 
 	    		//un objeto de control. 
 				XMLParser envioXml = new XMLParser();
 			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
+			    System.out.println("Este es el xml " + xmlInterno);
 			    final Pago pagoEnProceso = envioXml.LeerProximoPago(xmlInterno);
 			    final String cookie = this.getcookie();
-			    //En caso de que el servidor haya enviado un error
-			    //No hay pago en proceso (tabla pagoshonorarios vacia)
-			    if (pagoEnProceso == null)
-			    {
-			        System.out.println("OKA");
-			    	final String mostrarError = envioXml.obtenerError();
-			        UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
-							System.out.println("gud1");
+			    
+			    final String mostrarError = envioXml.obtenerError();
+			    UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() 
+					{
+						if(estaWait)
+						{
 							UiApplication.getUiApplication().popScreen(wait);
-							System.out.println("gud2");
+							estaWait = false;
+						}
+						
+						//En caso de que el servidor haya enviado un error
+					    //No hay pago en proceso (tabla pagoshonorarios vacia)
+						if (pagoEnProceso == null)
+					    {
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
 							   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
@@ -153,20 +159,15 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 								V_InicioSesion loginpage = new V_InicioSesion();
 								UiApplication.getUiApplication().pushScreen(loginpage);
 							}
-						}
-					});
-			    }
-			    else
-			    {
-			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
-							UiApplication.getUiApplication().popScreen(wait);
+					    }
+					    else
+					    {
 							HonorariosPagadosEnProceso honorariosPagadosEnProceso = new HonorariosPagadosEnProceso(pagoEnProceso, fechaAct);
 							honorariosPagadosEnProceso.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(honorariosPagadosEnProceso);
-						}
-					});
-			    }
+					    }
+					}
+				});
 			}
 			//Consulta historico de pagos
 			else if (tipoConsulta==1)
@@ -179,14 +180,21 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			    String xmlInterno = envioXml.extraerCapaWebService(respuesta);
 			    final Vector historicoPagos = envioXml.LeerHistoricoPagos(xmlInterno); 
 			    final String cookie = this.getcookie();
-			    //En caso de que el servidor haya enviado un error
-			    //No hay datos (pagos de nomina) entre las fechas indicadas
-			    if (historicoPagos == null)
-			    {
-			        final String mostrarError = envioXml.obtenerError();
-			        UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
+			    
+			    final String mostrarError = envioXml.obtenerError();
+			    UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() 
+					{
+						if(estaWait)
+						{
 							UiApplication.getUiApplication().popScreen(wait);
+							estaWait = false;
+						}
+						
+						//En caso de que el servidor haya enviado un error
+					    //No hay datos (pagos de nomina) entre las fechas indicadas
+						if (historicoPagos == null)
+					    {
 							Dialog.alert(mostrarError);
 							if(mostrarError.equals("Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión") || 
 							   mostrarError.equals("La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente"))
@@ -197,30 +205,31 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 								V_InicioSesion loginpage = new V_InicioSesion();
 								UiApplication.getUiApplication().pushScreen(loginpage);
 							}
-						}
-					});
-			    }
-			    else
-			    {
-			    	UiApplication.getUiApplication().invokeLater(new Runnable() {
-						public void run() {
-							UiApplication.getUiApplication().popScreen(wait);
+					    }
+					    else
+					    {
 							HonorariosPagadosHistorico honorariosPagadosHistorico = new HonorariosPagadosHistorico (historicoPagos, fechaInicial.toString(), fechaFinal.toString());
 							honorariosPagadosHistorico.setcookie(cookie);
 							UiApplication.getUiApplication().pushScreen(honorariosPagadosHistorico);
-						}
-					});
-			    }
+					    }
+					}
+				});
 			}
 		}
 	}
 
 	public void llamadaFallada(final String respuesta) {
-		synchronized (UiApplication.getEventLock()) 
+		UiApplication.getUiApplication().invokeLater(new Runnable() 
 		{
-			UiApplication.getUiApplication().popScreen(wait);
-			Dialog.alert("Error de conexión: " + respuesta);
-		}
+		    public void run() {
+			    if(estaWait)
+				{
+					UiApplication.getUiApplication().popScreen(wait);
+					estaWait =false; 
+				}
+		    	Dialog.alert("Error de conexión: " + respuesta);
+		    }
+		});
 	}
 
 	private void ConsultarHistoricoPagos(){
@@ -244,6 +253,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 			System.out.println(fechaF);
 			HttpConexion thread = new HttpConexion("/ConsultarHistoricoPagos?medico_tb=" + codSeleccionado + "&fechaI_tb=" + fechaI + "&fechaF_tb=" + fechaF, "GET", this, false);
 			thread.start();
+			estaWait  = true;
 			UiApplication.getUiApplication().pushModalScreen(wait);
 		}
 			
@@ -257,6 +267,7 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		//llamadaExitosa("");
 		HttpConexion thread = new HttpConexion("/ConsultarProximoPago?medico_tb=" + codSeleccionado, "GET", this, false);
 		thread.start();
+		estaWait  = true;
 		UiApplication.getUiApplication().pushModalScreen(wait);
 	}
 	

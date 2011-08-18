@@ -22,7 +22,7 @@ import net.rim.device.api.xml.parsers.DocumentBuilderFactory;
  */
 public class XMLParser {
 	
-	String error = "";
+	String error = " ";
 
     public XMLParser() {}
     
@@ -211,6 +211,7 @@ public class XMLParser {
     	Vector historicoPago = new Vector();
     	Pago pago;
     	
+    	System.out.println(xmlSource);
     	Document documento = PreprocesarXML(xmlSource);
     	Element elemento = documento.getDocumentElement();
     	elemento.normalize();
