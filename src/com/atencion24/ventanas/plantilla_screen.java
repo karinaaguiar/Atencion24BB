@@ -2,7 +2,10 @@ package com.atencion24.ventanas;
 
 import com.atencion24.interfaz.CustomLabelField;
 
-import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.math.Fixed32;
+//import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.system.Display;
+import net.rim.device.api.system.EncodedImage;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
@@ -21,7 +24,7 @@ public abstract class plantilla_screen extends MainScreen {
 	private String cookie="";
 	private String titulo;
 	private String subtitulo = null;
-	private static Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
+	//private static Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
 	
 	/**
 	 * Constructor de la clase 
@@ -37,12 +40,32 @@ public abstract class plantilla_screen extends MainScreen {
 		}catch (ClassNotFoundException e){}	
 		
 		//Logo alineado al centro
-		BitmapField logoField = new BitmapField(logoBitmap);
+		//Imagen escalada
+		EncodedImage image = EncodedImage.getEncodedImageResource("com/atencion24/imagenes/logo.png");
+		EncodedImage m = sizeImage(image, Display.getWidth() ,47);
+		BitmapField logoField = new BitmapField();
+		logoField.setImage(m);
+		
+		//BitmapField logoField = new BitmapField(logoBitmap);
 		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
 	    hfmLabel.add(logoField);
 	    add(hfmLabel);
 		add(new SeparatorField());
 	}	
+	
+
+	public EncodedImage sizeImage(EncodedImage image, int width, int height) 
+	{
+		 EncodedImage result = null;
+		 int currentWidthFixed32 = Fixed32.toFP(image.getWidth());
+		 int currentHeightFixed32 = Fixed32.toFP(image.getHeight());
+		 int requiredWidthFixed32 = Fixed32.toFP(width);
+		 int requiredHeightFixed32 = Fixed32.toFP(height);
+		 int scaleXFixed32 = Fixed32.div(currentWidthFixed32, requiredWidthFixed32);
+		 int scaleYFixed32 = Fixed32.div(currentHeightFixed32, requiredHeightFixed32);
+		 result = image.scaleImage32(scaleXFixed32, scaleYFixed32);
+		 return result;
+	 }
 	
 	/**
 	 * Metodo que despliega el titulo de la pantalla

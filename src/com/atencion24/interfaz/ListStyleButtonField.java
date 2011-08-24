@@ -124,11 +124,11 @@ _targetHeight = getFont().getHeight() * 2 + 2 * VPADDING;
         setExtent( width, _labelHeight + 2 * extraVPaddingNeeded );
     }
     
-    public void setText( String text )
+   /* public void setText( String text )
     {
         _labelField.setText( text );
         updateLayout();
-    }
+    }*/
     
     public void setFont( Font font )
     {

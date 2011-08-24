@@ -78,14 +78,18 @@ public class HonorariosPagadosEnProceso extends plantilla_screen_http {
             fieldManager.add(botonS);
             
             CustomButtonTable boton;
-            Enumeration deducciones = pago.getDeducciones().elements();
-            while (deducciones.hasMoreElements())
+            if(pago.getDeducciones()!=null)
             {
-            	Deduccion deduccion = (Deduccion) deducciones.nextElement();
-            	boton = new CustomButtonTable(deduccion.getConcepto()+ ": ", "-" + deduccion.getMonto() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
-                boton.setFont(appFont);
-                fieldManager.add(boton);
+	            Enumeration deducciones = pago.getDeducciones().elements();
+	            while (deducciones.hasMoreElements())
+	            {
+	            	Deduccion deduccion = (Deduccion) deducciones.nextElement();
+	            	boton = new CustomButtonTable(deduccion.getConcepto()+ ": ", "-" + deduccion.getMonto() , 0x704B4B, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE, Field.USE_ALL_WIDTH, 0xBBBBBB, 0, new int[] {0});
+	                boton.setFont(appFont);
+	                fieldManager.add(boton);
+	            }
             }
+            
             //Monto neto 
             encabezado = new CustomButtonTableNotFocus("Monto neto:", pago.getMontoNeto() , Color.LIGHTYELLOW, 0x400000, Field.USE_ALL_WIDTH, 0xBBBBBB);
             encabezado.setFont(appFont);

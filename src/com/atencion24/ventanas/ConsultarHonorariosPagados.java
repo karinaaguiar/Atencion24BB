@@ -15,6 +15,7 @@ import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.RadioButtonField;
 import net.rim.device.api.ui.component.RadioButtonGroup;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
@@ -23,7 +24,6 @@ import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Pago;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
-import com.atencion24.interfaz.CustomRadioButtom;
 import com.atencion24.interfaz.GridFieldManager;
 import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
@@ -31,8 +31,8 @@ import com.atencion24.interfaz.SpacerField;
 public class ConsultarHonorariosPagados extends plantilla_screen_http implements FieldChangeListener{
 	
 	static String dateTime = "31/12/2002";
-	CustomRadioButtom reciente;
-	CustomRadioButtom historico;
+	RadioButtonField reciente;
+	RadioButtonField historico;
 	
     DateField fechaInicial;
     DateField fechaFinal;
@@ -69,8 +69,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
         add(new SpacerField());
         //RadioButton para escoger el tipo de consulta a realizar
 		RadioButtonGroup tipoConsulta = new RadioButtonGroup();
-        reciente = new CustomRadioButtom("Pago en Proceso ",tipoConsulta,true);
-        historico = new CustomRadioButtom("Histórico ",tipoConsulta,false);	
+        reciente = new RadioButtonField("Pago en Proceso ",tipoConsulta,true);
+        historico = new RadioButtonField("Histórico ",tipoConsulta,false);	
         //foreground.
         add(reciente);
         //foreground.

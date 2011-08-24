@@ -246,15 +246,18 @@ public class HonorariosPagadosHistorico extends plantilla_screen_http implements
     	            infohijo = new InformacionNivel("Monto Liberado:" , pago.getMontoLiberado(), 0, new int[] {posicion});
     	            info.getHijo().put(new Integer(posicion), infohijo);
     	            
-    	            Enumeration deducciones = pago.getDeducciones().elements();
-    	            Deduccion deduccion;
-    	            while(deducciones.hasMoreElements())
-    	            {
-    	            	posicion ++;
-    	            	deduccion = (Deduccion) deducciones.nextElement();
-    	            	infohijo = new InformacionNivel(deduccion.getConcepto() + ":" , "-" + deduccion.getMonto(), 0, new int[] {posicion});
-    	                info.getHijo().put(new Integer(posicion),infohijo);
-    	            }	
+    	            if(pago.getDeducciones()!=null)
+    	            {	
+	    	            Enumeration deducciones = pago.getDeducciones().elements();
+	    	            Deduccion deduccion;
+	    	            while(deducciones.hasMoreElements())
+	    	            {
+	    	            	posicion ++;
+	    	            	deduccion = (Deduccion) deducciones.nextElement();
+	    	            	infohijo = new InformacionNivel(deduccion.getConcepto() + ":" , "-" + deduccion.getMonto(), 0, new int[] {posicion});
+	    	                info.getHijo().put(new Integer(posicion),infohijo);
+	    	            }	
+    	            }
             	}
             }    
             informacionNivelSuperior.setElementAt(info,pos[0]);
