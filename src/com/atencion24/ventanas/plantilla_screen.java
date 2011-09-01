@@ -1,9 +1,10 @@
 package com.atencion24.ventanas;
 
 import com.atencion24.interfaz.CustomLabelField;
+import com.atencion24.interfaz.HeaderBar;
+import com.atencion24.interfaz.SpacerField;
 
 import net.rim.device.api.math.Fixed32;
-//import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.system.EncodedImage;
 import net.rim.device.api.ui.Color;
@@ -24,7 +25,7 @@ public abstract class plantilla_screen extends MainScreen {
 	private String cookie="";
 	private String titulo;
 	private String subtitulo = null;
-	//private static Bitmap logoBitmap = Bitmap.getBitmapResource("com/atencion24/imagenes/logo.png");
+	HorizontalFieldManager screen; 
 	
 	/**
 	 * Constructor de la clase 
@@ -38,18 +39,27 @@ public abstract class plantilla_screen extends MainScreen {
 			Font appFont = familiaFont.getFont(Font.PLAIN, 8, Ui.UNITS_pt);
 			setFont(appFont);
 		}catch (ClassNotFoundException e){}	
+	
 		
-		//Logo alineado al centro
-		//Imagen escalada
+		//add(new SpacerField());
+		
+		//Add Señal del teléfono
+		HorizontalFieldManager hfmSignal = new HorizontalFieldManager(FIELD_RIGHT);
+		HeaderBar bar = new HeaderBar();
+		hfmSignal.add(bar);
+		add(hfmSignal);
+		add(new SeparatorField());
+		
+		//Add logo
 		EncodedImage image = EncodedImage.getEncodedImageResource("com/atencion24/imagenes/logo.png");
-		EncodedImage m = sizeImage(image, Display.getWidth() ,47);
+		EncodedImage m = sizeImage(image, (Display.getWidth()*6)/10 ,((Display.getWidth()*6)/10)/4);
 		BitmapField logoField = new BitmapField();
-		logoField.setImage(m);
-		
-		//BitmapField logoField = new BitmapField(logoBitmap);
+		logoField.setImage(m);	
 		HorizontalFieldManager hfmLabel = new HorizontalFieldManager(FIELD_HCENTER);
 	    hfmLabel.add(logoField);
 	    add(hfmLabel);
+	    
+		add(new SpacerField());
 		add(new SeparatorField());
 	}	
 	

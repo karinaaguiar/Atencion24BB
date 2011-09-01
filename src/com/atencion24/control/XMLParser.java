@@ -88,6 +88,8 @@ public class XMLParser {
             	this.error = "502";
             if(elemento.getChildNodes().item(0).getNodeValue().equals("503"))
             	this.error = "503";
+            if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
     	
