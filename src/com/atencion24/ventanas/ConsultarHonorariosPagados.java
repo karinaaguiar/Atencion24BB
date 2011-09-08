@@ -8,6 +8,7 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
@@ -24,6 +25,7 @@ import com.atencion24.control.HttpConexion;
 import com.atencion24.control.Pago;
 import com.atencion24.control.XMLParser;
 import com.atencion24.interfaz.CustomButtonField;
+import com.atencion24.interfaz.ForegroundManager;
 import com.atencion24.interfaz.GridFieldManager;
 import com.atencion24.interfaz.PleaseWaitPopUpScreen;
 import com.atencion24.interfaz.SpacerField;
@@ -55,6 +57,8 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
     PleaseWaitPopUpScreen wait = new PleaseWaitPopUpScreen();
     boolean estaWait = false; 
     
+    Manager foreground = new ForegroundManager();
+    
 	ConsultarHonorariosPagados(String codSeleccionado, String fechaAct) 
 	{
 		super( NO_VERTICAL_SCROLL | USE_ALL_HEIGHT | USE_ALL_WIDTH );
@@ -65,16 +69,16 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 		this.codSeleccionado = codSeleccionado;
 		this.fechaAct = fechaAct;
 		
-        add(new SpacerField());
-        add(new SpacerField());
+		foreground.add(new SpacerField());
+		foreground.add(new SpacerField());
         //RadioButton para escoger el tipo de consulta a realizar
 		RadioButtonGroup tipoConsulta = new RadioButtonGroup();
         reciente = new RadioButtonField("Pago en Proceso ",tipoConsulta,true);
         historico = new RadioButtonField("Histórico ",tipoConsulta,false);	
         //foreground.
-        add(reciente);
+        foreground.add(reciente);
         //foreground.
-        add(historico);
+        foreground.add(historico);
         tipoConsulta.setChangeListener(this);
         
         ControlDates dates = new ControlDates();
@@ -103,12 +107,12 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
         gridFieldManager.add(fechaFinal);
         
         nulo = new SpacerField();
-        add(nulo);
+        foreground.add(nulo);
         insertIndex = this.getFieldCount();
         
         //foreground.add(gridFieldManager);
-        add(new SpacerField());
-        add(new SpacerField());
+        foreground.add(new SpacerField());
+        foreground.add(new SpacerField());
         
         //Boton de consultar
         verRepor = new CustomButtonField(" Consultar ", Color.WHITE, 0x990000 , Color.WHITE, 0xF77100, 0);
@@ -116,7 +120,14 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
         VerticalFieldManager buttonManager = new VerticalFieldManager(FIELD_HCENTER);
         buttonManager.add(verRepor); 
         //foreground.
-        add(buttonManager);
+        foreground.add(buttonManager);
+        SpacerField nulo1 = new SpacerField();
+        foreground.add(nulo1);
+        SpacerField nulo2 = new SpacerField();
+        foreground.add(nulo2);
+        SpacerField nulo3 = new SpacerField();
+        foreground.add(nulo3);
+        add(foreground);
 	}
 
 	public void llamadaExitosa(String respuesta) {
@@ -277,12 +288,12 @@ public class ConsultarHonorariosPagados extends plantilla_screen_http implements
 	      if (field == historico) 
 	      {
 	    	  if (historico.isSelected()){	
-	    		  	replace(nulo, gridFieldManager);
+	    		  	foreground.replace(nulo, gridFieldManager);
 	    		  	//insert(gridFieldManager, insertIndex);
 	    	  }
 	    	  else 
 	    	  {
-		    	   	replace(gridFieldManager, nulo); 
+				  	foreground.replace(gridFieldManager, nulo); 
 		    	   	//delete(gridFieldManager);
 	    	  }
           }
