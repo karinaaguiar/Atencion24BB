@@ -185,6 +185,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
@@ -230,6 +232,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
@@ -329,6 +333,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
@@ -362,6 +368,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
@@ -424,6 +432,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
@@ -460,6 +470,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
@@ -509,6 +521,8 @@ public class XMLParser {
     			this.error = "Sobrepasó el tiempo de inactividad permitido. Debe volver a iniciar sesión";
     		if(elemento.getChildNodes().item(0).getNodeValue().equals("505"))	
     			this.error = "La sesión ha expirado. Para seguir utilizando la aplicación debe iniciar sesión nuevamente";
+    		if(elemento.getChildNodes().item(0).getNodeValue().equals("600"))
+            	this.error = "Actualmente se está actualizando la base de datos de la aplicación. Espere unos minutos mientras culmina el proceso";
             return null;
     	}	
 
