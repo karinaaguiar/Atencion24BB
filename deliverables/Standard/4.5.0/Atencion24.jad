@@ -1,22 +1,22 @@
 Manifest-Version: 1.0
 MIDlet-Version: 1.0.0
-MIDlet-Jar-Size: 285858
+MIDlet-Jar-Size: 277281
 RIM-COD-URL-2: Atencion24-2.cod
 MicroEdition-Configuration: CLDC-1.1
 MIDlet-Jar-URL: Atencion24.jar
-RIM-COD-Module-Dependencies: net_rim_cldc,net_rim_xml_org,net_rim_xml
-RIM-COD-SHA1-2: 91 54 7d 28 a9 01 6b de 3f 00 ff 31 24 90 f3 27 fb 89 ae a6
+RIM-COD-Module-Dependencies: net_rim_cldc,net_rim_os,net_rim_xml_org,net_rim_xml
+RIM-COD-SHA1-2: f5 96 60 34 4b fb 40 dc e1 5e d8 9a e9 26 be 5e ca fb 18 03
 RIM-COD-URL-1: Atencion24-1.cod
-RIM-COD-SHA1-1: c9 6f bb d2 98 e4 cf d6 47 44 be b7 38 c5 8f 58 fe 7e 28 39
-RIM-COD-Size-2: 11680
+RIM-COD-SHA1-1: 4b 2c d2 b5 5d 3c 6a d5 b2 2d f0 6e 83 b0 3f 23 3a a0 b7 11
+RIM-COD-Size-2: 11548
 RIM-MIDlet-Flags-1: 0
-RIM-COD-Size-1: 58796
+RIM-COD-Size-1: 58816
 RIM-COD-Module-Name: Atencion24
 MIDlet-Name: Atencion24
-RIM-COD-Size: 70436
-RIM-COD-Creation-Time: 1319116363
+RIM-COD-Size: 70864
+RIM-COD-Creation-Time: 1326313350
 MIDlet-1: Atencion 24,com/atencion24/imagenes/medical-bag-icon.png,
 RIM-COD-URL: Atencion24.cod
-RIM-COD-SHA1: be 31 47 6f 85 b8 69 46 56 2f 08 78 98 67 49 c2 49 02 a6 09
+RIM-COD-SHA1: 6a 88 c8 f4 51 3f de f7 50 0f c0 af 80 74 ff 31 fc d8 72 e0
 MicroEdition-Profile: MIDP-2.0
 MIDlet-Vendor: BlackBerry Developer

@@ -33,7 +33,7 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
  */
 public class V_InicioSesion extends plantilla_screen_http implements FieldChangeListener {
 
-	final int MAX_CLAVE = 6;
+	final int MAX_CLAVE = 15;
 	EditField nombreusuarioField;
 	LabelField nombreusuarioLabel;
 	PasswordEditField passwordField;
